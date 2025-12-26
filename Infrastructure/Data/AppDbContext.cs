@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Data
 {
 
-// Truyền biến options vào lớp cha IdentityDbContext
 public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)    {
 
         // ===== DbSet =====
