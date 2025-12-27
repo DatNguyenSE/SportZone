@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Data
 {
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)    {
-
+public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
+{
         // ===== DbSet =====
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
