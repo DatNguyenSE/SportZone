@@ -13,6 +13,8 @@ namespace Adidas.Application.Dtos
         [Required]
         [MinLength(4)]
         public string Password { get; set; } = "";  
-        [Required] public DateOnly DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
+        [Required]
+        public string FullName { get; set; } ="";
     }
 }
