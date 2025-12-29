@@ -1,5 +1,6 @@
 ﻿
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,13 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<IdentityRole>()
+            .HasData(
+                new IdentityRole { Id = "member-id", Name = "Member", NormalizedName = "MEMBER" },
+                new IdentityRole { Id = "staff-id", Name = "Staff", NormalizedName = "STAFF" },
+                new IdentityRole { Id = "admin-id", Name = "Admin", NormalizedName = "ADMIN" }
+            );
+            
             // CartItem composite key
             builder.Entity<CartItem>()
                 .HasKey(ci => new { ci.CartId, ci.ProductId });

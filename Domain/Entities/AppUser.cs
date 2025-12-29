@@ -6,7 +6,7 @@ namespace API.Entities
     {
         public string FullName { get; set; } = null!;
         public string? ImageUrl { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
         public string? Address { get; set; }
 
         // Auth
