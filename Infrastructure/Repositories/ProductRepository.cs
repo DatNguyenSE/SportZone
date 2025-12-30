@@ -1,17 +1,16 @@
 ﻿using Adidas.Application.Interfaces;
 using API.Data;
 using API.Entities;
+using Microsoft.EntityFrameworkCore;
 namespace Adidas.Infrastructure.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class ProductRepository(AppDbContext context) : GenericRepository<Product>(context), IProductRepository
     {
-        public ProductRepository(AppDbContext context) : base(context)
+        public async Task<IEnumerable<Product?>> GetListByCategoryIdAsync(int id)
         {
-        }
-
-        public Task<Product?> GetByCategoryIdAsync(int id)
-        {
-            throw new NotImplementedException();
+        return await context.Products
+         .Where(p => p.CategoryId == id)
+         .ToListAsync();
         }
     }
 
