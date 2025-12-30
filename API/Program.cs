@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,38 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+
+// Swagger config
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Adidas API", Version = "v1" });
+
+    // Cấu hình để Swagger hiển thị nút "Authorize" (ổ khóa)
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+      In = ParameterLocation.Header,
+      Description = "Please, enter the token code in the blank",
+      Name = "Authorizaion",
+      Type = SecuritySchemeType.Http,
+      BearerFormat = "JWT",
+      Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
@@ -49,12 +83,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // 2. Kích hoạt Swagger UI Middleware
+    app.UseSwagger();
+    app.UseSwaggerUI(); 
+    // Nếu muốn dùng mapOpenApi của .NET 9 cũ thì giữ, nhưng khuyên dùng 2 dòng trên
 }
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
-// app.UseHttpsRedirection();
 app.Run();
 
