@@ -1,4 +1,6 @@
 
+using System.Linq.Expressions;
+
 namespace Adidas.Application.Interfaces
 {
     public interface IGenericRepository<T> where T : class
@@ -8,5 +10,6 @@ namespace Adidas.Application.Interfaces
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);   
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
     }
 }

@@ -13,6 +13,7 @@ namespace Adidas.Application.Mappings
 
             // ReverseMap() giúp map 2 chiều: Product <-> ProductDto
             CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<CreateProductDto, Product>();
 
             //inventory
             CreateMap<InventoryDto, Inventory>().ReverseMap();

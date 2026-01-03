@@ -92,10 +92,9 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // 2. Kích hoạt Swagger UI Middleware
     app.UseSwagger();
     app.UseSwaggerUI(); 
-    // Nếu muốn dùng mapOpenApi của .NET 9 cũ thì giữ, nhưng khuyên dùng 2 dòng trên
+
 }
 app.UseHttpsRedirection();
 app.UseAuthentication();

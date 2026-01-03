@@ -1,20 +1,27 @@
-using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace Adidas.Application.Dtos;
-
-public class ProductDto
+namespace Adidas.Application.Dtos
 {
-    public int Id { get; set; } 
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; } = string.Empty;
-    public string? Brand { get; set; }
-    public decimal Price { get; set; }
-    public string? ImageUrl { get; set; } 
-    public int? CategoryId { get; set; }
-    [DefaultValue(false)]
-    public bool IsDeleted { get; set; } = false;
-    public int Quantity { get; set; }
-}  
 
+    public class CreateProductDto
+    {
+  
+        public required string Name { get; set; } 
+        public string? Description { get; set; }
+        public string? Brand { get; set; }
+        [Required]
+        public decimal Price { get; set; }
+        public string? ImageUrl { get; set; } 
+        [DefaultValue(1)]
+        public int CategoryId { get; set; }
+        public int Quantity { get; set; }
+    }
 
+    public class ProductDto : CreateProductDto
+    {
+        public int Id { get; set; }
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
+    }
+}

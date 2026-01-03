@@ -8,16 +8,23 @@ namespace Adidas.Application.Services
 {
     public class ProductService(IUnitOfWork uow, IMapper mapper) : IProductService
     {
-        public async Task<ProductDto> AddAsync(ProductDto productDto)
+        public async Task<ProductDto> AddAsync(CreateProductDto createDto)
         {
-            var entity = mapper.Map<Product>(productDto);
-            if (productDto.Quantity > 0)
+            var isDuplicate = await uow.ProductRepository.AnyAsync(p => p.Name == createDto.Name);
+            if (isDuplicate)
             {
+                throw new Exception("Product name already exists.");
+            }
+
+            var entity = mapper.Map<Product>(createDto);
+
+            // 1:1 relationship 
                 entity.Inventory = new Inventory
                 {
-                    Quantity = productDto.Quantity, 
+                    Quantity = createDto.Quantity,
                 };
-            }
+            
+            
             await uow.ProductRepository.AddAsync(entity);
             await uow.Complete();
             return mapper.Map<ProductDto>(entity);

@@ -2,11 +2,8 @@ using Adidas.Application.Dtos;
 using Adidas.Application.Interfaces.IService;
 using Adidas.Application.Extensions;
 using API.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
-
 
 namespace Adidas.API.Controllers
 {

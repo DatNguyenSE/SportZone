@@ -3,7 +3,7 @@ using Adidas.Application.Interfaces;
 using Adidas.Application.Interfaces.IService;
 using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
-{   
+{
     [Route("api/products")]
     [ApiController]
     public class ProductController(IProductService productService) : ControllerBase
@@ -12,14 +12,14 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
         {
             var products = await productService.GetAllAsync();
-            return Ok (products);
+            return Ok(products);
         }
 
         [HttpGet("{productId:int}")]
         public async Task<IActionResult> GetProductById(int productId)
         {
             var product = await productService.GetByIdAsync(productId);
-            if(product == null)
+            if (product == null)
             {
                 return NotFound(new { message = "The product does not exist." });
             }
@@ -27,17 +27,20 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> AddProduct(ProductDto productDto)
+        public async Task<ActionResult<ProductDto>> AddProduct(CreateProductDto productDto)
         {
-            var productAdded = await productService.AddAsync(productDto);
-            if(productAdded == null)
+            try
             {
-                return BadRequest(new { message = "Error, product not added." });
+                var productAdded = await productService.AddAsync(productDto);
+                
+                return CreatedAtAction(nameof(GetProductById), new { productId = productAdded.Id }, productAdded);
             }
-
-            return CreatedAtAction(nameof(GetProductById), new { productId = productAdded.Id }, productAdded);
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
-        
+
         [HttpDelete("{productId:int}")]
         public async Task<IActionResult> DeleteProduct(int productId)
         {
