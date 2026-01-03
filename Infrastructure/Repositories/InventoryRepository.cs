@@ -21,9 +21,9 @@ public class InventoryRepository( AppDbContext _context) : GenericRepository<Inv
         inventory.UpdatedAt = DateTime.UtcNow;
         return true;
     }
-    public Task<Inventory?> GetInventoryAsync(int productId)
+    public Task<int> GetQuantityAsync(int productId)
     {
-        return _context.Inventories.FirstOrDefaultAsync(i => i.ProductId == productId);
+        return _context.Inventories.Where(i => i.ProductId == productId).Select(i => i.Quantity).FirstOrDefaultAsync();
     }
 
 }

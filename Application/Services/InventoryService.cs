@@ -21,11 +21,17 @@ public class InventoryService(IUnitOfWork uow, IMapper mapper) : IInventoryServi
 
     public async Task<InventoryDto?> GetInventoryAsync(int productId)
     {
-        var inventory =  await uow.InventoryRepository.GetInventoryAsync(productId);
+        var inventory =  await uow.InventoryRepository.GetByIdAsync(productId);
         if (inventory == null)
         {
             return null;
         }
         return mapper.Map<InventoryDto>(inventory);
+    }
+
+    public async Task<int> GetQuantityAsync(int productId)
+    {
+        var inventory = await uow.InventoryRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found.");
+        return await uow.InventoryRepository.GetQuantityAsync(productId);
     }
 }

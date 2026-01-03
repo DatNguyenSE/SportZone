@@ -29,5 +29,20 @@ namespace Adidas.API.Controllers
             }
             return Ok(inventory);
         }
+        
+
+        [HttpGet("{productId:int}/quantity")]
+        public async Task<ActionResult<int>> GetQuantity(int productId)
+        {
+            try
+            {
+                var quantity = await inventoryService.GetQuantityAsync(productId);
+                return Ok(quantity);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message =  ex.Message });
+            }
+        }
     }
 }
