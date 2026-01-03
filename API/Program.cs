@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
+using Adidas.Application.Services;
+using Adidas.Application.Mappings;
+using Adidas.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 //AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Swagger config
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
@@ -58,7 +61,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {
@@ -84,6 +88,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// ===== BẮT ĐẦU SEED DATA =====
+// Tạo một scope mới để lấy service ra dùng 1 lần rồi bỏ
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        
+        // Gọi hàm seed vừa viết
+        await DbInitializer.InitAsync(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+// ===== KẾT THÚC SEED DATA =====
 
 if (app.Environment.IsDevelopment())
 {

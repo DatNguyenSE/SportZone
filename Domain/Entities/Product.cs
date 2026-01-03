@@ -9,7 +9,7 @@
         public decimal Price { get; set; }
         public string? Brand { get; set; }
         public string? ImageUrl { get; set; }
-        public Boolean IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

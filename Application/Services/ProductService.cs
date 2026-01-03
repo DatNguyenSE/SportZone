@@ -11,6 +11,13 @@ namespace Adidas.Application.Services
         public async Task<ProductDto> AddAsync(ProductDto productDto)
         {
             var entity = mapper.Map<Product>(productDto);
+            if (productDto.Quantity > 0)
+            {
+                entity.Inventory = new Inventory
+                {
+                    Quantity = productDto.Quantity, 
+                };
+            }
             await uow.ProductRepository.AddAsync(entity);
             await uow.Complete();
             return mapper.Map<ProductDto>(entity);
@@ -18,26 +25,23 @@ namespace Adidas.Application.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var product = await uow.ProductRepository.GetByIdAsync(id);
-            if(product == null)
+            var result = await uow.ProductRepository.ChangeStatusProduct(id); // soft delete
+            if (result)
             {
-                return false;
+                await uow.Complete();
             }
-
-            uow.ProductRepository.Delete(product);
-            var result = await uow.Complete();
-            return result ;
+            return result;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = await uow.ProductRepository.GetAllAsync();
+            var products = await uow.ProductRepository.GetAllProductWithInventoryAsync();
             return mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
-            var entity = await uow.ProductRepository.GetByIdAsync(id);
+            var entity = await uow.ProductRepository.GetProductWithInventoryByIdAsync(id);
             return mapper.Map<ProductDto>(entity);
         }
 
@@ -50,7 +54,7 @@ namespace Adidas.Application.Services
         public async Task<ProductDto?> UpdateAsync(int id, ProductDto productDto)
         {
             var existingProduct = await uow.ProductRepository.GetByIdAsync(id);
-            if(existingProduct == null)
+            if (existingProduct == null)
             {
                 return null;
             }
