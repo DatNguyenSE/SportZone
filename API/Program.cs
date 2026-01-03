@@ -89,25 +89,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// ===== BẮT ĐẦU SEED DATA =====
-// Tạo một scope mới để lấy service ra dùng 1 lần rồi bỏ
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<AppDbContext>();
-        
-        // Gọi hàm seed vừa viết
-        await DbInitializer.InitAsync(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
-// ===== KẾT THÚC SEED DATA =====
 
 if (app.Environment.IsDevelopment())
 {
