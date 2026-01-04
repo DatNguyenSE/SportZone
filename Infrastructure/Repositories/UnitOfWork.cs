@@ -10,6 +10,7 @@ public class UnitOfWork(AppDbContext _context): IUnitOfWork
 {
     private IProductRepository? _productRepository;
     private IInventoryRepository? _inventoryRepository;
+    private ICartRepository? _cartRepository;
 
 //when other function call (uow.ProductRepository) -> check and avoid create multiple instance
     public IProductRepository ProductRepository => _productRepository 
@@ -17,12 +18,15 @@ public class UnitOfWork(AppDbContext _context): IUnitOfWork
 
     public IInventoryRepository InventoryRepository => _inventoryRepository 
         ??= new InventoryRepository(_context);
-        
+    public ICartRepository CartRepository => _cartRepository 
+        ??= new CartRepository(_context);
+
+
     public async Task<bool> Complete()
     {
         try
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0; //Sửa dữ liệu trên RAM -> Chờ lệnh Save -> EF sinh SQL -> Gửi DB
         }
         catch(DbUpdateException ex)
         {

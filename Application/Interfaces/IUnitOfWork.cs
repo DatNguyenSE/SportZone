@@ -7,6 +7,7 @@ public interface IUnitOfWork
 {
     IProductRepository ProductRepository { get; }
     IInventoryRepository InventoryRepository { get; }
+    ICartRepository CartRepository { get; }
     Task<bool> Complete();
     bool HasChange();
 }

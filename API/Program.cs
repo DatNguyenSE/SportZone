@@ -63,6 +63,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {

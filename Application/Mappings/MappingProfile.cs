@@ -22,7 +22,10 @@ namespace Adidas.Application.Mappings
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Inventory != null ? src.Inventory.Quantity : 0))
                 .ReverseMap();
 
-
+            // Cart
+            CreateMap<Cart, CartDto>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
+                .ReverseMap();
         }
     }
 }
