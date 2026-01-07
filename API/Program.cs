@@ -9,6 +9,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using AutoMapper;
+using Adidas.Application.Services;
+using Adidas.Application.Mappings;
+using Adidas.Infrastructure.Data;
+using Adidas.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +22,39 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+// Swagger config
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Adidas API", Version = "v1" });
+
+    // Cấu hình để Swagger hiển thị nút "Authorize" (ổ khóa)
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+      In = ParameterLocation.Header,
+      Description = "Please, enter the token code in the blank",
+      Name = "Authorizaion",
+      Type = SecuritySchemeType.Http,
+      BearerFormat = "JWT",
+      Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
@@ -23,7 +62,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {
@@ -49,12 +90,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
+app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(); 
+
 }
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
-// app.UseHttpsRedirection();
 app.Run();
 

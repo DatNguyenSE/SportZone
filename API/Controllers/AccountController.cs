@@ -2,10 +2,8 @@ using Adidas.Application.Dtos;
 using Adidas.Application.Interfaces.IService;
 using Adidas.Application.Extensions;
 using API.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Adidas.API.Controllers
 {
@@ -23,18 +21,35 @@ namespace Adidas.API.Controllers
                 DateOfBirth = registerDto.DateOfBirth,
                 FullName = registerDto.FullName
             };
-            var result = await userManager.CreateAsync(user, registerDto.Password); // save password Hash
+
+            var result = await userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("identity", error.Description);
                 }
-                return ValidationProblem(); //StatusCodes.Status400BadRequest response
+                return ValidationProblem();
             }
-
-            await userManager.AddToRoleAsync(user, "Member"); // have to seed ROLES in DB first
+            await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
             await SetRefreshTokenCookie(user);
+            return await user.ToDto(tokenService);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        {
+            var user = await userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null)
+            {
+                return Unauthorized("Invalid email address!");
+            }
+            var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if(!result)
+            {
+                return Unauthorized("Invalid password!");
+            }
             return await user.ToDto(tokenService);
 
         }

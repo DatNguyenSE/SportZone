@@ -1,16 +1,42 @@
+using Adidas.Application.Dtos;
 using Adidas.Application.Interfaces;
+using Adidas.Application.Interfaces.IService;
 using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
-{   
+{
     [Route("api/products")]
     [ApiController]
-    public class ProductController(IUnitOfWork _uow) : ControllerBase
+    public class ProductController(IProductService productService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
         {
-            var products = await _uow.ProductRepository.GetAllAsync();
-            return Ok (products);
+            var products = await productService.GetAllAsync();
+            return Ok(products);
+        }
+
+        [HttpGet("{productId:int}")]
+        public async Task<IActionResult> GetProductById(int productId)
+        {
+            var product = await productService.GetByIdAsync(productId);
+            return Ok(product);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDto>> AddProduct(CreateProductDto productDto)
+        {
+
+            var productAdded = await productService.AddAsync(productDto);
+
+            return CreatedAtAction(nameof(GetProductById), new { productId = productAdded.Id }, productAdded);
+
+        }
+
+        [HttpDelete("{productId:int}")]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            await productService.DeleteAsync(productId);
+            return NoContent();
         }
     }
 }

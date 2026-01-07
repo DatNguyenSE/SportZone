@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Adidas.Application.Interfaces;
 
 using API.Data;
@@ -42,6 +43,12 @@ namespace Adidas.Infrastructure.Repositories
         public void Update(T entity)
         {
             _dbSet.Update(entity);
+        }
+
+        //check if any entity matches the predicate
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
 
     }

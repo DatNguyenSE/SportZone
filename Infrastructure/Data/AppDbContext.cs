@@ -24,8 +24,10 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<IdentityRole>()
+            // Tự động thêm điều kiện "WHERE IsDeleted = false" vào mọi câu truy vấn Product
+            builder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
+            
+            builder.Entity<IdentityRole>() //seed role
             .HasData(
                 new IdentityRole { Id = "member-id", Name = "Member", NormalizedName = "MEMBER" },
                 new IdentityRole { Id = "staff-id", Name = "Staff", NormalizedName = "STAFF" },
