@@ -15,6 +15,8 @@ using SportZone.Application.Services;
 using SportZone.Application.Mappings;
 using SportZone.Infrastructure.Data;
 using SportZone.API.Middlewares;
+using Sport.Application.IService;
+using Sport.Infrastructure.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IVnPayService,VnPayService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {

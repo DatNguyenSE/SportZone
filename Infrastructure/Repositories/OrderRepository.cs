@@ -18,13 +18,20 @@ public class OrderRepository(AppDbContext _context) : GenericRepository<Order>(_
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
     }
 
-    public async Task<IEnumerable<Order?>> GetOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus)
+    public async Task<IEnumerable<Order?>> GetListOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus)
     {
         return await _context.Orders 
         .AsNoTracking()
         .Include(o => o.Payment)
         .Where(o => o.UserId == userId && o.Payment != null &&o.Payment.PaymentStatus == paymentStatus)
         .ToListAsync();
+    }
+    
+    public async Task<Order?> GetOrderWithPaymentAsync(int orderId)
+    {
+        return await _context.Orders 
+        .Include(o => o.Payment).FirstOrDefaultAsync(x => x.Id == orderId);
+        
     }
 
     public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId)
