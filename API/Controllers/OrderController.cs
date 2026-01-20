@@ -46,7 +46,7 @@ namespace SportZone.API.Controllers
         public async Task<ActionResult> GetOrderWithPaymentStatus(PaymentStatus paymentStatus)
         {
             var userId = User.GetUserId();
-            var orders = await orderService.GetOrderWithPaymentAsync(userId, paymentStatus);
+            var orders = await orderService.GetListOrderWithPaymentAsync(userId, paymentStatus);
             return Ok(orders);
         }
     }
