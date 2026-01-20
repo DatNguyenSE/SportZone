@@ -6,8 +6,8 @@ namespace SportZone.Application.Interfaces.IRepositories;
 
 public interface IOrderRepository : IGenericRepository<Order>
 {
-    Task<IEnumerable<Order?>> GetOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus);
+    Task<IEnumerable<Order?>> GetListOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus);
     Task<Order?> GetOrderWithDetailsAsync(int OrderId, string userId);
     Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId);
-
+    Task<Order?> GetOrderWithPaymentAsync(int orderId);
 }

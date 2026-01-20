@@ -7,9 +7,13 @@ namespace SportZone.Application.Interfaces.IService;
 
 public interface IOrderService
 {
-    Task<IEnumerable<OrderDetailsDto>> GetOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus);
+    Task<IEnumerable<OrderDetailsDto>> GetListOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus);
     Task<OrderDetailsDto?> GetOrderWithDetailsAsync(int orderId, string userId);
     Task<IEnumerable<OrderDto>> GetOrdersByUserIdAsync(string userId);
     Task<OrderDetailsDto> CreateOrderByCartItemsAsync(string userId, PaymentMethod paymentMethod);
     Task CancelOrderAsync(int orderId, string userId);
+    Task UpdateOrderStatus(int orderId, OrderStatus orderStatus);
+    Task<OrderDto> GetOrderByIdAsync(int orderId);
+    Task CompletedOrderStatus(int orderId);
+    Task<OrderDetailsDto> GetOrderWithPaymentAsync(int orderId);
 }

@@ -23,8 +23,8 @@ public class VnPayLibrary
                     vnPay.AddResponseData(key, value);
                 }
             }
-            var orderId = Convert.ToInt64(vnPay.GetResponseData("vnp_TxnRef"));
-            // var orderId = vnPay.GetResponseData("vnp_TxnRef");
+            // var orderId = Convert.ToInt64(vnPay.GetResponseData("vnp_TxnRef"));
+            var orderId = vnPay.GetResponseData("vnp_TxnRef");
             var vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
             // var vnPayTranId = vnPay.GetResponseData("vnp_TransactionNo");
             var vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
@@ -33,6 +33,9 @@ public class VnPayLibrary
             var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
             var checkSignature =
                 vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
+            
+            long vnp_Amount = Convert.ToInt64(vnPay.GetResponseData("vnp_Amount"));
+            
             if (!checkSignature)
                 return new PaymentResponseModel()
                 {
@@ -43,11 +46,12 @@ public class VnPayLibrary
                 Success = true,
                 PaymentMethod = "VnPay",
                 OrderDescription = orderInfo,
-                OrderId = orderId.ToString(),
+                OrderId = orderId, // "12_639045166745147581"
                 PaymentId = vnPayTranId.ToString(),
                 TransactionId = vnPayTranId.ToString(),
                 Token = vnpSecureHash,
-                VnPayResponseCode = vnpResponseCode
+                VnPayResponseCode = vnpResponseCode,
+                Amount = vnp_Amount
             };
         }
 

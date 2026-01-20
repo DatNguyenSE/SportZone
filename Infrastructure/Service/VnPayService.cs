@@ -2,79 +2,71 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Sport.Application.IService;
 using SportZone.Application.Dtos.Vnpay;
-using SportZone.Infrastructure.Common.Utilities;
-namespace Sport.Infrastructure.Service;
-public class VnPayService : IVnPayService
+using SportZone.Infrastructure.Common.Utilities; // Đã có VnPayLibrary ở đây
+
+namespace Sport.Infrastructure.Service
 {
-    private readonly IConfiguration _configuration;
-
-    public VnPayService(IConfiguration configuration)
+    public class VnPayService : IVnPayService
     {
-        _configuration = configuration;
-    }
+        private readonly IConfiguration _configuration;
 
-    public string CreatePaymentUrl(PaymentInformationModel model, HttpContext context, string txnRef)
-    {
-        var timeZoneId = TimeZoneInfo.FindSystemTimeZoneById(_configuration["TimeZoneId"]);
-        var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneId);
-        var tick = DateTime.Now.Ticks.ToString();
-        var vnpay = new VnPayLibrary();
-        var urlCallBack = _configuration["Vnpay:ReturnUrl"];
-
-        vnpay.AddRequestData("vnp_Version", _configuration["VnPay:Version"]);
-        vnpay.AddRequestData("vnp_Command", _configuration["VnPay:Command"]);
-        vnpay.AddRequestData("vnp_TmnCode", _configuration["VnPay:TmnCode"]);
-        vnpay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString()); // Số tiền phải nhân với 100
-        
-        vnpay.AddRequestData("vnp_CreateDate",timeNow.ToString("yyyyMMddHHmmss"));
-        vnpay.AddRequestData("vnp_CurrCode", _configuration["VnPay:CurrCode"]);
-        vnpay.AddRequestData("vnp_IpAddr", vnpay.GetIpAddress(context)); 
-        vnpay.AddRequestData("vnp_Locale", _configuration["VnPay:Locale"]);
-        
-        vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + model.OrderDescription);
-        vnpay.AddRequestData("vnp_OrderType", model.OrderType); // Ví dụ: "other"
-        vnpay.AddRequestData("vnp_ReturnUrl", "https://localhost:5001/api/Payment/Callback"); // URL nhận kết quả
-        vnpay.AddRequestData("vnp_TxnRef", tick); // Mã đơn hàng (phải là duy nhất)
-
-        var paymentUrl = vnpay.CreateRequestUrl(_configuration["VnPay:BaseUrl"], _configuration["VnPay:HashSecret"]);
-        return paymentUrl;
-    }
-
-
-
-    public PaymentResponseModel PaymentExecute(IQueryCollection collections)
-    {
-        var vnpay = new VnPayLibrary();
-        foreach (var (key, value) in collections)
+        public VnPayService(IConfiguration configuration)
         {
-            if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
-            {
-                vnpay.AddResponseData(key, value.ToString());
-            }
+            _configuration = configuration;
         }
 
-        var vnp_orderId = Convert.ToInt64(vnpay.GetResponseData("vnp_TxnRef"));
-        var vnp_TransactionId = Convert.ToInt64(vnpay.GetResponseData("vnp_TransactionNo"));
-        var vnp_SecureHash = collections.FirstOrDefault(p => p.Key == "vnp_SecureHash").Value;
-        var vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
-        var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
-
-        bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, _configuration["VnPay:HashSecret"]);
-        
-        if (!checkSignature)
+        public string CreatePaymentUrl(PaymentInformationModel model, HttpContext context, string? returnUrlOverride = null)
         {
-            return new PaymentResponseModel { Success = false };
+            // Khởi tạo thư viện
+            var vnpay = new VnPayLibrary();
+
+            // 1. Lấy Config
+            var timeZoneId = _configuration["TimeZoneId"] ?? "SE Asia Standard Time";
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
+            
+            var baseUrl = _configuration["VnPay:BaseUrl"];
+            var hashSecret = _configuration["VnPay:HashSecret"];
+            var returnUrl = !string.IsNullOrEmpty(returnUrlOverride) 
+                            ? returnUrlOverride 
+                            : _configuration["VnPay:ReturnUrl"];
+
+            // 2. Add Request Data
+            vnpay.AddRequestData("vnp_Version", _configuration["VnPay:Version"]);
+            vnpay.AddRequestData("vnp_Command", _configuration["VnPay:Command"]);
+            vnpay.AddRequestData("vnp_TmnCode", _configuration["VnPay:TmnCode"]);
+            
+            // Số tiền nhân 100
+            vnpay.AddRequestData("vnp_Amount", ((long)(model.Amount * 100)).ToString()); 
+            
+            vnpay.AddRequestData("vnp_CreateDate", timeNow.ToString("yyyyMMddHHmmss"));
+            vnpay.AddRequestData("vnp_CurrCode", _configuration["VnPay:CurrCode"]);
+            
+            vnpay.AddRequestData("vnp_IpAddr", vnpay.GetIpAddress(context));
+
+            vnpay.AddRequestData("vnp_Locale", _configuration["VnPay:Locale"]);
+            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + model.OrderId);
+            vnpay.AddRequestData("vnp_OrderType", model.OrderType ?? "other"); 
+            vnpay.AddRequestData("vnp_ReturnUrl", returnUrl);
+            
+            // Mã tham chiếu txnRef phải là duy nhất cho mỗi lần giao dịch , nếu trùng vnpay sẽ chặn nếu trước đó giao dịch sai 
+            var txnRef = $"{model.OrderId}_{DateTime.Now.Ticks}";
+            vnpay.AddRequestData("vnp_TxnRef", txnRef); // 12_639045166745147581
+        
+
+
+            // Tạo URL
+            var paymentUrl = vnpay.CreateRequestUrl(baseUrl, hashSecret);
+            return paymentUrl;
         }
 
-        return new PaymentResponseModel
+        public PaymentResponseModel PaymentExecute(IQueryCollection collections)
         {
-            Success = true,
-            PaymentMethod = "VnPay",
-            OrderDescription = vnp_OrderInfo,
-            OrderId = vnp_orderId.ToString(),
-            TransactionId = vnp_TransactionId.ToString(),
-            Token = vnp_SecureHash,
-            VnPayResponseCode = vnp_ResponseCode
-        };
+            var vnpay = new VnPayLibrary();
+            
+            var response = vnpay.GetFullResponseData(collections, _configuration["VnPay:HashSecret"]);
+        
+            return response;
+        }
     }
 }

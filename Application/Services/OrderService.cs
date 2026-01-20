@@ -75,27 +75,33 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
 
         order.TotalAmount = totalAmount;
 
-        // 5. Refactor Payment Logic (Sạch sẽ hơn)
-        order.Payment = paymentMethod switch
+        //chia 2 truong hop 
+        if(paymentMethod == PaymentMethod.COD)
         {
-            PaymentMethod.COD => new Payment
+            order.Payment = new Payment
             {
                 PaymentMethod = PaymentMethod.COD,
                 PaymentStatus = PaymentStatus.Pending,
-                PaidAt = null // COD thì chưa thanh toán ngay
-            },
-            PaymentMethod.OnlineBanking => new Payment
+                PaidAt = null
+            };
+            order.Status = OrderStatus.Placed; // dat hang va nhan tai cua hang
+            
+        }
+        else if(paymentMethod == PaymentMethod.OnlineBanking)
+        {
+            order.Payment = new Payment
             {
                 PaymentMethod = PaymentMethod.OnlineBanking,
                 PaymentStatus = PaymentStatus.Pending,
-                PaidAt = null // Chờ callback từ VNPay mới update PaidAt
-            },
-            _ => throw new BadRequestException($"Payment method '{paymentMethod}' is not supported.")
-        };
+                PaidAt = null
+            };
+            order.Status = OrderStatus.Pending; 
+        }
+        else
+        {
+             throw new BadRequestException($"Payment method '{paymentMethod}' is not supported.");
+        }
 
-        order.Status = OrderStatus.Placed;
-
-        
 
         // 6. Save changes
         await uow.OrderRepository.AddAsync(order);
@@ -121,9 +127,9 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         return mapper.Map<OrderDetailsDto>(orderEntity);
     }
 
-    public async Task<IEnumerable<OrderDetailsDto>> GetOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus)
+    public async Task<IEnumerable<OrderDetailsDto>> GetListOrderWithPaymentAsync(string userId, PaymentStatus paymentStatus)
     {
-        var orderEntity = await uow.OrderRepository.GetOrderWithPaymentAsync(userId, paymentStatus);
+        var orderEntity = await uow.OrderRepository.GetListOrderWithPaymentAsync(userId, paymentStatus);
 
         return mapper.Map<IEnumerable<OrderDetailsDto>>(orderEntity);
     }
@@ -140,7 +146,8 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         }
 
         // Update status
-        if (order.Payment != null) order.Payment.PaymentStatus = PaymentStatus.Failed;
+        if (order.Payment != null) 
+        order.Payment.PaymentStatus = PaymentStatus.Failed;
         order.Status = OrderStatus.Cancelled;
 
         // REFUND QUANTITY 
@@ -162,8 +169,8 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
                 else
                 {
                     logger.LogWarning(
-                        "Refund Warning: Order {OrderId} cancelled but Inventory for ProductId {ProductId} not found. Stock could not be restored.", 
-                        orderId, 
+                        "Refund Warning: Order {OrderId} cancelled but Inventory for ProductId {ProductId} not found. Stock could not be restored.",
+                        orderId,
                         orderItem.ProductId
                     );
                 }
@@ -171,5 +178,61 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         }
 
         await uow.Complete();
+    }
+
+    public async Task UpdateOrderStatus(int orderId, OrderStatus orderStatus)
+    {
+        var order = await uow.OrderRepository.GetByIdAsync(orderId);
+        if (order == null)
+        {
+            throw new BadRequestException("Order not found");
+        }
+        order.Status = orderStatus;
+
+        await uow.Complete();
+    }
+
+    public async Task CompletedOrderStatus(int orderId)
+    {
+        var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId); //include Payment
+
+        if (order == null)
+        {
+            throw new BadRequestException("Order not found");
+        }
+
+        if (order.Status != OrderStatus.Paid)
+        {
+            order.Status = OrderStatus.Paid;
+
+            if (order.Payment != null)
+            {
+                order.Payment.PaymentStatus = PaymentStatus.Success;
+                order.Payment.PaidAt = DateTime.UtcNow;
+            }
+            else
+            {
+                // Trường hợp dữ liệu bị lỗi: Có đơn hàng nhưng chưa tạo record Payment
+                // Bạn có thể tạo mới Payment tại đây hoặc log warning tùy nghiệp vụ
+            }
+
+            await uow.Complete();
+        }
+    }
+
+    public async Task<OrderDto> GetOrderByIdAsync(int orderId)
+    {
+        var order = await uow.OrderRepository.GetByIdAsync(orderId);
+        if (order == null)
+        {
+            throw new NotFoundException("Order not found");
+        }
+        return mapper.Map<OrderDto>(order);
+    }
+
+    public async Task<OrderDetailsDto> GetOrderWithPaymentAsync(int orderId)
+    {
+       var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId);
+       return mapper.Map<OrderDetailsDto>(order);
     }
 }
