@@ -15,6 +15,8 @@ public class VnPayService : IVnPayService
 
     public string CreatePaymentUrl(PaymentInformationModel model, HttpContext context, string txnRef)
     {
+        var timeZoneId = TimeZoneInfo.FindSystemTimeZoneById(_configuration["TimeZoneId"]);
+        var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneId);
         var tick = DateTime.Now.Ticks.ToString();
         var vnpay = new VnPayLibrary();
         var urlCallBack = _configuration["Vnpay:ReturnUrl"];
@@ -24,7 +26,7 @@ public class VnPayService : IVnPayService
         vnpay.AddRequestData("vnp_TmnCode", _configuration["VnPay:TmnCode"]);
         vnpay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString()); // Số tiền phải nhân với 100
         
-        vnpay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+        vnpay.AddRequestData("vnp_CreateDate",timeNow.ToString("yyyyMMddHHmmss"));
         vnpay.AddRequestData("vnp_CurrCode", _configuration["VnPay:CurrCode"]);
         vnpay.AddRequestData("vnp_IpAddr", vnpay.GetIpAddress(context)); 
         vnpay.AddRequestData("vnp_Locale", _configuration["VnPay:Locale"]);
