@@ -1,1 +1,145 @@
-<p>home works!</p>
+<main class="w-full flex flex-col items-center">
+  <div class="w-full max-w-[1440px]">
+
+    <section class="w-full px-4 md:px-10 py-6">
+      <div class="relative overflow-hidden rounded-2xl bg-cover bg-center h-[500px] md:h-[600px] shadow-lg group"
+        style='background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAK0sOzvmpS6YjAe66BjAyJiHFvt94Yzr2Tx_EVAd6GmROhl7UHlZLpAsi9BZZFTzSFrkdOTsa0JwwuikDNV19SMPWHA18MDDqgkC870uqjQjcFAnba8oQYj-15aHdV0FVg1Eun_p0vHSGUAOk4hJtXFUwH_b4GTz_3cZHh5FWUbrYBXcAAu1SyO0-5PeI0w_OIkH79V_qWo4qyG8d05t8oSKSG-rEF2fRHw7ljj2AyjqHgFcCugDX_Vhe3WC8yfxYGDkLA7nfZrr8");'>
+        <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-16 text-white max-w-3xl">
+          <span
+            class="inline-block px-3 py-1 mb-4 text-xs font-bold uppercase tracking-wider bg-primary/90 text-white w-fit rounded-full">New
+            Collection 2024</span>
+          <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight mb-4 drop-shadow-md">
+            Bứt Phá Giới Hạn <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-white">Bản Lĩnh Dẫn Đầu</span>
+          </h1>
+          <p class="text-lg md:text-xl font-normal text-gray-200 mb-8 max-w-xl">
+            Bộ sưu tập thể thao mùa hè mới nhất với công nghệ Cool-Dry thoáng mát. Sẵn sàng cho mọi thử thách.
+          </p>
+          <div class="flex gap-4">
+            <button
+              class="flex items-center justify-center h-12 px-8 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-lg transition-all shadow-lg hover:shadow-primary/50 transform hover:-translate-y-0.5">Khám
+              Phá Ngay</button>
+            <button
+              class="flex items-center justify-center h-12 px-8 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/50 text-base font-bold rounded-lg transition-all">Xem
+              Video</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 md:px-10 py-10">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-text-main-light dark:text-text-main-dark tracking-tight">Danh mục
+          phổ biến</h2>
+        <a class="text-primary font-medium hover:underline flex items-center gap-1" href="#">
+          Xem tất cả <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div *ngFor="let cat of categories" class="group flex flex-col items-center gap-3 cursor-pointer">
+          <div class="w-full aspect-square rounded-2xl overflow-hidden relative shadow-sm">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
+            <div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500"
+              [style.background-image]="'url(' + cat.imageUrl + ')'">
+            </div>
+          </div>
+          <span
+            class="font-semibold text-text-main-light dark:text-text-main-dark group-hover:text-primary transition-colors">
+            {{ cat.name }}
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 md:px-10 py-10 bg-white/50 dark:bg-card-dark/20 rounded-3xl mx-0 md:mx-4 lg:mx-10 my-6">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-text-main-light dark:text-text-main-dark tracking-tight">Sản phẩm
+          nổi bật</h2>
+        <div class="flex gap-2">
+          <button
+            class="p-2 rounded-full border border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-card-dark hover:shadow-md transition-all"><span
+              class="material-symbols-outlined">chevron_left</span></button>
+          <button
+            class="p-2 rounded-full border border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-card-dark hover:shadow-md transition-all bg-white dark:bg-card-dark"><span
+              class="material-symbols-outlined">chevron_right</span></button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div *ngFor="let product of featuredProducts"
+          class="group bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl transition-shadow duration-300">
+          <div class="relative w-full aspect-[4/5] overflow-hidden bg-gray-100 dark:bg-gray-800">
+
+            <div *ngIf="product.discountPercent"
+              class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+              -{{ product.discountPercent }}%
+            </div>
+            <div *ngIf="product.isNew"
+              class="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+              New
+            </div>
+
+            <button
+              class="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white dark:hover:bg-black text-primary">
+              <span class="material-symbols-outlined text-sm">favorite</span>
+            </button>
+
+            <img [src]="product.imageUrl" [alt]="product.name"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+
+          <div class="p-4">
+            <p class="text-sm text-text-sub-light dark:text-text-sub-dark mb-1">{{ product.categoryName }}</p>
+            <h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-2 truncate"
+              [title]="product.name">
+              {{ product.name }}
+            </h3>
+            <div class="flex items-center justify-between">
+              <div class="flex flex-col">
+                <span class="text-primary font-bold text-lg">{{ product.price | number:'1.0-0' }}₫</span>
+                <span *ngIf="product.originalPrice"
+                  class="text-text-sub-light dark:text-text-sub-dark text-xs line-through">
+                  {{ product.originalPrice | number:'1.0-0' }}₫
+                </span>
+              </div>
+              <button
+                class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-colors">
+                <span class="material-symbols-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 md:px-10 py-6">
+      <div
+        class="relative rounded-2xl overflow-hidden bg-primary px-6 py-12 md:px-12 md:py-16 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="absolute inset-0 opacity-20"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHMyQ_WiMXPbSvYFRn37EGhUbYIFbtAWbAkw9HnoortYzj_65o6Gk31gna46jOyiaQdWF-BDi6I3J4QLwag2vp0ObkBX50P3aiXLtG0KOPvoIaoLQhJe6il1JeN9EjXTxRjEYo5qDYWtHh5SErHUE9BZK053eM8mQ4J0K2CvXx0saVM7qjIyP76amFKVjGjnVpMXAyKXBWpTiRLH49AuteAoj_-h2RCGmv0BuwjrKHsPWFfdpggE8qUBrwcJ7tykkqJ3J78Itafr4");'>
+        </div>
+        <div class="relative z-10 flex-1 text-center md:text-left">
+          <h2 class="text-2xl md:text-4xl font-black text-white mb-4">Mùa Hè Năng Động - Giảm Ngay 30%</h2>
+          <p class="text-white/90 text-lg mb-0 max-w-xl">Cho tất cả các phụ kiện thể thao khi mua kèm giày. Ưu đãi chỉ
+            diễn ra trong tuần này.</p>
+        </div>
+        <div class="relative z-10">
+          <button
+            class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow-lg transition-colors">Mua
+            Ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-12 bg-white dark:bg-card-dark border-t border-border-light dark:border-border-dark pt-16 pb-8">
+      <div class="px-4 md:px-10 text-center text-text-sub-light">Footer Content here...</div>
+    </footer>
+
+  </div>
+</main>

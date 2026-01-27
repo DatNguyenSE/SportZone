@@ -12,7 +12,7 @@ namespace SportZone.Application.Extensions
         {
             Id = user.Id,
             FullName = user.FullName,
-            UserName = user.UserName!,
+            UserName = user.UserName,
             Email = user.Email!,
             ImageUrl = user.ImageUrl,
             Token = await tokenService.CreateToken(user)

@@ -4,6 +4,7 @@ using SportZone.Application.Extensions;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace SportZone.API.Controllers
 {
@@ -16,10 +17,8 @@ namespace SportZone.API.Controllers
         {
             var user = new AppUser
             {
-                UserName = registerDto.UserName,
                 Email = registerDto.Email,
-                DateOfBirth = registerDto.DateOfBirth,
-                FullName = registerDto.FullName
+                UserName = registerDto.UserName
             };
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
@@ -46,13 +45,34 @@ namespace SportZone.API.Controllers
             }
             var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            if(!result)
+            if (!result)
             {
                 return Unauthorized("Invalid password!");
             }
             return await user.ToDto(tokenService);
 
         }
+
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken == null) return NoContent();
+
+            var user = await userManager.Users
+                .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken
+                    && x.RefreshTokenExpiry > DateTime.UtcNow);
+
+            if (user == null) return Unauthorized();
+
+            await SetRefreshTokenCookie(user);
+
+            return await user.ToDto(tokenService);
+        }
+
+
+
         private async Task SetRefreshTokenCookie(AppUser user)
         {
             var refreshToken = tokenService.GenerateRefreshToken();

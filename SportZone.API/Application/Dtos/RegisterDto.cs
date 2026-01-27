@@ -4,8 +4,7 @@ namespace SportZone.Application.Dtos
 {
     public class RegisterDto
     {
-        [Required]
-        public string UserName { get; set; } = "";
+        public string? UserName { get;set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; } = "";
@@ -13,8 +12,5 @@ namespace SportZone.Application.Dtos
         [Required]
         [MinLength(4)]
         public string Password { get; set; } = "";  
-        public DateOnly DateOfBirth { get; set; }
-        [Required]
-        public string FullName { get; set; } ="";
     }
 }

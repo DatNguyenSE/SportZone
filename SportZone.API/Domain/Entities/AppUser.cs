@@ -4,9 +4,8 @@ namespace API.Entities
 {
     public class AppUser : IdentityUser
     {
-        public string FullName { get; set; } = null!;
+        public string? FullName { get; set; }
         public string? ImageUrl { get; set; }
-        public DateOnly DateOfBirth { get; set; }
         public string? Address { get; set; }
 
         // Auth
