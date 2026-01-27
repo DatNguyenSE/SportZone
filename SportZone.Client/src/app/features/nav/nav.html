@@ -1,0 +1,438 @@
+<header class="sticky top-0 z-40 w-full bg-white border-b border-gray-200 transition-all duration-300">
+  <div
+    class="bg-black text-white text-[11px] font-bold py-2.5 text-center uppercase tracking-widest cursor-pointer hover:underline z-50 relative">
+    GIAO HÀNG MIỄN PHÍ CHO THÀNH VIÊN CỦA ADICLUB
+    <span class="ml-2">∨</span>
+  </div>
+
+  <div class="hidden lg:flex justify-end px-10 py-1 gap-6 text-[11px] text-gray-600 font-medium">
+    <a href="#" class="hover:text-black">Trợ giúp</a>
+    <a href="#" class="hover:text-black">Trình theo dõi đơn hàng</a>
+    <a href="#" class="hover:text-black">Đăng ký hội viên</a>
+    <span class="flex items-center gap-1 cursor-pointer hover:text-black">🇻🇳</span>
+  </div>
+
+  <div class="px-4 lg:px-10 pb-4 pt-1 flex items-center justify-between">
+
+    <a routerLink="/" class="flex-shrink-0 mr-8 group">
+      <div class="flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-2xl font-black tracking-tighter uppercase italic transform -skew-x-12">
+          SportZone</h2>
+      </div>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-6 absolute left-1/2 transform -translate-x-1/2">
+      <a routerLink="/qos" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Giày</a>
+      <a routerLink="/q" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nam</a>
+      <a routerLink="/a" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nữ</a>
+      <a routerLink="/ui" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Thể
+        thao</a>
+      <a routerLink="/g" routerLinkActive="text-red-600"
+        class="text-sm font-bold  uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Outlet</a>
+    </nav>
+
+    <div class="flex items-center gap-4 flex-1 justify-end">
+      <!-- search -->
+      <div class="hidden md:block relative w-30 lg:w-45">
+        <input
+          class="w-full bg-gray-100 text-gray-900 text-sm font-medium px-4 py-2 pl-4 pr-10 border border-transparent focus:bg-white focus:border-gray-300 outline-none transition-all placeholder-gray-500"
+          placeholder="Tìm kiếm" type="text" />
+        <span
+          class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 text-xl font-bold cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+
+        </span>
+      </div>
+      <!-- user -->
+
+      <div class="flex items-center gap-1 sm:gap-3">
+
+        <button (click)="toggleLoginModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <span class="material-symbols-outlined text-gray-900 text-[24px]"><svg xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </span>
+        </button>
+        <!-- favorite -->
+        <button class="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block">
+          <span class="material-symbols-outlined text-gray-900 text-[24px]"><svg xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+          </span>
+        </button>
+        <!-- cart  -->
+        <button class="p-2 relative hover:bg-gray-100 rounded-full transition-colors">
+          <span class="material-symbols-outlined text-gray-900 text-[24px] font-medium"><svg
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          </span> </button>
+
+      </div>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- toggle login -->
+
+@if(this.accountService.currentUser() === null){
+<div *ngIf="isLoginModalOpen"
+  class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
+  <div class="bg-white w-full max-w-[480px] p-6 md:p-10 relative shadow-2xl animate-fade-in-up transition-all">
+
+    <button (click)="toggleLoginModal()"
+      class="absolute top-4 right-4 p-2 hover:bg-gray-100 border border-black transition-colors z-10">
+      <span class="material-symbols-outlined text-black font-bold text-xl"><svg xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </span>
+    </button>
+
+    <div class="flex flex-col gap-5">
+      <div class="flex items-end gap-1 mb-1">
+        <span class="text-xl font-bold tracking-tight mb-1">SportZone</span>
+      </div>
+
+      <div *ngIf="creds.step === 1" class="animate-fade-in">
+
+        <div class="space-y-3">
+          <h2 class="text-2xl md:text-2xl font-black uppercase tracking-tight leading-none">
+            ĐĂNG NHẬP HOẶC ĐĂNG KÝ
+          </h2>
+          <p class="text-[13px] font-medium leading-relaxed">
+            Tận hưởng quyền truy cập chỉ dành cho hội viên vào các sản phẩm, trải nghiệm, ưu đãi độc quyền và hơn thế
+            nữa.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mt-4">
+          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg
+              class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.048 0-2.733.984-2.733 2.039v1.932h3.588l-.642 3.667h-2.946v7.98c-5.083.7-5.083.7-5.083.7z" />
+            </svg></button>
+          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg
+              class="w-6 h-6" viewBox="0 0 48 48">
+              <path fill="#EA4335"
+                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+              <path fill="#4285F4"
+                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+              <path fill="#FBBC05"
+                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+              <path fill="#34A853"
+                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+            </svg></button>
+          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg
+              class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.64 3.98-1.54.34 0 .7.02 1.06.06-.88 1.41-2.08 2.27-2.08 4.29.02 3.19 3.1 4.56 3.11 4.58l-.04.14c-.49 1.4-1.56 3.19-3.25 4.7zM11.95 3c.03.14.04.29.04.44 0 1.25-.56 2.5-1.37 3.32-.93.93-2.3.93-2.3.93-.15-1.42.53-2.73 1.34-3.54C10.37 3.42 11.66 2.97 11.95 3z" />
+            </svg></button>
+        </div>
+
+        <div class="mt-4">
+          <input [(ngModel)]="creds.email" (keyup.enter)="onContinue()" type="email" placeholder="ĐỊA CHỈ EMAIL *"
+            [class.border-red-500]="this.creds.emailError" [class.text-red-500]="this.creds.emailError"
+            class="w-full border border-gray-400 p-3.5 text-sm font-bold placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all" />
+
+          <p *ngIf="this.creds.emailError" class="text-red-600 text-[11px] mt-1 font-bold">Vui lòng nhập định dạng email
+            hợp lệ (ví dụ: user@domain.com)</p>
+        </div>
+
+        <div class="pt-5 space-y-4 text-sm">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox"
+              class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+            <span class="text-gray-900 leading-tight">
+              Có, tôi trên 16 tuổi<br>
+              <a href="/dieu-khoan"
+                class="underline font-bold text-[11px] hover:bg-black hover:text-white transition-colors px-0.5">Tại
+                sao nó quan trọng?</a> *
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox"
+              class="shrink-0 w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+
+            <span class="text-gray-900 leading-tight">
+              Tôi đã đọc, hiểu và chấp thuận <a href="/dieu-khoan"
+                class="underline hover:bg-black hover:text-white px-0.5">Chính sách Bảo mật</a>,
+              <a href="/dieu-khoan" class="underline hover:bg-black hover:text-white px-0.5">Điều khoản SportZone</a> và
+              <a href="/dieu-khoan" class="underline hover:bg-black hover:text-white px-0.5">Điều khoản trang Web</a>. *
+            </span>
+          </label>
+
+
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox"
+              class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+            <span class="text-gray-900 leading-tight">
+              Tôi đồng ý nhận thông tin quảng cáo và khuyến mãi cá nhân hóa.
+            </span>
+          </label>
+        </div>
+
+        <button (click)="onContinue()"
+          class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-6">
+          TIẾP TỤC
+          <span class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </span>
+        </button>
+
+      </div>
+      <div *ngIf="creds.step === 2" class="animate-fade-in">
+
+        <div class="space-y-1 mb-6">
+          <h2 class="text-xl font-black uppercase tracking-tight break-all">
+            CHÀO MỪNG ĐẾN VỚI SportZone!
+          </h2>
+        </div>
+
+        <div class="space-y-4">
+          <div class="relative">
+            <input [(ngModel)]="creds.password" [type]="isPasswordVisible ? 'text' : 'password'"
+              placeholder="MẬT KHẨU *"
+              class="w-full border border-gray-400 p-3.5 text-sm font-bold placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all" />
+
+            <span (click)="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-black select-none">
+
+              <span *ngIf="!isPasswordVisible" class="material-symbols-outlined flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </span>
+
+              <span *ngIf="isPasswordVisible" class="material-symbols-outlined flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </span>
+            </span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <a href="#"
+              class="text-[11px] font-bold underline hover:bg-black hover:text-white transition-colors px-0.5">QUÊN MẬT
+              KHẨU?</a>
+          </div>
+
+          <button (click)="onLogin()"
+            class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-2">
+            ĐĂNG NHẬP
+            <span class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+              </svg>
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+}
+@else {
+<div *ngIf="isLoginModalOpen">
+
+  <body class="bg-white text-black overflow-hidden font-sans antialiased">
+
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
+
+      <div
+        class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">
+
+        <div class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
+          <div class="flex items-center gap-2">
+            <div class="bg-black text-white p-1">
+              <span class="material-icons-outlined text-sm font-bold">Logo</span>
+            </div>
+            <span class="font-black uppercase tracking-widest text-lg text-black">SportZone</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <!-- setting -->
+            <button class="text-zinc-400 hover:text-black transition-colors"><span class="material-icons-outlined"><svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </span>
+            </button>
+            <!-- phone -->
+            <button class="text-zinc-400 hover:text-black transition-colors"><span class="material-icons-outlined"><svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                </svg>
+              </span>
+            </button>
+            <!-- back -->
+            <button (click)="toggleLoginModal()" class="pl-5 text-zinc-400 hover:text-black transition-colors"><span
+                class="material-icons-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </span></button>
+          </div>
+        </div>
+
+        <div
+          class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+
+          <div class="p-8">
+            <div class="flex items-center gap-5 mb-8">
+              <div class="w-16 h-16 rounded-full border-4 border-zinc-700 flex items-center justify-center bg-zinc-900">
+                <span class="material-icons-outlined text-white text-2xl"><svg xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                  </svg>
+                </span>
+              </div>
+              <div>
+                <div class="text-5xl font-black text-black leading-none">150</div>
+                <div class="text-[10px] uppercase font-bold text-zinc-500 tracking-widest mt-1">Points to spend</div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <a class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                  My Orders
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+              <a class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                  My Rewards
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+              <a class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                  Points History
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-2 border-t border-zinc-800">
+            <div class="flex border-b border-zinc-800 sticky top-0 bg-white z-10">
+              <button
+                class="flex-1 py-4 text-xs font-bold uppercase tracking-wider text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 hover:bg-zinc-900 transition-colors  bg-zinc-800">
+                For You</button>
+              <button
+                class="flex-1 py-4 text-xs font-bold uppercase tracking-wider text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 hover:bg-zinc-900 transition-colors">
+                Use Points</button>
+              <button
+                class="flex-1 py-4 text-xs font-bold uppercase tracking-wider text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 hover:bg-zinc-900 transition-colors">
+                Earn Points</button>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="font-black uppercase text-xs tracking-widest text-zinc-400">Available Vouchers</h3>
+              </div>
+
+              <div
+                class="relative bg-emerald-700 text-white p-5 overflow-hidden group mb-6 rounded-sm border border-white shadow-lg">
+                <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white"></div>
+                <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white"></div>
+
+                <div class="flex flex-col gap-1 mb-6 pl-2">
+                  <div class="text-[10px] font-bold uppercase opacity-80 tracking-widest">Member Club Exclusive</div>
+                  <div class="text-2xl font-black italic tracking-tighter">VOUCHER 15% OFF</div>
+                </div>
+
+                <div class="flex items-center justify-between border-t border-white/20 pt-4 pl-2">
+                  <span class="text-[10px] font-mono opacity-90 uppercase tracking-widest">CODE: CLUB15</span>
+                  <button
+                    class="text-[10px] font-bold underline underline-offset-2 hover:opacity-80 flex items-center gap-1 uppercase tracking-wider">
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+
+
+              <div class="border border-zinc-800 bg-zinc-900/50 p-6 flex flex-col gap-4 rounded-sm">
+                <div class="bg-white text-black text-[10px] font-bold px-2 py-1 self-start uppercase tracking-wider">
+                  Earn 100 Points
+                </div>
+                <h4 class="font-extrabold uppercase text-sm text-white">Download the App</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed">
+                  Get early access to drops and exclusive content when you use our mobile application.
+                </p>
+                <button
+                  class="w-full py-3 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors">
+                  Download Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 border-t border-white bg-white">
+          <button
+            class="w-full flex items-center justify-center gap-2 text-zinc-500 hover:text-black transition-colors py-2 group">
+            <span class="material-icons-outlined text-sm group-hover:-translate-x-1 transition-transform">logout</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Sign Out</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</div>
+}
