@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { LoginCreds, RegisterCreds, User } from '../../types/user';
+import { authenResponse, authenLoginCreds, RegisterCreds, User } from '../../types/user';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -12,24 +12,24 @@ export class AccountService {
   currentUser = signal<User | null>(null);
   baseUrl = environment.apiUrl;
   
-  register(creds: RegisterCreds) {
-    return this.http.post<User>(this.baseUrl + 'account/register', creds,
-      { withCredentials: true }).pipe(
-        tap(user => {
-          if (user) {
-            this.setCurrentUser(user);
-            // this.startTokenRefreshInterval();
-          }
-        })
-      )
-  }
+  // register(creds: RegisterCreds) {
+  //   return this.http.post<User>(this.baseUrl + 'account/register', creds,
+  //     { withCredentials: true }).pipe(
+  //       tap(user => {
+  //         if (user) {
+  //           this.setCurrentUser(user);
+  //           // this.startTokenRefreshInterval();
+  //         }
+  //       })
+  //     )
+  // }
 
-  login(creds: LoginCreds) {
-    return this.http.post<User>(this.baseUrl + 'account/login', creds,
+  authenticate(creds: authenLoginCreds) {
+    return this.http.post<authenResponse>(this.baseUrl + 'account/authenticate', creds,
       { withCredentials: true }).pipe(
-        tap(user => {
-          if (user) {
-            this.setCurrentUser(user);
+        tap(res => {
+          if (res.user) {
+            this.setCurrentUser(res.user);
             // this.startTokenRefreshInterval();
           }
         })
@@ -63,7 +63,6 @@ export class AccountService {
   logout() {
     this.http.post(this.baseUrl + 'account/logout', {}, { withCredentials: true }).subscribe({
       next: () => {
-        localStorage.removeItem('filters');
       }
     })
 

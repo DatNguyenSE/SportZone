@@ -27,11 +27,13 @@ export class Nav implements OnInit {
   };
   protected isLoginModalOpen = false;
   protected isPasswordVisible = false;
+  private isSubmitting = false;
   // protected selectedTheme = signal<string>(localStorage.getItem('theme') || 'light');
   // protected themes = themes;
 
   ngOnInit(): void {
     // document.documentElement.setAttribute('data-theme', this.selectedTheme());
+    
   }
 
   toggleLoginModal() {
@@ -46,7 +48,6 @@ export class Nav implements OnInit {
   }
 
   onContinue() {
-    // Regex đơn giản để check format email
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (emailPattern.test(this.creds.email)) {
@@ -57,37 +58,28 @@ export class Nav implements OnInit {
     }
   }
 
-// Trong file Component (nav.ts hoặc header.component.ts)
-
   onLogin() {
-    // 1. Tự động tạo Username từ Email (nếu backend yêu cầu trường này)
-    // Ví dụ: email là "nhan@gmail.com" => username sẽ là "nhan"
-    if (!this.creds.username && this.creds.email) {
-      this.creds.username = this.creds.email.split('@')[0];
+    if (this.isSubmitting) return;
+     if (!this.creds.fullname && this.creds.email) {
+      this.creds.fullname = this.creds.email.split('@')[0];
     }
-    
 
-    console.log('Đang gọi API Register với:', this.creds);
-
-    // 2. Gọi hàm register thay vì login
-    this.accountService.register(this.creds).subscribe({
-      next: (user) => {
-        this.toast.success('Đăng ký thành công');
-        this.toggleLoginModal(); // Đóng modal
-        // this.creds = {}; // Reset form nếu muốn
+    this.accountService.authenticate(this.creds).subscribe({
+      next: (res) => {
+        
+        this.toast.success(res.message);
+        this.toggleLoginModal(); 
       },
       error: (error) => {
-        console.error(error);
-        // Hiển thị lỗi từ backend (ví dụ: Email đã tồn tại, Password yếu...)
-        const errorMessage = error.error?.errors?.[0]?.description || error.error || 'Đăng ký thất bại';
-        this.toast.error(errorMessage);
+        console.log('Lỗi đã được bắt bởi Interceptor:', error);
+      
       }
     })
   }
 
   logout() {
     this.accountService.logout();
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/FFF');
   }
 
 

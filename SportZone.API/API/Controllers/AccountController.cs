@@ -5,6 +5,8 @@ using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using SportZone.API.Extensions;
 
 namespace SportZone.API.Controllers
 {
@@ -12,45 +14,73 @@ namespace SportZone.API.Controllers
     [ApiController]
     public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : ControllerBase
     {
-        [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
-        {
-            var user = new AppUser
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.UserName
-            };
+        // [HttpPost("register")]
+        // public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        // {
+        //     var user = new AppUser
+        //     {
+        //         Email = registerDto.Email,
+        //         UserName = registerDto.UserName
+        //     };
 
-            var result = await userManager.CreateAsync(user, registerDto.Password);
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("identity", error.Description);
-                }
-                return ValidationProblem();
-            }
-            await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
-            await SetRefreshTokenCookie(user);
-            return await user.ToDto(tokenService);
-        }
+        //     var result = await userManager.CreateAsync(user, registerDto.Password);
+        //     if (!result.Succeeded)
+        //     {
+        //         foreach (var error in result.Errors)
+        //         {
+        //             ModelState.AddModelError("identity", error.Description);
+        //         }
+        //         return ValidationProblem();
+        //     }
+        //     await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
+        //     await SetRefreshTokenCookie(user);
+        //     return await user.ToDto(tokenService);
+        // }
 
-        [HttpPost("Login")]
+
+        //   !login  ->  register 
+        [HttpPost("authenticate")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await userManager.FindByEmailAsync(loginDto.Email);
+            bool isNewUser = false;
             if (user == null)
             {
-                return Unauthorized("Invalid email address!");
-            }
-            var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
+                user = new AppUser
+                {
+                    Email = loginDto.Email,
+                    UserName = loginDto.Email, // 
+                    FullName = loginDto.Email.Split("@")[0]
+                };
 
-            if (!result)
+                var result = await userManager.CreateAsync(user, loginDto.Password);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("identity", error.Description);
+                    }
+                    return ValidationProblem();
+                }
+                await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
+                isNewUser = true;
+            }
+            else
             {
-                return Unauthorized("Invalid password!");
-            }
-            return await user.ToDto(tokenService);
+                var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
 
+                if (!result) return Unauthorized("Invalid password!");
+
+            }
+            await SetRefreshTokenCookie(user);
+            var userDto = await user.ToDto(tokenService);
+
+            return Ok(new
+            {
+                user = userDto,
+                Message = isNewUser ? "New account successfully created.!" : "Log in successfully!",
+                IsNewUser = isNewUser
+            });
         }
 
 
@@ -69,6 +99,22 @@ namespace SportZone.API.Controllers
             await SetRefreshTokenCookie(user);
 
             return await user.ToDto(tokenService);
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            await userManager.Users
+                .Where(x => x.Id == User.GetUserId())
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(x => x.RefreshToken, _ => null)
+                    .SetProperty(x => x.RefreshTokenExpiry, _ => null)
+                    );
+
+            Response.Cookies.Delete("refreshToken");
+
+            return Ok();
         }
 
 
