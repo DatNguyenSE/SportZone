@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "isDeleted": false,
+    "name": "Nike Mercurial Vapor 15 Academy TF",
+    "description": "Giày đá bóng sân cỏ nhân tạo, trọng lượng nhẹ, bám sân tốt.",
+    "brand": "Nike",
+    "price": 1850000,
+    "imageUrl": "https://example.com/nike-vapor-15-tf.jpg",
+    "categoryId": 1,
+    "quantity": 50
+  },
+  {
+    "id": 2,
+    "isDeleted": false,
+    "name": "Adidas Predator Accuracy.1 FG",
+    "description": "Giày đá bóng sân cỏ tự nhiên, kiểm soát bóng tối ưu.",
+    "brand": "Adidas",
+    "price": 3500000,
+    "imageUrl": "https://example.com/adidas-predator-fg.jpg",
+    "categoryId": 2,
+    "quantity": 30
+  },
+  {
+    "id": 3,
+    "isDeleted": false,
+    "name": "Nike Lunar Gato II IC",
+    "description": "Giày Futsal đế bằng, da thật mềm mại, đệm Lunarlon êm ái.",
+    "brand": "Nike",
+    "price": 2200000,
+    "imageUrl": "https://example.com/nike-lunar-gato-ic.jpg",
+    "categoryId": 3,
+    "quantity": 45
+  },
+  {
+    "id": 4,
+    "isDeleted": false,
+    "name": "Manchester United Home Kit 23/24",
+    "description": "Áo đấu sân nhà CLB Manchester United mùa giải 2023/2024.",
+    "brand": "Adidas",
+    "price": 1600000,
+    "imageUrl": "https://example.com/mu-home-kit.jpg",
+    "categoryId": 4,
+    "quantity": 100
+  },
+  {
+    "id": 5,
+    "isDeleted": false,
+    "name": "Vietnam National Team Home Kit 2024",
+    "description": "Áo đấu chính hãng đội tuyển quốc gia Việt Nam.",
+    "brand": "Grand Sport",
+    "price": 890000,
+    "imageUrl": "https://example.com/vietnam-home-kit.jpg",
+    "categoryId": 5,
+    "quantity": 200
+  },
+  {
+    "id": 6,
+    "isDeleted": false,
+    "name": "Adidas UCL Pro Ball Istanbul",
+    "description": "Bóng thi đấu chính thức chung kết Champion League.",
+    "brand": "Adidas",
+    "price": 3200000,
+    "imageUrl": "https://example.com/ucl-ball.jpg",
+    "categoryId": 6,
+    "quantity": 20
+  },
+  {
+    "id": 7,
+    "isDeleted": false,
+    "name": "Adidas Predator Pro Hybrid Gloves",
+    "description": "Găng tay thủ môn chuyên nghiệp, mút dính, hỗ trợ đấm bóng.",
+    "brand": "Adidas",
+    "price": 2800000,
+    "imageUrl": "https://example.com/gloves-predator.jpg",
+    "categoryId": 7,
+    "quantity": 15
+  },
+  {
+    "id": 8,
+    "isDeleted": false,
+    "name": "Nike Mercurial Lite Shin Guards",
+    "description": "Bảo vệ ống đồng, siêu nhẹ, thoáng khí.",
+    "brand": "Nike",
+    "price": 450000,
+    "imageUrl": "https://example.com/shin-guards.jpg",
+    "categoryId": 8,
+    "quantity": 80
+  }
+]

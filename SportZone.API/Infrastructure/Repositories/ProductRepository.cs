@@ -1,7 +1,7 @@
 ﻿using SportZone.Application.Interfaces;
-using API.Data;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
+using SportZone.Infrastructure.Data;
 namespace SportZone.Infrastructure.Repositories
 {
     public class ProductRepository(AppDbContext context) : GenericRepository<Product>(context), IProductRepository
