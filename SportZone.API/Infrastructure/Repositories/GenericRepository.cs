@@ -1,9 +1,7 @@
 using System.Linq.Expressions;
 using SportZone.Application.Interfaces;
-
-using API.Data;
-
 using Microsoft.EntityFrameworkCore;
+using SportZone.Infrastructure.Data;
 
 namespace SportZone.Infrastructure.Repositories
 

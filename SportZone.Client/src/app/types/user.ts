@@ -1,10 +1,24 @@
 export type User = {
     id: string;
-    displayName: string;
+    userName?: string;
+    fullName?: string;
     email: string;
     token: string;
     imageUrl?: string;
     roles: string[];
+}
+
+export type UserProfile = {
+    id: string;
+    userName?: string;
+    fullName: string;
+    email: string;
+    token: string;
+    imageUrl?: string;
+    address?: string;
+    phone?: string;
+    gender?: 'male' | 'female' | 'other';
+    dateOfBirth?: string;
 }
 
 export type authenLoginCreds = {
@@ -13,14 +27,14 @@ export type authenLoginCreds = {
     fullname: string;
 }
 
-export type RegisterCreds = {
-    email: string;
-    password: string;
-    username: string
-}
-
 export type authenResponse = {
     user: User;
     message: string;
     isNewUser : boolean;
+}
+
+export type RegisterCreds = {
+    email: string;
+    password: string;
+    username: string
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data
+namespace SportZone.Infrastructure.Data
 {
 
     public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)

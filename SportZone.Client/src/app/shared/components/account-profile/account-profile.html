@@ -1,0 +1,254 @@
+<div class="flex flex-1 justify-center -mt-10 px-4 md:px-8 bg-background-light dark:bg-background-dark min-h-screen">
+    <div class="flex flex-col max-w-6xl w-full gap-6">
+
+        <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                <a class="hover:text-primary transition-colors" href="#">Trang chủ</a>
+                <span>/</span>
+                <span class="text-slate-900 dark:text-slate-100 font-medium">Tài khoản của tôi</span>
+            </div>
+            <div class="md:hidden mt-2">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Hồ sơ cá nhân</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Quản lý thông tin và bảo mật tài khoản</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
+
+            <aside class="md:col-span-4 lg:col-span-3 flex flex-col gap-6">
+                <div
+                    class="flex items-center gap-4 p-4 bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="size-12 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center shrink-0 border-2 border-white dark:border-slate-700 shadow-sm"
+                        [style.background-image]="'url(' + (user?.imageUrl || 'assets/images/default-avatar.png') + ')'">
+                        <span *ngIf="!user?.imageUrl"
+                            class="flex h-full w-full items-center justify-center text-slate-400">
+                            <span class="material-symbols-outlined text-xl">person</span>
+                        </span>
+                    </div>
+                    <div class="flex flex-col overflow-hidden">
+                        <span class="text-xs text-slate-500 dark:text-slate-400">Xin chào,</span>
+                        <span class="font-bold text-slate-900 dark:text-white truncate">{{ user?.fullName ||
+                            user?.userName }}</span>
+                    </div>
+                </div>
+
+                <nav
+                    class="flex flex-col overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800 text-sm font-medium">
+                    <a
+                        class="flex items-center gap-3 px-5 py-4 bg-primary/10 text-primary border-l-4 border-primary transition-colors cursor-pointer">
+                        Hồ sơ của tôi
+                    </a>
+                    <a
+                        class="flex items-center gap-3 px-5 py-4 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer border-l-4 border-transparent">
+                        <span class="material-symbols-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            </svg>
+                        </span>
+                        Đơn mua
+                    </a>
+                    <a
+                        class="flex items-center gap-3 px-5 py-4 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer border-l-4 border-transparent">
+                        <span class="material-symbols-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                        </span>
+                        Địa chỉ nhận hàng
+                    </a>
+                    <a
+                        class="flex items-center gap-3 px-5 py-4 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer border-l-4 border-transparent">
+                        <span class="material-symbols-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                            </svg>
+                        </span>
+                        Ngân hàng / Thẻ
+                    </a>
+                    <div class=" mt-5 h-px bg-slate-100 dark:bg-slate-700 mx-5 my-1"></div>
+                    <a
+                        class="flex items-center justify-center  py-4 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors cursor-pointer border-l-4 border-transparent">
+
+
+                        <span class="font-medium">Đăng xuất</span>
+
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="md:col-span-8 lg:col-span-9 flex flex-col gap-6">
+
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div
+                        class="px-6 py-5 border-b border-slate-100 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Hồ sơ của tôi</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Quản lý thông tin hồ sơ để bảo mật tài
+                                khoản</p>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!user" class="p-8 text-center text-slate-500">Đang tải dữ liệu...</div>
+
+                    <div *ngIf="user" class="p-6 md:p-8">
+                        <div class="flex flex-col-reverse lg:flex-row gap-8 lg:gap-12">
+
+                            <div class="flex-1 flex flex-col gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
+                                    <label
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Tên
+                                        đăng nhập</label>
+                                    <div class="md:col-span-2 text-slate-900 dark:text-white font-medium pl-1">{{
+                                        user.userName }}</div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
+                                    <label
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Họ
+                                        và tên</label>
+                                    <div class="md:col-span-2">
+                                        <input [(ngModel)]="user.fullName"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm text-sm py-2.5 transition-all"
+                                            type="text" placeholder="Nhập họ tên của bạn" />
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
+                                    <label
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Email</label>
+                                    <div
+                                        class="md:col-span-2 flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-colors">
+                                        <div class="text-slate-900 dark:text-white text-sm truncate">{{ user.email }}
+                                        </div>
+                                        <button
+                                            class="text-xs font-medium text-primary hover:underline whitespace-nowrap ml-2">Thay
+                                            đổi</button>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
+                                    <label
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Giới
+                                        tính</label>
+                                    <div class="md:col-span-2 flex gap-6 pl-1">
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="radio" name="gender" value="male" [(ngModel)]="user.gender"
+                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
+                                            <span
+                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Nam</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="radio" name="gender" value="female" [(ngModel)]="user.gender"
+                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
+                                            <span
+                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Nữ</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="radio" name="gender" value="other" [(ngModel)]="user.gender"
+                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
+                                            <span
+                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Khác</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
+                                    <label
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Ngày
+                                        sinh</label>
+                                    <div class="md:col-span-2">
+                                        <div
+                                            class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 shadow-sm text-sm px-3 py-2.5">
+                                            {{ user.dateOfBirth || 'Chưa cập nhật' }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-4 mt-4">
+                                    <div class="hidden md:block"></div>
+                                    <div class="md:col-span-2">
+                                        <button (click)="onSave()"
+                                            class="w-full md:w-auto bg-primary hover:bg-green-700 text-green-800 px-8 py-2.5 rounded-lg font-medium transition-all border shadow-primary/30 hover:shadow-primary/50 active:scale-95 flex justify-center items-center">
+                                            Lưu thay đổi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="w-full lg:w-72 flex flex-col items-center gap-6 pt-4 lg:border-l border-slate-100 dark:border-slate-700">
+                                <div class="relative group cursor-pointer" (click)="onSelectAvatar()">
+                                    <div
+                                        class="size-36 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-700 shadow-md ring-1 ring-slate-200 dark:ring-slate-600">
+                                        <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                                            [style.background-image]="'url(' + (user?.imageUrl || 'assets/images/default-avatar.png') + ')'">
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute inset-0 rounded-full flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[2px]">
+                                        <div class="flex flex-col items-center text-white">
+                                            <span class="material-symbols-outlined text-3xl">camera_alt</span>
+                                            <span class="text-xs font-medium mt-1">Sửa ảnh</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <button (click)="onSelectAvatar()"
+                                        class="text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                        Chọn ảnh mới
+                                    </button>
+                                    <div class="text-xs text-slate-400 text-center leading-relaxed">
+                                        Dụng lượng file tối đa 1 MB<br />Định dạng: .JPEG, .PNG
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Địa chỉ nhận hàng</h3>
+                        <button class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-base">settings</span>
+                            Quản lý
+                        </button>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div
+                            class="flex-1 p-4 border border-primary/30 rounded-xl bg-primary/5 dark:bg-primary/10 relative group transition-all hover:shadow-md">
+                            <div class="flex items-center flex-wrap gap-2 mb-2">
+                                <span class="font-bold text-slate-900 dark:text-white">{{ user?.fullName }}</span>
+                                <span class="text-slate-300 dark:text-slate-600">|</span>
+                                <span class="text-slate-600 dark:text-slate-300 font-medium">{{ user?.phone }}</span>
+                                <span
+                                    class="bg-primary text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded ml-auto">Mặc
+                                    định</span>
+                            </div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
+                                {{ user?.address || 'Chưa cập nhật địa chỉ' }}
+                            </p>
+                            <button class="text-sm font-medium text-primary hover:text-blue-700 transition-colors">Chỉnh
+                                sửa</button>
+                        </div>
+
+                        <button
+                            class="flex items-center justify-center gap-2 p-4 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-slate-500 hover:text-primary hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 transition-all md:w-1/3 min-h-[100px]">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            <span class="font-medium">Thêm địa chỉ mới</span>
+                        </button>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</div>
