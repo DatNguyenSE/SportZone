@@ -19,10 +19,11 @@ namespace SportZone.Infrastructure.Repositories
 
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
-        public async Task<IEnumerable<Product?>> GetAllProductWithInventoryAsync()
+        public async Task<IEnumerable<Product?>> GetAllProductWithInventoryAndCategoryAsync()
         {
             return await _context.Products
                 .Include(p => p.Inventory)
+                .Include(p => p.Category)
                 .ToListAsync();
         }
         public async Task<bool> ChangeStatusProduct(int id) // soft delete

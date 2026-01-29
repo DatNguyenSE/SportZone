@@ -5,7 +5,7 @@ using SportZone.Application.Interfaces.IService;
 
 namespace SportZone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Categories")]
     [ApiController]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {

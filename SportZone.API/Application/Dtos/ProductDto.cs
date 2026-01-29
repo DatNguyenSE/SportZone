@@ -15,6 +15,7 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; } 
         [DefaultValue(1)]
         public int CategoryId { get; set; }
+        public string? CategoryName { get; set; }
         public int Quantity { get; set; }
     }
 

@@ -20,6 +20,7 @@ namespace SportZone.Application.Mappings
             CreateMap<Product, ProductDto>()
 
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Inventory != null ? src.Inventory.Quantity : 0))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.CategoryName : null ))
                 .ReverseMap();
 
             // Map CartItem -> CartItemDto (Destination , Options)

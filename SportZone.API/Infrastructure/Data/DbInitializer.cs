@@ -23,48 +23,48 @@ namespace SportZone.Infrastructure.Data
     // --- SHOES ---
     new Category
     {
-        Name = "Artificial Turf (TF)",
+        CategoryName = "Artificial Turf (TF)",
         Description = "Turf shoes with rubber studs, optimized for 5-a-side and 7-a-side artificial grass surfaces."
     },
     new Category
     {
-        Name = "Firm Ground (FG)",
+        CategoryName = "Firm Ground (FG)",
         Description = "Classic cleats designed for natural grass fields, providing traction for professional 11-a-side matches."
     },
     new Category
     {
-        Name = "Futsal / Indoor (IC)",
+        CategoryName = "Futsal / Indoor (IC)",
         Description = "Flat-soled shoes with non-marking rubber, designed for indoor courts, wooden surfaces, and street style."
     },
 
     // --- KITS / JERSEYS ---
     new Category
     {
-        Name = "Club Kits",
+        CategoryName = "Club Kits",
         Description = "Official replica jerseys and kits from top clubs like Real Madrid, Man Utd, Arsenal, and more."
     },
     new Category
     {
-        Name = "National Team Kits",
+        CategoryName = "National Team Kits",
         Description = "Authentic jerseys representing national teams including Argentina, Germany, and others."
     },
 
     // --- BALLS ---
     new Category
     {
-        Name = "Footballs",
+        CategoryName = "Footballs",
         Description = "FIFA Quality Pro match balls (UCL, World Cup), training balls, and low-bounce Futsal balls."
     },
 
     // --- ACCESSORIES ---
     new Category
     {
-        Name = "Goalkeeper Gear",
+        CategoryName = "Goalkeeper Gear",
         Description = "Professional goalkeeper gloves and protective apparel for keepers."
     },
     new Category
     {
-        Name = "Accessories",
+        CategoryName = "Accessories",
         Description = "Essential gear including socks, shin guards, boot bags, and captain armbands."
     }
 };

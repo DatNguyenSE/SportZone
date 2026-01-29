@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SportZone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/inventories")]
     [ApiController]
     public class InventoryController(IInventoryService inventoryService) : ControllerBase
     {

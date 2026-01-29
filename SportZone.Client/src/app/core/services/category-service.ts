@@ -14,7 +14,7 @@ export class CategoryService {
 
 
   getCategories() {
-    this.http.get<Category[]>(`${this.baseUrl}Category`).subscribe({
+    this.http.get<Category[]>(`${this.baseUrl}categories`).subscribe({
       next: (res) => {
         this.categories.set(res);
       },
