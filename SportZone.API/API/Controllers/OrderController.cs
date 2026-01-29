@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SportZone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/order")]
     [ApiController]
     public class OrderController(IOrderService orderService) : ControllerBase
     {

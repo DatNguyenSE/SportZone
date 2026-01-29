@@ -32,31 +32,73 @@
     </section>
 
     
-    <section class="px-4 md:px-10 py-10">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl md:text-3xl font-bold text-text-main-light dark:text-text-main-dark tracking-tight">Danh mục
-          phổ biến</h2>
-        <a class="text-primary font-medium hover:underline flex items-center gap-1" href="#">
-          Xem tất cả <span class="material-symbols-outlined text-sm">arrow_forward</span>
-        </a>
-      </div>
+    <section class="px-4 md:px-10 py-10 font-sans">
+  
+  <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+    
+    <div class="flex flex-wrap items-center gap-3">
+      @for (cat of categories(); track cat.id) {
+        <button 
+          (click)="selectCategory(cat.id)"
+          class="px-4 py-2 border transition-all duration-200 flex items-center gap-2 text-sm font-bold tracking-wide"
+          [ngClass]="{
+            'bg-black text-white border-black': selectedCategoryId() === cat.id,
+            'bg-white text-gray-800 border-gray-300 hover:border-black': selectedCategoryId() !== cat.id
+          }">
+          {{ cat.categoryName }}
+          @if (cat.imageUrl) { <span>{{ cat.imageUrl }}</span> }
+        </button>
+      }
+    </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        <div *ngFor="let cat of categories" class="group flex flex-col items-center gap-3 cursor-pointer">
-          <div class="w-full aspect-square rounded-2xl overflow-hidden relative shadow-sm">
-            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
-            <div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500"
-              [style.background-image]="'url(' + cat.imageUrl + ')'">
+    <a href="#" class="text-black font-bold text-sm underline underline-offset-4 hover:bg-black hover:text-white px-2 py-1 transition-colors self-start md:self-auto">
+      Xem Tất cả
+    </a>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+    @for (product of filteredProducts(); track product.id) {
+      <div class="group cursor-pointer flex flex-col h-full">
+        
+        <div class="relative w-full aspect-square bg-[#eceff1] mb-3 overflow-hidden">
+            <button class="absolute top-3 right-3 z-10 p-1 hover:scale-110 transition-transform">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+              </svg>
+            </button>
+
+            <img 
+              [src]="product.image" 
+              [alt]="product.name"
+              class="w-full h-full object-cover object-top mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+            >
+             
             </div>
+
+        <div class="flex flex-col gap-1 mt-auto">
+          <div class="bg-white self-start pt-1 pb-1">
+             <span class="text-sm font-medium text-black">
+               {{ product.price | number:'1.0-0' }}₫
+             </span>
           </div>
-          <span
-            class="font-semibold text-text-main-light dark:text-text-main-dark group-hover:text-primary transition-colors">
-            {{ cat.name }}
+
+          <h3 class="text-sm font-normal text-gray-900 leading-tight uppercase group-hover:underline">
+            {{ product.name }}
+          </h3>
+
+          <span class="text-xs text-gray-500 mt-1">
+            {{ product.categoryName }}
           </span>
         </div>
-      </div>
-    </section>
 
+      </div>
+    } @empty {
+      <div class="col-span-full py-20 text-center text-gray-500">
+        Chưa có sản phẩm nào trong danh mục này.
+      </div>
+    }
+  </div>
+</section>
     <section class="px-4 md:px-10 py-10 bg-white/50 dark:bg-card-dark/20 rounded-3xl mx-0 md:mx-4 lg:mx-10 my-6">
       <div class="flex items-center justify-between mb-8">
         <h2 class="_heading--title_52ixl_99">
@@ -73,15 +115,15 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div *ngFor="let product of featuredProducts"
+        <div *ngFor="let product of products()"
           class="group bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl transition-shadow duration-300">
           <div class="relative w-full aspect-[4/5] overflow-hidden bg-gray-100 dark:bg-gray-800">
 
-            <div *ngIf="product.discountPercent"
+            <div *ngIf="product.price"
               class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-              -{{ product.discountPercent }}%
+              -{{ product.id }}%
             </div>
-            <div *ngIf="product.isNew"
+            <div *ngIf="product.name"
               class="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
               New
             </div>
@@ -91,12 +133,12 @@
               <span class="material-symbols-outlined text-sm">favorite</span>
             </button>
 
-            <img [src]="product.imageUrl" [alt]="product.name"
+            <img [src]="product.image" [alt]="product.name"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           </div>
 
           <div class="p-4">
-            <p class="text-sm text-text-sub-light dark:text-text-sub-dark mb-1">{{ product.categoryName }}</p>
+            <p class="text-sm text-text-sub-light dark:text-text-sub-dark mb-1">{{ product.categoryId }}</p>
             <h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-2 truncate"
               [title]="product.name">
               {{ product.name }}
@@ -104,9 +146,9 @@
             <div class="flex items-center justify-between">
               <div class="flex flex-col">
                 <span class="text-primary font-bold text-lg">{{ product.price | number:'1.0-0' }}₫</span>
-                <span *ngIf="product.originalPrice"
+                <span *ngIf="product.price"
                   class="text-text-sub-light dark:text-text-sub-dark text-xs line-through">
-                  {{ product.originalPrice | number:'1.0-0' }}₫
+                  {{ product.price | number:'1.0-0' }}₫
                 </span>
               </div>
               <button

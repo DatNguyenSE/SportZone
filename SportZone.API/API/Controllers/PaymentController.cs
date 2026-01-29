@@ -12,7 +12,7 @@ using SportZone.Domain.Enums;
 namespace SportZone.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/payment")]
     public class PaymentController : ControllerBase
     {
         private readonly IVnPayService _vnPayService;

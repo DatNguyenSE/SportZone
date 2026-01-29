@@ -49,7 +49,7 @@ namespace SportZone.Application.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = await uow.ProductRepository.GetAllProductWithInventoryAsync();
+            var products = await uow.ProductRepository.GetAllProductWithInventoryAndCategoryAsync();
             return mapper.Map<IEnumerable<ProductDto>>(products);
         }
 

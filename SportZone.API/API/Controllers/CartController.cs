@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SportZone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cart")]
     [ApiController]
     public class CartController(ICartService cartService) : ControllerBase
     {
