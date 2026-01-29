@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Cần thiết để dùng *ngFor, *ngIf
+import { CategoryService } from '../../core/services/category-service';
+import { RouterModule } from '@angular/router';
 
 // 1. Định nghĩa khuôn mẫu dữ liệu (Interface)
 interface Category {
@@ -22,35 +24,27 @@ interface Product {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
   
   // 2. Khai báo biến để chứa dữ liệu
-  categories: Category[] = [];
   featuredProducts: Product[] = [];
-
+  categoryService = inject(CategoryService);
+  categories = this.categoryService.categories;
   constructor() {}
 
   ngOnInit(): void {
-    // Khi component chạy, gọi hàm lấy dữ liệu
-    this.loadData();
+   this.categoryService.getCategories();
+   this.loadData();
   }
 
   loadData() {
     // --- GIẢ LẬP GỌI API (Sau này thay bằng HttpClient gọi xuống .NET) ---
     
-    // Giả lập lấy danh mục
-    this.categories = [
-      { id: 1, name: 'Chạy bộ', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD37eLkuTee9jxr5-BFeW0_luMZgpfPOd-HqudQogvdqqt-yN4Hpn6_oYNFYDWLCAsejo92FtSbOFbQqUtYWzJQe7SnbHx2UV0QnWjZj0hWHq5GfCQ-I-F-ctoEhByfI1p5DPlnpH817CzOXOYzTHi5eyNVR-W84dKio_qr7N59KXe-TWpYUAiUSuUz6M0sMFyDQx4ZpG5QTZ6zMTMmpbmpTkE403YF8S47aOvj6GyuIxYmSZBDmY6WFTdV88LHBCGzHiDix6r6N5U' },
-      { id: 2, name: 'Gym & Training', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAT9PZFY-Hq1B6DrKEAM8SY_cc37HYfMSQlYQhWDYW8qd7sVpQrtAYIoOksohLzigeUolm6meBlMw4kqVXf02QEmURREBXud7-ZZgbpgcGU1KGmJJafaw944TUXtje7GGOXYFuQRIpoPdaNjsKa0xFVNgLc2_F1gcTXPhW4KcehuvV3gSy5sRUSFbYxpC2XESbOdvZCH25ErRnsWja1UmG4VlIT1hIejFzT6Vizd-j1gSSTuMicTXnbuA_tevYtn_L98PoKiSTq2gQ' },
-      { id: 3, name: 'Bóng đá', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD53zpLexTd7z8ohz6oU3fv-B5FLA_BG5lxSfDAP8mYqRxA2siEbu9bNS7maCcWbgsc3DOCiYg3bljOyiDz0FM_oHMwg8YpgmYwReZOWtyX_yBLRezxyFIb1B-mGL8eX4rBFCytOnL_0GkYrwTWw3xZ65ynQO7ZjNfeBbqYnGe4an5sSO2Sc36O71rFxIFWdSXvfCt9fKDyq47-ZoA0nnqeuy4Nz3MoQ3ct6YBLU7lCr6mmRqzbZAmsa7AZVvjCessisy_UjNABrfk' },
-      { id: 4, name: 'Yoga', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZP-eHP6_xsBSeWgTzzXzvCr3_aDxYHPZl_EBeQ7qpKiIQBkbMFVL64EEOpZPUnXksttbtYtpS0G4OJHTSa9ejPfXWbTrQGqkK8lnBTAGAJLEJMnqEv7iwVY63b3Xktbbl48Z67q1OqZj469mmShO0NNuPuZU1vr63aBSX7Td9roUNNTCPho3GncVK086QBcNNwDU4iBKytthQQodDaLLeJudQwJo4SM4V64M6t17pUjuV_VTkpfOaxnxCP9FTMguurn9pBOABujw' },
-      { id: 5, name: 'Bóng rổ', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPXvj43kFpdMNVhOW1Q15oec2Z310zBcmIHNjSRGupQ3mcctqgQ2Ho0UR6tjsnwpdnJn_LTkF7lawRy3fr5XpPQUeAGw38AH35XqI4MF86lv3IE6y42fGw9HKUaVedlXobfRiMqBqnWYXa83cteDeGSx_R7Wp3OBNni5Is_3VBtDFEtip5yKsjPm1aREtGMy3acwwDOKGGZbysNdSEvv9HATTvoe87BfnjJgHWoisthDsKZpEY0qNcXmqZ8lEvNIdRKIiweNNYIHQ' },
-      { id: 6, name: 'Quần vợt', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCO5h-rwn2IQKLkAwvFHyTmhAPZ22NF_5YQAdWVWqYJoQXnxep9MdwbcuwABCyPXADx9KfDCEUHB0SFsYOOwD_UXTLs_r0Z7Os-unWlkarvnONE3N0qSWrterwXwaTfZatHOwQcNqV3bU5wNGSUi21BpSqHkxmiLIVC9yIj54PTKWMbxtJBSboOoDI6NdrTHrRzZyQuJvrcMTuKCyvLh2CHU-Cd-R8yUxgxsqn3k-kkpjDhza52glvFrGBf8wEcWe8hg4RFjAcJ9VQ' },
-    ];
+  
 
     // Giả lập lấy sản phẩm nổi bật
     this.featuredProducts = [

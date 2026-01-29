@@ -43,6 +43,9 @@ namespace SportZone.Application.Mappings
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<Payment, PaymentDto>().ReverseMap();
             CreateMap<Product, ProductItemDto>().ReverseMap();
+
+            //map category
+            CreateMap<Category,CategoryDto>().ReverseMap();
         }
     }
 }
