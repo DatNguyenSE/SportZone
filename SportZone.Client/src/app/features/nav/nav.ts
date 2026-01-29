@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../core/services/account-service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './nav.css'
 })
 export class Nav implements OnInit {
+ 
   protected accountService = inject(AccountService);
   protected busyService = inject(BusyService);
   private router = inject(Router);
@@ -35,7 +36,7 @@ export class Nav implements OnInit {
     // document.documentElement.setAttribute('data-theme', this.selectedTheme());
     
   }
-
+ 
   toggleLoginModal() {
     this.isLoginModalOpen = !this.isLoginModalOpen;
     // Reset lại trạng thái khi đóng mở
@@ -79,7 +80,7 @@ export class Nav implements OnInit {
 
   logout() {
     this.accountService.logout();
-    this.router.navigateByUrl('/FFF');
+    this.router.navigate([]);
   }
 
 

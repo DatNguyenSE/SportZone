@@ -114,5 +114,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+// Trong file Program.cs
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+try 
+{
+    var context = services.GetRequiredService<AppDbContext>();
+    
+    await context.Database.MigrateAsync();
+
+    await Seed.SeedCategories(context); 
+
+    await Seed.SeedProducts(context); 
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Lỗi trong quá trình Seeding dữ liệu");
+}
 app.Run();
 

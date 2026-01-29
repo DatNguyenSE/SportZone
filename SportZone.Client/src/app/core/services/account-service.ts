@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { authenResponse, authenLoginCreds, RegisterCreds, User } from '../../types/user';
+import { authenResponse, authenLoginCreds, RegisterCreds, User, UserProfile } from '../../types/user';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { tap } from 'rxjs';
 export class AccountService {
   private http = inject(HttpClient);
   currentUser = signal<User | null>(null);
+  currentProfile = signal<UserProfile | null>(null);
   baseUrl = environment.apiUrl;
   
   // register(creds: RegisterCreds) {
@@ -41,6 +42,28 @@ export class AccountService {
       { withCredentials: true })
   }
 
+  getProfile() {
+    return this.http.get<UserProfile>(this.baseUrl + 'account/profile').pipe(
+      tap(userProfile => {
+        if(userProfile) {
+          this.currentProfile.set(userProfile);
+        }
+      })
+    )
+    
+    }
+
+
+  logout() {
+    this.http.post(this.baseUrl + 'account/logout', {}, { withCredentials: true }).subscribe({
+      next: () => {
+        this.currentUser.set(null);
+         window.location.href = '/';
+      }
+    })
+
+  }
+
   startTokenRefreshInterval() {
     setInterval(() => {
       this.http.post<User>(this.baseUrl + 'account/refresh-token', {},
@@ -58,14 +81,6 @@ export class AccountService {
   setCurrentUser(user: User) {
     user.roles = this.getRolesFromToken(user);
     this.currentUser.set(user);
-  }
-
-  logout() {
-    this.http.post(this.baseUrl + 'account/logout', {}, { withCredentials: true }).subscribe({
-      next: () => {
-      }
-    })
-
   }
 
   private getRolesFromToken(user: User): string[] {

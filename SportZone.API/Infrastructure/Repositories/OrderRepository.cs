@@ -1,9 +1,9 @@
 using System;
 using SportZone.Application.Interfaces.IRepositories;
 using SportZone.Domain.Enums;
-using API.Data;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
+using SportZone.Infrastructure.Data;
 
 namespace SportZone.Infrastructure.Repositories;
 

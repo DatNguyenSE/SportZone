@@ -117,7 +117,30 @@ namespace SportZone.API.Controllers
             return Ok();
         }
 
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userId = User.GetUserId();
+            var profile = await userManager.FindByIdAsync(userId);
+            
+            // var profileUser = UserService.GetProfile();
 
+            if (profile == null) return Unauthorized();
+        
+            return Ok(new UserProfileDto
+            {
+                Id = profile.Id,
+                UserName = profile.UserName,
+                Email = profile.Email!,
+                ImageUrl = profile.ImageUrl,
+                FullName = profile.FullName,
+                Address = "55/11 lo lu , truong thanh, tp.hcm",
+                Gender = "Male",
+                DateOfBirth = "6/11/2005",
+                Phone = "091992492"
+                
+            });
+        }
 
         private async Task SetRefreshTokenCookie(AppUser user)
         {
