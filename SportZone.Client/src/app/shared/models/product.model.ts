@@ -5,7 +5,7 @@ export interface Product {
   categoryId: number;
   categoryName: string;
   price: number;
-  image?: string;
+  imageUrl?: string;
   discount?: number;
   isNew?: boolean;
   isDelete: boolean

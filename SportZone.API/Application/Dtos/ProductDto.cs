@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SportZone.Application.Dtos
 {
@@ -15,6 +16,7 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; } 
         [DefaultValue(1)]
         public int CategoryId { get; set; }
+        [JsonIgnore]
         public string? CategoryName { get; set; }
         public int Quantity { get; set; }
     }

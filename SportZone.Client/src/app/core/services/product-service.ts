@@ -23,4 +23,7 @@ export class ProductService {
     });
 
   }
+  getProductsByCategoryId(categoryId: number ){
+    return this.http.get<Product[]>(`${this.baseUrl}products/category/`+ categoryId)
+  }
 }

@@ -1,0 +1,20 @@
+/* Font đặc thù Adidas */
+.heading-font {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.product-grid {
+  /* Đảm bảo khoảng cách giữa các card luôn đều */
+  column-gap: 10px;
+  row-gap: 30px;
+}
+
+.group:hover img {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Ẩn thanh cuộn nhưng vẫn scroll được */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
