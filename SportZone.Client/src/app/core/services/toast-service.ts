@@ -74,7 +74,7 @@ export class ToastService {
   private createToastElement(
     message: string,
     alertClass: string,
-    duration = 400000,
+    duration = 4000,
     avatar?: string,
     route?: string
   ) {

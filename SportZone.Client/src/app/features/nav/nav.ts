@@ -6,11 +6,12 @@ import { ToastService } from '../../core/services/toast-service';
 import { themes } from '../../types/theme';
 import { BusyService } from '../../core/services/busy-service';
 import { CommonModule } from '@angular/common';
+import { HasRole } from "../../shared/directives/has-role";
 
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule, HasRole],
   templateUrl: './nav.html',
   styleUrl: './nav.css'
 })

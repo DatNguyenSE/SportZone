@@ -3,7 +3,9 @@ export interface Product {
   name: string;
   brand : string;
   categoryId: number;
-  categoryName: string;
+  categoryName?: string;
+  description: string;
+  quantity: number;
   price: number;
   imageUrl?: string;
   discount?: number;

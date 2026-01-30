@@ -25,9 +25,10 @@
       <a routerLink="/qos" routerLinkActive="text-red-600"
         class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Giày</a>
       <a routerLink="/ui" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Áo Thể
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Áo
+        Thể
         thao</a>
-        <a routerLink="/q" routerLinkActive="text-red-600"
+      <a routerLink="/q" routerLinkActive="text-red-600"
         class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nam</a>
       <a routerLink="/a" routerLinkActive="text-red-600"
         class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nữ</a>
@@ -238,9 +239,10 @@
             </span>
           </div>
 
-          
-           <div class="mb-10">for test: 
-            <br>Dat6112005nt!</div>
+
+          <div class="mb-10">for test:
+            <br>Dat6112005nt!
+          </div>
 
 
           <div class="flex justify-between items-center">
@@ -266,17 +268,18 @@
   </div>
 </div>
 }
+
 @else {
 <div *ngIf="isLoginModalOpen">
 
   <body class="bg-white text-black overflow-hidden font-sans antialiased">
 
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
+    <div  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
 
-      <div
+      <div 
         class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">
 
-        <div class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div  class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
           <div class="flex items-center gap-2">
             <div class="bg-black text-white p-1">
               <span class="material-icons-outlined text-sm font-bold">Logo</span>
@@ -285,7 +288,8 @@
           </div>
           <div class="flex items-center gap-4">
             <!-- profile -->
-            <button routerLink="/my-account/profile" (click)="toggleLoginModal()" class="text-zinc-400 hover:text-black transition-colors"><span class="material-icons-outlined">
+            <button routerLink="/my-account/profile" (click)="toggleLoginModal()"
+              class="text-zinc-400 hover:text-black transition-colors"><span class="material-icons-outlined">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -312,27 +316,35 @@
               </span></button>
           </div>
         </div>
-
         <div
           class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
 
-          <div class="p-8">
-            <div class="flex items-center gap-5 mb-8">
-              <div class="w-16 h-16 rounded-full border-4 border-zinc-700 flex items-center justify-center bg-zinc-900">
-                <span class="material-icons-outlined text-white text-2xl"><svg xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                  </svg>
-                </span>
-              </div>
-              <div>
-                <div class="text-5xl font-black text-black leading-none">150</div>
-                <div class="text-[10px] uppercase font-bold text-zinc-500 tracking-widest mt-1">Points to spend</div>
-              </div>
+         <div class="p-8 relative"> 
+    
+    <div class="absolute top-8 right-8">
+        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full border border-zinc-200 bg-zinc-50 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-zinc-600">
+                {{ this.accountService.currentUser()?.roles }}
+            </span>
+        </div>
+    </div>
+    <!-- <div *appHasRole="['Member']"> hello</div> -->
+    <div class="flex items-center gap-5 mb-8">
+        <div class="w-16 h-16 rounded-full border-4 border-zinc-700 flex items-center justify-center bg-zinc-900">
+             <span class="material-icons-outlined text-white text-2xl">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                 </svg>
+             </span>
+        </div>
+        <div>
+            <div class="text-5xl font-black text-black leading-none">150</div>
+            <div class="text-[10px] uppercase font-bold text-zinc-500 tracking-widest mt-1">Points to spend</div>
             </div>
+    </div>
 
-            <div class="space-y-4">
+    <div class="space-y-4">
               <a class="flex items-center justify-between group py-2" href="#">
                 <span
                   class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
@@ -426,6 +438,96 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="p-6 border-t border-white bg-white">
+          <button (click)="logout()"
+            class="w-full flex items-center justify-center gap-2 text-zinc-500 hover:text-black transition-colors py-2 group">
+            <span class="material-icons-outlined text-sm group-hover:-translate-x-1 transition-transform">logout</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Sign Out</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+<!-- for admin  -->
+    <div *appHasRole="['Admin']" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
+
+      <div 
+        class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">
+
+        <div  class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
+          <div class="flex items-center gap-2">
+            <div class="bg-black text-white p-1">
+              <span class="material-icons-outlined text-sm font-bold">Logo</span>
+            </div>
+            <span class="font-black uppercase tracking-widest text-lg text-black">SportZone</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <!-- back -->
+            <button (click)="toggleLoginModal()"  class="pl-5 text-zinc-400 hover:text-black transition-colors"><span
+                class="material-icons-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+
+         <div class="p-8 relative"> 
+    
+    <div class=" top-8 left-8">
+        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full border border-zinc-200 bg-zinc-50 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-zinc-600">
+              xin chào  {{ this.accountService.currentUser()?.roles }}
+            </span>
+        </div>
+    </div>
+
+    <div class="pt-10 space-y-4">
+              <a (click)="toggleLoginModal()" routerLink="/product-manager" class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                edit Product 
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+              <a class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                  edit member
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+              <a class="flex items-center justify-between group py-2" href="#">
+                <span
+                  class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
+                  edit campaign
+                </span>
+                <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <div class="p-6 border-t border-white bg-white">

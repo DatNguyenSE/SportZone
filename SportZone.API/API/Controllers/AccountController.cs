@@ -94,7 +94,7 @@ namespace SportZone.API.Controllers
                 .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken
                     && x.RefreshTokenExpiry > DateTime.UtcNow);
 
-            if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized("Your login has expired, please log in again.");
 
             await SetRefreshTokenCookie(user);
 
