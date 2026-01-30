@@ -70,6 +70,7 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IVnPayService,VnPayService>();
+builder.Services.AddScoped<IPhotoService,PhotoService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {

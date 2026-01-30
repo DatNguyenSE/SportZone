@@ -4,19 +4,20 @@ using SportZone.Application.Interfaces.IService;
 using SportZone.Domain.Exceptions;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace SportZone.Application.Services
 {
-    public class ProductService(IUnitOfWork uow, IMapper mapper) : IProductService
+    public class ProductService(IUnitOfWork uow, IMapper mapper, IPhotoService photoService) : IProductService
     {
         public async Task<ProductDto> AddAsync(CreateProductDto createDto)
         {
             var errors = new List<string>();
-            
+
             var isDuplicate = await uow.ProductRepository.AnyAsync(p => p.Name == createDto.Name);
             if (isDuplicate) errors.Add("Product name already exists.");
 
-            if( createDto.Price < 0) errors.Add("Price must be greater than or equal to 0.");
+            if (createDto.Price < 0) errors.Add("Price must be greater than or equal to 0.");
 
             if (errors.Count > 0)
             {
@@ -26,12 +27,12 @@ namespace SportZone.Application.Services
             var entity = mapper.Map<Product>(createDto);
 
             // 1:1 relationship 
-                entity.Inventory = new Inventory
-                {
-                    Quantity = createDto.Quantity,
-                };
-            
-            
+            entity.Inventory = new Inventory
+            {
+                Quantity = createDto.Quantity,
+            };
+
+
             await uow.ProductRepository.AddAsync(entity);
             await uow.Complete();
             return mapper.Map<ProductDto>(entity);
@@ -58,31 +59,50 @@ namespace SportZone.Application.Services
             var entity = await uow.ProductRepository.GetProductWithInventoryByIdAsync(id);
             if (entity == null)
             {
-               throw new NotFoundException($"Product with id {id} not found.");
+                throw new NotFoundException($"Product with id {id} not found.");
             }
             return mapper.Map<ProductDto>(entity);
         }
 
         public async Task<IEnumerable<ProductDto>> GetListByCategoryIdAsync(int categoryId)
         {
-        // Kiểm tra Category có tồn tại không trước (Optional - Good UX)
-        // var categoryExists = await uow.CategoryRepository.ExistsAsync(categoryId);
-        // if (!categoryExists) throw new NotFoundException($"Category {categoryId} not found.");
+            // Kiểm tra Category có tồn tại không trước (Optional - Good UX)
+            // var categoryExists = await uow.CategoryRepository.ExistsAsync(categoryId);
+            // if (!categoryExists) throw new NotFoundException($"Category {categoryId} not found.");
             var entities = await uow.ProductRepository.GetListByCategoryIdAsync(categoryId);
             return mapper.Map<IEnumerable<ProductDto>>(entities);
         }
 
-        public async Task<ProductDto?> UpdateAsync(int id, ProductDto productDto)
+        public async Task<ProductDto?> UpdateAsync(int id, UpdateProductDto productDto, IFormFile? file)
         {
-            var existingProduct = await uow.ProductRepository.GetByIdAsync(id);
-            if (existingProduct == null)
+            var product = await uow.ProductRepository.GetByIdAsync(id);
+            if (product == null)
             {
                 throw new NotFoundException($"Product with id {id} not found.");
             }
-            mapper.Map(productDto, existingProduct); // bo qua thuoc tinh thieu dto có mà entity k
-            uow.ProductRepository.Update(existingProduct);
+            
+            mapper.Map(productDto, product);
+
+
+            if (file != null)
+            {
+                if (!string.IsNullOrEmpty(product.PublicId))
+                {
+                    var deleteResult = await photoService.DeletePhotoAsync(product.PublicId);
+
+                }
+
+                var uploadResult = await photoService.AddPhotoAsync(file);
+                if (uploadResult.Error != null) throw new Exception(uploadResult.Error);
+
+                product.ImageUrl = uploadResult.Url;
+                product.PublicId = uploadResult.PublicId;
+            }
+            
+            uow.ProductRepository.Update(product);
             await uow.Complete();
-            return mapper.Map<ProductDto>(existingProduct);
+            return mapper.Map<ProductDto>(product);
         }
+
     }
 }

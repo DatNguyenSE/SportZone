@@ -6,11 +6,12 @@ import { ToastService } from '../../core/services/toast-service';
 import { themes } from '../../types/theme';
 import { BusyService } from '../../core/services/busy-service';
 import { CommonModule } from '@angular/common';
+import { HasRole } from "../../shared/directives/has-role";
 
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule, HasRole],
   templateUrl: './nav.html',
   styleUrl: './nav.css'
 })
@@ -72,7 +73,7 @@ export class Nav implements OnInit {
         this.toggleLoginModal(); 
       },
       error: (error) => {
-        console.log('Lỗi đã được bắt bởi Interceptor:', error);
+        console.log('error from interceptor:', error);
       
       }
     })
@@ -87,20 +88,22 @@ export class Nav implements OnInit {
   togglePassword() {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
-
-
-  handleSelectTheme(theme: string) {
-    // this.selectedTheme.set(theme);
-    localStorage.setItem('theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-    const elem = document.activeElement as HTMLDivElement;
-    if (elem) elem.blur();
-  }
-
+   
   handleSelectUserItem() {
     const elem = document.activeElement as HTMLDivElement;
     if (elem) elem.blur();
   }
+
+
+  // handleSelectTheme(theme: string) {
+  //   // this.selectedTheme.set(theme);
+  //   localStorage.setItem('theme', theme);
+  //   document.documentElement.setAttribute('data-theme', theme);
+  //   const elem = document.activeElement as HTMLDivElement;
+  //   if (elem) elem.blur();
+  // }
+
+
 
 
 }

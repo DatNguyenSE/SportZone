@@ -32,14 +32,13 @@
     </section>
 
     
-    <section class="px-4 md:px-10 py-10 font-sans">
+ <section class="px-4 md:px-10 py-10 font-sans">
   
   <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-    
     <div class="flex flex-wrap items-center gap-3">
-      @for (cat of categories(); track cat.id) {
+      @for (cat of displayCategories(); track cat.id) {
         <button 
-          (click)="selectCategory(cat.id)"
+          (click)="selectCategory(cat.id)" 
           class="px-4 py-2 border transition-all duration-200 flex items-center gap-2 text-sm font-bold tracking-wide"
           [ngClass]="{
             'bg-black text-white border-black': selectedCategoryId() === cat.id,
@@ -50,15 +49,16 @@
         </button>
       }
     </div>
-
-    <a href="#" class="text-black font-bold text-sm underline underline-offset-4 hover:bg-black hover:text-white px-2 py-1 transition-colors self-start md:self-auto">
+    <button  (click)="onSeeMoreProducts()"  href="#" class="text-black font-bold text-sm underline underline-offset-4 hover:bg-black hover:text-white px-2 py-1 transition-colors self-start md:self-auto">
       Xem Tất cả
-    </a>
+    </button>
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+  <div class="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory scroll-smooth hide-scrollbar">
+    
     @for (product of filteredProducts(); track product.id) {
-      <div class="group cursor-pointer flex flex-col h-full">
+      <div class="group cursor-pointer flex flex-col h-full flex-shrink-0 snap-start 
+                  w-[calc(50%-8px)] md:w-[calc(25%-12px)] min-w-[160px]">
         
         <div class="relative w-full aspect-square bg-[#eceff1] mb-3 overflow-hidden">
             <button class="absolute top-3 right-3 z-10 p-1 hover:scale-110 transition-transform">
@@ -68,12 +68,11 @@
             </button>
 
             <img 
-              [src]="product.image" 
-              [alt]="product.name"
+              [src]="product.imageUrl" 
+              [alt]="product.imageUrl"
               class="w-full h-full object-cover object-top mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
             >
-             
-            </div>
+        </div>
 
         <div class="flex flex-col gap-1 mt-auto">
           <div class="bg-white self-start pt-1 pb-1">
@@ -82,7 +81,7 @@
              </span>
           </div>
 
-          <h3 class="text-sm font-normal text-gray-900 leading-tight uppercase group-hover:underline">
+          <h3 class="text-sm font-normal text-gray-900 leading-tight uppercase group-hover:underline line-clamp-2">
             {{ product.name }}
           </h3>
 
@@ -93,7 +92,7 @@
 
       </div>
     } @empty {
-      <div class="col-span-full py-20 text-center text-gray-500">
+      <div class="w-full py-20 text-center text-gray-500">
         Chưa có sản phẩm nào trong danh mục này.
       </div>
     }
@@ -133,7 +132,7 @@
               <span class="material-symbols-outlined text-sm">favorite</span>
             </button>
 
-            <img [src]="product.image" [alt]="product.name"
+            <img [src]="product.imageUrl" [alt]="product.name"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           </div>
 

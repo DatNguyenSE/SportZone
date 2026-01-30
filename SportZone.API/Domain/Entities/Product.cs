@@ -12,7 +12,8 @@
         public bool IsDeleted { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
+        //property for Cloud
+        public string? PublicId { get; set; }
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 

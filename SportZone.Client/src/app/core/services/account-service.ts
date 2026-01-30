@@ -31,7 +31,7 @@ export class AccountService {
         tap(res => {
           if (res.user) {
             this.setCurrentUser(res.user);
-            // this.startTokenRefreshInterval();
+            this.startTokenRefreshInterval();
           }
         })
       )

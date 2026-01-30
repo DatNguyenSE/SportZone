@@ -16,5 +16,11 @@ public class CategoryService(IUnitOfWork uow, IMapper mapper) : ICategoryService
         return mapper.Map<IEnumerable<CategoryDto>>(categories);
     }
 
+    public async Task<CategoryDto> GetByIdAsync(int categoryId)
+    {
+        var category = await uow.CategoryRepository.GetByIdAsync(categoryId);
+        return mapper.Map<CategoryDto>(category);
+    }
+
   
 }

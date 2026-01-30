@@ -36,6 +36,37 @@ namespace SportZone.Infrastructure.Data
                 new IdentityRole { Id = "admin-id", Name = "Admin", NormalizedName = "ADMIN" }
             );
 
+            // --- SEED ADMIN USER ---
+            var adminId = "admin-id"; 
+            var adminUser = new AppUser
+            {
+                Id = adminId,
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@gmail.com",
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+
+            var hasher = new PasswordHasher<AppUser>();
+            adminUser.PasswordHash = hasher.HashPassword(adminUser, "Dat6112005nt!");
+
+            // Add User vào DB
+            builder.Entity<AppUser>().HasData(adminUser);
+
+            // --- ASSIGN ROLE TO ADMIN ---
+            builder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = "admin-id", 
+                    UserId = adminId   
+                }
+            );
+
+
+
+
+
             // --- entity configurations ---
 
             

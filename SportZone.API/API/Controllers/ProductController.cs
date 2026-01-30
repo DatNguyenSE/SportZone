@@ -6,7 +6,7 @@ namespace API.Controllers
 {
     [Route("api/products")]
     [ApiController]
-    public class ProductController(IProductService productService) : ControllerBase
+    public class ProductController(IProductService productService, IPhotoService photoService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
@@ -22,13 +22,46 @@ namespace API.Controllers
             return Ok(product);
         }
 
-        [HttpPost]
+        [HttpGet("category/{categoryId:int}")]
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByCategoryId(int categoryId)
+        {
+            var products = await productService.GetListByCategoryIdAsync(categoryId);
+            return Ok(products);
+        }
+
+        [HttpPost("add")]
         public async Task<ActionResult<ProductDto>> AddProduct(CreateProductDto productDto)
         {
 
             var productAdded = await productService.AddAsync(productDto);
 
             return CreatedAtAction(nameof(GetProductById), new { productId = productAdded.Id }, productAdded);
+
+        }
+
+        [HttpPost("add_image")]
+        public async Task<ActionResult<ProductDto>> AddProductWithImage( [FromForm] CreateProductDto productDto, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Please, choose pic for product!.");
+            }
+            var result = await photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error);
+
+            productDto.ImageUrl = result.Url;
+            var productAdded = await productService.AddAsync(productDto);
+
+            return CreatedAtAction(nameof(GetProductById), new { productId = productAdded.Id }, productAdded);
+
+        }
+
+        [HttpPut("update/{productId:int}")]
+        public async Task<ActionResult> UpdateProduct(int productId,[FromForm] UpdateProductDto productDto, IFormFile file)
+        {
+            var product = await productService.UpdateAsync(productId, productDto, file);
+            return Ok(product);
 
         }
 
@@ -40,3 +73,4 @@ namespace API.Controllers
         }
     }
 }
+
