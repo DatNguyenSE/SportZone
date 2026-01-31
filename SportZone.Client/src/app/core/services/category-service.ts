@@ -25,6 +25,6 @@ export class CategoryService {
   }
   
   getCategoryById(categoryId:number) {
-    return this.http.get<Category[]>(`${this.baseUrl}categories/`+categoryId);
+    return this.http.get<Category>(`${this.baseUrl}categories/`+categoryId);
   }
 }

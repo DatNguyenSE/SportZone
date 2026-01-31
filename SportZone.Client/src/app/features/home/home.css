@@ -3,5 +3,12 @@
   font-weight: 700;
   font-size: 32px;  
   text-transform: uppercase;
-  /* Các thuộc tính khác giữ nguyên như trên */
 }
+
+.no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }

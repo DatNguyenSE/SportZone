@@ -1,9 +1,17 @@
-import { Component, computed, inject, OnInit, signal, effect } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, effect, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 // Import đúng model và service của bạn
 import { CategoryService } from '../../core/services/category-service';
 import { ProductService } from '../../core/services/product-service';
+
+interface Slide {
+  id: number;
+  image: string;
+  title: string;
+  subtitle: string;
+  category: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -23,7 +31,7 @@ export class Home implements OnInit {
   selectedCategoryId = signal<number>(0);
 
   private readonly FOOTBALL_SHOES_GROUP = [1, 2, 3];
-  readonly FOOTBALL_CATEGORY_ID = 999;
+  readonly FOOTBALL_CATEGORY_ID = 123;
 
 
 
@@ -78,4 +86,52 @@ export class Home implements OnInit {
     this.router.navigate(['/category', this.selectedCategoryId()]);
   }
 
+
+
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+
+  slides: Slide[] = [
+    {
+    id: 1,
+    // Ảnh cầu thủ buộc dây giày chuẩn bị vào sân (Rất "nghệ")
+    image: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?q=80&w=2574&auto=format&fit=crop', 
+    title: 'PREDATOR ELITE',
+    subtitle: 'Kiểm soát bóng, làm chủ cuộc chơi.',
+    category: 'FIRM GROUND'
+  },
+  {
+    id: 2,
+    // Ảnh giày đinh trên sân cỏ (Cận cảnh)
+    image: 'https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=2564&auto=format&fit=crop', 
+    title: 'X CRAZYFAST',
+    subtitle: 'Tốc độ xé gió, bứt phá mọi giới hạn.',
+    category: 'SPEED BOOTS'
+  },
+  {
+    id: 3,
+    // Ảnh sân vận động/cầu thủ đang sút (Action)
+    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=2670&auto=format&fit=crop', 
+    title: 'COPA PURE 2',
+    subtitle: 'Cảm giác bóng chân thực nhất.',
+    category: 'SÂN CỎ TỰ NHIÊN'
+  },
+  {
+    id: 4,
+    // Ảnh bóng đá đường phố / Futsal (Tối màu, ngầu)
+    image: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=2549&auto=format&fit=crop', 
+    title: 'STREET LEGEND',
+    subtitle: 'Thống trị mặt sân cỏ nhân tạo.',
+    category: 'TURF / FUTSAL'
+  }
+  ];
+
+  scroll(direction: 'left' | 'right') {
+    const container = this.scrollContainer.nativeElement;
+    const scrollAmount = container.clientWidth / (window.innerWidth > 768 ? 3 : 1); // Cuộn 1 slide
+
+    container.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
+  }
 }
