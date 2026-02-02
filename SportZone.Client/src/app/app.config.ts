@@ -1,5 +1,5 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -13,6 +13,15 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withViewTransitions()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      //  Tự động cuộn lên đầu khi chuyển trang
+      withInMemoryScrolling({ 
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled' 
+      })
+    ),
     provideHttpClient(withInterceptors([errorInterceptor, jwtInterceptor])),
     provideAppInitializer(async () => {
       const initService = inject(InitService);

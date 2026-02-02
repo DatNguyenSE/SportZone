@@ -1,7 +1,5 @@
 <app-nav></app-nav>
-<div 
-    [class.mt-24]="router.url !== '/'"
-    [class.container]="router.url !== '/'"
-    [class.mx-auto]="router.url !== '/'"
->
-    <router-outlet />
+<main class="max-w-[1440px] mx-auto mt-10">
+  <router-outlet></router-outlet> </main>
+
+<app-footer></app-footer>

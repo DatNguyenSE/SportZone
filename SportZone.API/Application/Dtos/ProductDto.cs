@@ -17,8 +17,8 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; } 
         [DefaultValue(1)]
         public int CategoryId { get; set; }
-        [JsonIgnore]
-        public string? CategoryName { get; set; }
+ 
+       
         public int Quantity { get; set; }
     }
 
@@ -28,20 +28,21 @@ namespace SportZone.Application.Dtos
         public int Id { get; set; }
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+        public string? CategoryName { get; set; }
     }
 
     public class UpdateProductDto
     {
   
-        public required string Name { get; set; } 
+        public string? Name { get; set; } 
         public string? Description { get; set; }
         public string? Brand { get; set; }
-        [Required]
+      
         public decimal Price { get; set; }
         [JsonIgnore]
         public string? PublicId { get; set; }
         public string? ImageUrl { get; set; } 
         [DefaultValue(1)]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

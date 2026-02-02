@@ -23,8 +23,12 @@ export class ProductService {
     });
 
   }
-  getProductsByCategoryId(categoryId: number ){
+  getProductsByCategoryId(categoryId: number | undefined){
     return this.http.get<Product[]>(`${this.baseUrl}products/category/`+ categoryId)
+  }
+
+  getProductsById(productId: number ){
+    return this.http.get<Product>(`${this.baseUrl}products/`+ productId)
   }
 
 
