@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
             }
             resolve()
           }
-        }, 200)
+        }, 500)
       })
     })
   ]

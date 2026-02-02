@@ -15,7 +15,7 @@ export interface Product {
   sizes?: ProductSize[];
   colors?: ProductColor[];
   reviewCount?: number;
-  isAdiClub?: boolean; // Để hiện box voucher
+  isSportZClub?: boolean; // Để hiện box voucher
 }
 
 export interface ProductSize {

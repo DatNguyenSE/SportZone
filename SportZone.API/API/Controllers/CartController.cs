@@ -42,7 +42,7 @@ namespace SportZone.API.Controllers
             return NoContent();
         }
         
-        [HttpPost("update-items")]
+        [HttpPost("update-item")]
         public async Task<IActionResult> UpdateItemQuantity(UpdateCartItemDto dto)
         {
             var userId = User.GetUserId();
