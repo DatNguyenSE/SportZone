@@ -56,7 +56,7 @@ namespace SportZone.Application.Services
 
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
-            var entity = await uow.ProductRepository.GetProductWithInventoryByIdAsync(id);
+            var entity = await uow.ProductRepository.GetProductByIdAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException($"Product with id {id} not found.");
@@ -80,9 +80,20 @@ namespace SportZone.Application.Services
             {
                 throw new NotFoundException($"Product with id {id} not found.");
             }
-            
-            mapper.Map(productDto, product);
 
+
+            if (!string.IsNullOrEmpty(productDto.Name)) product.Name = productDto.Name;
+            
+            if (!string.IsNullOrEmpty(productDto.Description)) product.Description = productDto.Description;
+
+            if (!string.IsNullOrEmpty(productDto.Brand)) product.Brand = productDto.Brand;
+            
+            if (productDto.CategoryId != 0) product.CategoryId = productDto.CategoryId;
+
+
+           
+            if (productDto.Price > 0)  product.Price = productDto.Price;
+    
 
             if (file != null)
             {
@@ -98,7 +109,7 @@ namespace SportZone.Application.Services
                 product.ImageUrl = uploadResult.Url;
                 product.PublicId = uploadResult.PublicId;
             }
-            
+
             uow.ProductRepository.Update(product);
             await uow.Complete();
             return mapper.Map<ProductDto>(product);

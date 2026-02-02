@@ -7,7 +7,7 @@ namespace SportZone.Application.Interfaces
     {
         // Khai bao them ham
         Task<IEnumerable<Product?>> GetListByCategoryIdAsync(int id);
-        Task<Product?> GetProductWithInventoryByIdAsync(int id);
+        Task<Product?> GetProductByIdAsync(int id);
         Task<IEnumerable<Product?>> GetAllProductWithInventoryAndCategoryAsync();
         Task<bool> ChangeStatusProduct(int id);
     }

@@ -58,7 +58,7 @@ namespace API.Controllers
         }
 
         [HttpPut("update/{productId:int}")]
-        public async Task<ActionResult> UpdateProduct(int productId,[FromForm] UpdateProductDto productDto, IFormFile file)
+        public async Task<ActionResult> UpdateProduct(int productId,[FromForm] UpdateProductDto productDto, IFormFile? file)
         {
             var product = await productService.UpdateAsync(productId, productDto, file);
             return Ok(product);

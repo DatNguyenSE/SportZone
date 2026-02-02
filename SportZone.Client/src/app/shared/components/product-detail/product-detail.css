@@ -1,0 +1,21 @@
+/* Hiệu ứng gạch chéo cho size hết hàng */
+.crossed-out {
+  background-image: linear-gradient(
+    to top left,
+    transparent calc(50% - 1px),
+    #d1d5db calc(50% - 1px),
+    #d1d5db calc(50% + 1px),
+    transparent calc(50% + 1px)
+  );
+}
+
+/* Đảm bảo Font Heading (Oswald) hoạt động nếu bạn đã config trong tailwind.config.js */
+.font-heading {
+    font-family: 'Oswald', sans-serif;
+}
+
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }

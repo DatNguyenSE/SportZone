@@ -84,7 +84,6 @@ export class Nav implements OnInit {
     this.router.navigate([]);
   }
 
-
   togglePassword() {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
@@ -103,6 +102,9 @@ export class Nav implements OnInit {
   //   if (elem) elem.blur();
   // }
 
+  onCart() {
+    this.router.navigate(['/cart']);
+  }
 
 
 

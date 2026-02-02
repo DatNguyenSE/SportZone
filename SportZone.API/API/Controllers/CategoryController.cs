@@ -17,10 +17,12 @@ namespace SportZone.API.Controllers
         }
 
         [HttpGet("{categoryId:int}")]
-        public async Task<ActionResult<IReadOnlyList<CategoryDto>>> GetById(int categoryId)
+        public async Task<ActionResult<CategoryDto>> GetById(int categoryId)
         {
             var categories = await categoryService.GetByIdAsync(categoryId);
             return Ok(categories);
         }
+
+        
     }
 }
