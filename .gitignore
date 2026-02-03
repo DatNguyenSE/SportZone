@@ -484,3 +484,8 @@ $RECYCLE.BIN/
 *.swp
 
 API/appsettings.json
+
+dist/
+bin/
+obj/
+node_modules/
