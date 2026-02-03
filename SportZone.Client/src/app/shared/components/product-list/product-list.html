@@ -1,0 +1,122 @@
+<main class="mx-30 px-6 lg:px-10 py-6 min-h-screen">
+
+    <nav class="text-xs mb-8 flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+        <a routerLink="/" class="flex items-center gap-1 hover:underline">
+            <span class="material-icons-outlined text-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                </svg>
+            </span> QUAY LẠI
+        </a>
+        <span class="mx-2">/</span>
+        <span class="font-bold text-black dark:text-white uppercase">
+            {{ categoryName() || "Đang tải" }}
+        </span>
+    </nav>
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+        <div class="flex items-baseline gap-2">
+            <h1 class="text-4xl md:text-5xl font-bold heading-font tracking-tight uppercase italic">
+                {{ categoryName() }}
+            </h1>
+            <span *ngIf="products().length >= 1" class="text-sm font-medium text-gray-500">
+                [{{ products().length }}]
+            </span>
+        </div>
+
+        <button
+            class="flex items-center gap-2 border border-gray-300 dark:border-gray-700 px-4 py-2 hover:bg-gray-50 transition-colors">
+            <span class="text-xs font-bold uppercase tracking-widest">Bộ lọc khác</span>
+            <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                </svg>
+            </span>
+        </button>
+    </div>
+
+    <div *ngIf="subCategories().length > 0" class="flex flex-wrap gap-3 mb-8 pb-4 border-b border-gray-100">
+
+        <button (click)="filterBySubCategory(0)"
+            class="px-5 py-2 text-xs font-bold uppercase tracking-widest border rounded-full transition-all duration-200"
+            [class]="activeFilterId() === 0 
+              ? 'bg-black text-white border-black dark:bg-white dark:text-black' 
+              : 'bg-white text-gray-600 border-gray-300 hover:border-black'">
+            Tất cả
+        </button>
+
+        <button *ngFor="let sub of subCategories()" (click)="filterBySubCategory(sub.id)"
+            class="px-5 py-2 text-xs font-bold uppercase tracking-widest border rounded-full transition-all duration-200"
+            [class]="activeFilterId() === sub.id 
+              ? 'bg-black text-white border-black dark:bg-white dark:text-black' 
+              : 'bg-white text-gray-600 border-gray-300 hover:border-black'">
+            {{ sub.categoryName }}
+        </button>
+    </div>
+
+    <div *ngIf="products().length === 0 && isLoading()" class="flex flex-col items-center justify-center py-20">
+        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-black mb-4"></div>
+        <p class="text-gray-500 text-sm">Đang tải sản phẩm...</p>
+    </div>
+
+    <div *ngIf="products().length === 0 && !isLoading()" class="flex flex-col items-center justify-center py-20">
+        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-black mb-4"></div>
+
+        <p class="text-gray-500 text-sm">Không tìm thấy sản phẩm nào trong mục này.</p>
+    </div>
+
+    <div *ngIf="products().length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10">
+
+        <div class="group cursor-pointer" *ngFor="let p of products()">
+
+            <div
+                class="border-b-amber-800 relative aspect-[1] overflow-hidden bg-gray-50 mb-3 object-cover transition-transform duration-500 group-hover:scale-105  ">
+                <img [src]="p.imageUrl" [alt]="p.name" class="w-full ">
+
+                <div
+                    class="absolute top-2 left-2 bg-white px-2 py-1 text-[11px] font-bold border border-gray-200 shadow-sm z-10">
+                    {{ p.price | number:'1.0-0' }}₫
+                </div>
+
+                <div
+                    class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white p-1.5 shadow-sm rounded-full">
+                    <span class="material-icons-outlined text-sm"><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd"
+                                d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+
+                <h3
+                    class="text-sm font-bold uppercase leading-tight tracking-wide text-black dark:text-white group-hover:underline decoration-1 underline-offset-4">
+                    {{ p.name || 'Sản phẩm mới ra mắt' }}
+                </h3>
+
+                <p class="text-xs  font-bold text-gray-500 capitalize">
+                    {{ p.discount || 'Mới' }}
+                </p>
+
+                <p class="text-xs text-gray-400 mt-1">
+                    {{ p.brand }}
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="products().length > 0" class="mt-16 flex flex-col items-center gap-6 border-t border-gray-200 pt-10">
+        <p class="text-xs text-gray-500">Bạn đã xem {{ products().length }} sản phẩm</p>
+        <button
+            class="px-10 py-3 border border-black dark:border-white font-bold text-sm tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all uppercase">
+            Tải thêm
+        </button>
+    </div>
+
+</main>

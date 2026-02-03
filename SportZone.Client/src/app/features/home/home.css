@@ -1,0 +1,14 @@
+._heading--title_52ixl_99 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 32px;  
+  text-transform: uppercase;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
