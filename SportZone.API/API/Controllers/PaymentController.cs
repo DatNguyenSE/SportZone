@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using API.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sport.Application.IService;

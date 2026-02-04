@@ -1,7 +1,7 @@
 using SportZone.Application.Dtos;
 using SportZone.Application.Interfaces.IService;
 using SportZone.Application.Extensions;
-using API.Entities;
+using SportZone.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

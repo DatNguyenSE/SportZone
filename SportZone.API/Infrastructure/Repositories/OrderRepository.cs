@@ -1,7 +1,7 @@
 using System;
 using SportZone.Application.Interfaces.IRepositories;
 using SportZone.Domain.Enums;
-using API.Entities;
+using SportZone.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using SportZone.Infrastructure.Data;
 

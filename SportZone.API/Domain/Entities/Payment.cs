@@ -1,6 +1,6 @@
 ﻿using SportZone.Domain.Enums;
 
-namespace API.Entities
+namespace SportZone.Domain.Entities
 {
     public class Payment
     {

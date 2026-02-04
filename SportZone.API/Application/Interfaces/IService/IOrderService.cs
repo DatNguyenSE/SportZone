@@ -1,7 +1,7 @@
 using System;
 using SportZone.Application.Dtos;
 using SportZone.Domain.Enums;
-using API.Entities;
+
 
 namespace SportZone.Application.Interfaces.IService;
 

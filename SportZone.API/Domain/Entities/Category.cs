@@ -1,4 +1,4 @@
-﻿namespace API.Entities
+﻿namespace SportZone.Domain.Entities
 {
     public class Category
     {
