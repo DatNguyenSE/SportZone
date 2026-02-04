@@ -9,17 +9,18 @@ namespace SportZone.Infrastructure.Repositories;
 public class UnitOfWork(AppDbContext _context): IUnitOfWork
 {
     private IProductRepository? _productRepository;
-    private IInventoryRepository? _inventoryRepository;
+    private ProductSizeRepository? _productSizeRepository;
     private ICartRepository? _cartRepository;
     private IOrderRepository? _orderRepository;
     private ICategoryRepository? _categoryRepository;
-
+    private IPromotionRepository? _promotionRepository;
+    
 //when other function call (uow.ProductRepository) -> check and avoid create multiple instance
     public IProductRepository ProductRepository => _productRepository 
         ??= new ProductRepository(_context);
 
-    public IInventoryRepository InventoryRepository => _inventoryRepository 
-        ??= new InventoryRepository(_context);
+    public IProductSizeRepository ProductSizeRepository => _productSizeRepository 
+        ??= new ProductSizeRepository(_context);
     public ICartRepository CartRepository => _cartRepository 
         ??= new CartRepository(_context);
 
@@ -27,7 +28,10 @@ public class UnitOfWork(AppDbContext _context): IUnitOfWork
         ??= new OrderRepository(_context);
     public ICategoryRepository CategoryRepository => _categoryRepository
         ??= new CategoryRepository(_context);
-        
+
+    public IPromotionRepository PromotionRepository => _promotionRepository 
+        ??= new PromotionRepository(_context);
+
     public async Task<bool> Complete()
     {
         try

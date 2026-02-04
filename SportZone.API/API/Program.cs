@@ -4,7 +4,6 @@ using SportZone.Application.Interfaces.IService;
 using SportZone.Infrastructure.Repositories;
 using SportZone.Infrastructure.Service;
 using API.Data;
-using API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ using SportZone.Infrastructure.Data;
 using SportZone.API.Middlewares;
 using Sport.Application.IService;
 using Sport.Infrastructure.Service;
+using SportZone.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,11 +66,12 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IProductSizeService, ProductSizeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IVnPayService,VnPayService>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
+builder.Services.AddScoped<IPromotionService, PromotionService>();
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {
@@ -129,6 +130,9 @@ try
     await Seed.SeedCategories(context); 
 
     await Seed.SeedProducts(context); 
+    
+    await Seed.SeedProductSizes(context);
+
 }
 catch (Exception ex)
 {

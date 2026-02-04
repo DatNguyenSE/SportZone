@@ -18,8 +18,10 @@ namespace SportZone.Application.Dtos
         [DefaultValue(1)]
         public int CategoryId { get; set; }
  
-       
-        public int Quantity { get; set; }
+        public double? Discount { get; set; } = 0.0;
+        public bool IsNew { get; set; } = true;
+        public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
+
     }
 
     public class ProductDto : CreateProductDto

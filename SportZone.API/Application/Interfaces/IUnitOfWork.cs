@@ -6,10 +6,11 @@ namespace SportZone.Application.Interfaces;
 public interface IUnitOfWork
 {
     IProductRepository ProductRepository { get; }
-    IInventoryRepository InventoryRepository { get; }
+    IProductSizeRepository ProductSizeRepository { get; }
     ICategoryRepository CategoryRepository { get; }
     ICartRepository CartRepository { get; }
     IOrderRepository OrderRepository { get; }
+    IPromotionRepository PromotionRepository { get; }
     Task<bool> Complete();
     bool HasChange();
 }

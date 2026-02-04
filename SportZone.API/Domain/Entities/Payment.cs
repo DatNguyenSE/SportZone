@@ -1,6 +1,6 @@
 ﻿using SportZone.Domain.Enums;
 
-namespace API.Entities
+namespace SportZone.Domain.Entities
 {
     public class Payment
     {
@@ -9,7 +9,7 @@ namespace API.Entities
         public PaymentMethod PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public DateTime? PaidAt { get; set; }
-
+        public decimal Amount { get; set; }
         public int OrderId { get; set; }
         public Order Order { get; set; } = null!;
     }
