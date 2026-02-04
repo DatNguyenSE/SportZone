@@ -13,7 +13,7 @@ namespace SportZone.Application.Services;
 
 public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService> logger) : IOrderService
 {
-    public async Task<OrderDetailsDto> CreateOrderByCartItemsAsync(string userId, PaymentMethod paymentMethod)
+    public async Task<OrderDetailsDto> CreateOrderByCartItemsAsync(string userId, string? couponCode, PaymentMethod paymentMethod)
     {
         // 1. Get user cart
         var userCart = await uow.CartRepository.GetCartByUserIdAsync(userId);
@@ -39,7 +39,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
             Items = new List<OrderItem>()
         };
 
-        decimal totalAmount = 0;
+        decimal subTotal = 0;
 
         foreach (var cartItem in userCart.Items)
         {
@@ -69,44 +69,88 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
                 UnitPrice = cartItem.Product.Price
             };
 
-            totalAmount += orderItem.Quantity * orderItem.UnitPrice;
+            subTotal += orderItem.Quantity * orderItem.UnitPrice;
             order.Items.Add(orderItem);
         }
+        // 5. XỬ LÝ KHUYẾN MÃI (PROMOTION)
+      decimal discountAmount = 0;
+        
+        if (!string.IsNullOrEmpty(couponCode))
+        {
+            // Cần thêm PromotionRepository vào UnitOfWork
+            var promotion = await uow.PromotionRepository.GetByCodeAsync(couponCode);
 
-        order.TotalAmount = totalAmount;
+            // Validate cơ bản
+            if (promotion != null && promotion.IsActive)
+            {
+                var now = DateTime.UtcNow;
+                if (promotion.StartDate <= now && promotion.EndDate >= now)
+                {
+                    // Check đơn tối thiểu
+                    if (promotion.MinOrderValue == null || subTotal >= promotion.MinOrderValue)
+                    {
+                        // Tính toán giảm giá
+                        if (promotion.DiscountType == "FIXED")
+                        {
+                            discountAmount = promotion.DiscountValue;
+                        }
+                        else if (promotion.DiscountType == "PERCENT")
+                        {
+                            discountAmount = subTotal * (promotion.DiscountValue / 100);
+                            
+                            // Check giảm tối đa
+                            if (promotion.MaxDiscountAmount.HasValue && discountAmount > promotion.MaxDiscountAmount.Value)
+                            {
+                                discountAmount = promotion.MaxDiscountAmount.Value;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        //chia 2 truong hop 
-        if(paymentMethod == PaymentMethod.COD)
+        // Đảm bảo không giảm quá số tiền hàng (tránh âm tiền)
+        if (discountAmount > subTotal) discountAmount = subTotal;
+
+        // Gán các giá trị tiền tệ vào Order
+        order.SubTotal = subTotal;
+        order.DiscountAmount = discountAmount;
+        order.CouponCode = discountAmount > 0 ? couponCode : null; // Chỉ lưu mã nếu áp dụng thành công
+        order.TotalAmount = subTotal - discountAmount;
+
+
+        // 6. Payment Logic
+        if (paymentMethod == PaymentMethod.COD)
         {
             order.Payment = new Payment
             {
                 PaymentMethod = PaymentMethod.COD,
                 PaymentStatus = PaymentStatus.Pending,
+                Amount = order.TotalAmount, // Lưu số tiền cần thu
                 PaidAt = null
             };
-            order.Status = OrderStatus.Placed; // dat hang va nhan tai cua hang
-            
+            order.Status = OrderStatus.Placed;
         }
-        else if(paymentMethod == PaymentMethod.OnlineBanking)
+        else if (paymentMethod == PaymentMethod.OnlineBanking)
         {
             order.Payment = new Payment
             {
                 PaymentMethod = PaymentMethod.OnlineBanking,
                 PaymentStatus = PaymentStatus.Pending,
+                Amount = order.TotalAmount, // Lưu số tiền cần thanh toán online
                 PaidAt = null
             };
-            order.Status = OrderStatus.Pending; 
+            order.Status = OrderStatus.Pending;
         }
         else
         {
-             throw new BadRequestException($"Payment method '{paymentMethod}' is not supported.");
+            throw new BadRequestException($"Payment method '{paymentMethod}' is not supported.");
         }
 
-
-        // 6. Save changes
+        // 7. Save changes
         await uow.OrderRepository.AddAsync(order);
         await uow.CartRepository.ClearCartAsync(userId);
-        await uow.Complete(); // Commit transaction (Order + Inventory + Cart)
+        await uow.Complete(); // Commit Transaction
 
         return mapper.Map<OrderDetailsDto>(order);
     }

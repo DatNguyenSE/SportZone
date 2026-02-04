@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using SportZone.Infrastructure.Data;
 namespace SportZone.Infrastructure.Repositories
 {
-    public class ProductRepository(AppDbContext context) : GenericRepository<Product>(context), IProductRepository
+    public class ProductRepository(AppDbContext _context) : GenericRepository<Product>(_context), IProductRepository
     {
         public async Task<IEnumerable<Product?>> GetListByCategoryIdAsync(int id)
         {
-            return await context.Products
+            return await _context.Products
              .Where(p => p.CategoryId == id)
              .ToListAsync();
         }

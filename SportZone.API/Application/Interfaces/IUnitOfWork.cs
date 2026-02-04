@@ -10,6 +10,7 @@ public interface IUnitOfWork
     ICategoryRepository CategoryRepository { get; }
     ICartRepository CartRepository { get; }
     IOrderRepository OrderRepository { get; }
+    IPromotionRepository PromotionRepository { get; }
     Task<bool> Complete();
     bool HasChange();
 }

@@ -11,10 +11,10 @@ namespace SportZone.API.Controllers
     public class OrderController(IOrderService orderService) : ControllerBase
     {
         [HttpPost("add")]
-        public async Task<IActionResult> CreateOrder(PaymentMethod paymentMethod)
+        public async Task<IActionResult> CreateOrder(string? CouponCode,PaymentMethod paymentMethod)
         {
             var userId = User.GetUserId();
-            var order = await orderService.CreateOrderByCartItemsAsync(userId, paymentMethod);
+            var order = await orderService.CreateOrderByCartItemsAsync(userId,CouponCode, paymentMethod);
             return CreatedAtAction(nameof(GetOrderWithDetails), new { orderId = order.Id }, order);
         }
 

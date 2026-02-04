@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportZone.Infrastructure.Data;
@@ -11,9 +12,11 @@ using SportZone.Infrastructure.Data;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203112402_addPropertiesFromOrder")]
+    partial class addPropertiesFromOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,14 +108,14 @@ namespace API.Data.Migrations
                         {
                             Id = "admin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "STATIC-GUID-CON-67890",
+                            ConcurrencyStamp = "f0a0c8c4-d97f-400c-8e2a-c62073a430c7",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELuWf8X8+7J8J8+J8+J8+J8+J8+J8+J8+J8+J8+J8+J8+J8+J8+J8+A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI/S/WiFN4vIH7tAschccmmrRf66qjowQOY3PgCtPN0nbNr9jkOg2S7KEHnvnd+wrA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "STATIC-GUID-SEC-12345",
+                            SecurityStamp = "f7ed35ae-78d7-4b6c-8103-4a0ce032552f",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
