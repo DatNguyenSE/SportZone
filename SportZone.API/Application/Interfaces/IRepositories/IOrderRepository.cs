@@ -1,6 +1,6 @@
 using System;
 using SportZone.Domain.Enums;
-using API.Entities;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Interfaces.IRepositories;
 

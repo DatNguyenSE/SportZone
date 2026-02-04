@@ -1,7 +1,6 @@
 using SportZone.Application.Interfaces;
 using SportZone.Application.Interfaces.IService;
 using SportZone.Domain.Exceptions;
-using API.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using SportZone.Application.Dtos;

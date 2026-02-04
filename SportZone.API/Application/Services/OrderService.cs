@@ -4,10 +4,10 @@ using SportZone.Application.Interfaces;
 using SportZone.Application.Interfaces.IService;
 using SportZone.Domain.Enums;
 using SportZone.Domain.Exceptions;
-using API.Entities;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Services;
 
@@ -25,10 +25,12 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
 
         // 2. TỐI ƯU: Load Inventory và chuyển sang Dictionary để tra cứu nhanh O(1)
         var productIds = userCart.Items.Select(i => i.ProductId).Distinct().ToList();
-        var inventoriesList = await uow.InventoryRepository.GetListByProductIdsAsync(productIds);
+        var productSizeIds = userCart.Items.Select(i => i.ProductSizeId).Distinct().ToList();
+        
+        var productSizes = await uow.ProductSizeRepository.GetListByProductIdsAsync(productIds, productSizeIds);
 
         // Key là ProductId, Value là Inventory Object
-        var inventoryDict = inventoriesList.ToDictionary(x => x.ProductId);
+        var productSizeDict = productSizes.ToDictionary(x => (x.ProductId, x.Id), x => x);
 
         // 3. Create order object
         var order = new Order
@@ -47,26 +49,27 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
             if (cartItem.Product == null)
                 throw new Exception($"Product info missing for CartItem ID: {cartItem.CartId}");
 
-            if (!inventoryDict.TryGetValue(cartItem.ProductId, out var inventory))
+            if (!productSizeDict.TryGetValue((cartItem.ProductId, cartItem.ProductSizeId), out var productSize))
             {
-                throw new BadRequestException($"Inventory not found for Product ID: {cartItem.ProductId}");
+                throw new BadRequestException($"Product Size not found for Product ID: {cartItem.ProductId}, Size ID: {cartItem.ProductSizeId}");
             }
 
             // Check stock
-            if (inventory.Quantity < cartItem.Quantity)
+            if (productSize.Quantity < cartItem.Quantity)
             {
-                throw new InvalidOperationException($"Not enough stock for '{cartItem.Product.Name}'. Available: {inventory.Quantity}, Requested: {cartItem.Quantity}");
+                throw new InvalidOperationException($"Not enough stock for '{cartItem.Product.Name}'. Available: {productSize.Quantity}, Requested: {cartItem.Quantity}");
             }
 
             // Update stock (Memory)
-            inventory.Quantity -= cartItem.Quantity;
-            inventory.UpdatedAt = DateTime.UtcNow;
+            productSize.Quantity -= cartItem.Quantity;
 
             var orderItem = new OrderItem
             {
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity,
-                UnitPrice = cartItem.Product.Price
+                UnitPrice = cartItem.Product.Price,
+                ProductSizeId = cartItem.ProductSizeId,
+                SizeName = productSize.SizeName
             };
 
             subTotal += orderItem.Quantity * orderItem.UnitPrice;
@@ -198,17 +201,16 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         if (order.Items != null && order.Items.Count != 0)
         {
             var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
-            var inventoriesList = await uow.InventoryRepository.GetListByProductIdsAsync(productIds);
+            var productSizes = await uow.ProductSizeRepository.GetListByProductIdsAsync(productIds, order.Items.Select(i => i.ProductSizeId));
 
             // Dùng Dictionary để map nhanh
-            var inventoryDict = inventoriesList.ToDictionary(i => i.ProductId);
+            var productSizeDict = productSizes.ToDictionary(i => (i.ProductId, i.Id), i => i);
 
             foreach (var orderItem in order.Items)
             {
-                if (inventoryDict.TryGetValue(orderItem.ProductId, out var inventory))
+                if (productSizeDict.TryGetValue((orderItem.ProductId, orderItem.ProductSizeId), out var productSize))
                 {
-                    inventory.Quantity += orderItem.Quantity;
-                    inventory.UpdatedAt = DateTime.UtcNow;
+                    productSize.Quantity += orderItem.Quantity;
                 }
                 else
                 {

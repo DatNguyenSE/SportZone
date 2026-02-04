@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace API.Entities
+namespace SportZone.Domain.Entities
 {
     public class AppUser : IdentityUser
     {

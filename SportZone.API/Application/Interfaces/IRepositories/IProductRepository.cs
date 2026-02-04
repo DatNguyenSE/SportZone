@@ -1,5 +1,4 @@
-using API.Entities;
-
+using SportZone.Domain.Entities;
 namespace SportZone.Application.Interfaces
 {
 
@@ -8,7 +7,7 @@ namespace SportZone.Application.Interfaces
         // Khai bao them ham
         Task<IEnumerable<Product?>> GetListByCategoryIdAsync(int id);
         Task<Product?> GetProductByIdAsync(int id);
-        Task<IEnumerable<Product?>> GetAllProductWithInventoryAndCategoryAsync();
+        Task<IEnumerable<Product?>> GetAllProductsDetailAsync();
         Task<bool> ChangeStatusProduct(int id);
     }
 }

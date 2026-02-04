@@ -14,7 +14,7 @@ namespace SportZone.API.Controllers
         public async Task<IActionResult> AddItemToCart(AddCartItemDto dto)
         {
             var userId = User.GetUserId();
-            await cartService.AddItemToCartAsync(userId, dto.ProductId, dto.Quantity);
+            await cartService.AddItemToCartAsync(userId, dto.ProductId, dto.Quantity, dto.SizeName);
             return Ok();
         }
 
@@ -35,10 +35,10 @@ namespace SportZone.API.Controllers
         }
 
         [HttpDelete("remove/{productId:int}")]
-        public async Task<IActionResult> RemoveItemFromCart(int productId)
+        public async Task<IActionResult> RemoveItemFromCart(int productId, string sizeName)
         {
             var userId = User.GetUserId();
-            await cartService.RemoveItemFromCartAsync(userId, productId);
+            await cartService.RemoveItemFromCartAsync(userId, productId, sizeName);
             return NoContent();
         }
         
@@ -46,7 +46,7 @@ namespace SportZone.API.Controllers
         public async Task<IActionResult> UpdateItemQuantity(UpdateCartItemDto dto)
         {
             var userId = User.GetUserId();
-            await cartService.UpdateItemQuantityAsync(userId, dto.ProductId, dto.Quantity);
+            await cartService.UpdateItemQuantityAsync(userId, dto.ProductId, dto.Quantity, dto.SizeName);
             return Ok();
         }
     }
