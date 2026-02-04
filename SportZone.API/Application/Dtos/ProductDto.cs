@@ -31,6 +31,7 @@ namespace SportZone.Application.Dtos
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
         public string? CategoryName { get; set; }
+        public List<ProductSizeDto>? ProductSizes { get; set; }
     }
 
     public class UpdateProductDto

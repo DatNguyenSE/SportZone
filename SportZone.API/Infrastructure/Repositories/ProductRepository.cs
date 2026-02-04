@@ -19,6 +19,8 @@ namespace SportZone.Infrastructure.Repositories
             return await _context.Products
                 .Include(p => p.ProductSizes)
                 .Include(p => p.Category)
+                .Include(P => P.Reviews)
+                .Include(p => p.ProductSizes)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task<IEnumerable<Product?>> GetAllProductsDetailAsync()
@@ -26,6 +28,7 @@ namespace SportZone.Infrastructure.Repositories
             return await _context.Products
                 .Include(p => p.ProductSizes)
                 .Include(p => p.Category)
+                .Include(P => P.Reviews)
                 .ToListAsync();
         }
         public async Task<bool> ChangeStatusProduct(int id) // soft delete

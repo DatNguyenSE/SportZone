@@ -13,7 +13,9 @@ namespace SportZone.Application.Mappings
             // CreateMap<ProductDto, Product>();
 
             // ReverseMap() giúp map 2 chiều: Product <-> ProductDto
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, ProductDto>()
+             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+             .ReverseMap();
             CreateMap<CreateProductDto, Product>();
             CreateMap<UpdateProductDto, Product>();
 
