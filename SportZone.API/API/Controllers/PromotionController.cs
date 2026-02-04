@@ -1,0 +1,36 @@
+using System.Threading.Tasks;
+using API.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Sport.Application.IService;
+using SportZone.API.Extensions;
+using SportZone.Application.Dtos.Vnpay;
+using SportZone.Application.Interfaces.IService;
+using SportZone.Application.Services;
+using SportZone.Domain.Enums;
+
+namespace SportZone.API.Controllers
+{
+    [ApiController]
+    [Route("api/promotion")]
+    public class PromotionController(IPromotionService promotionService) : ControllerBase
+    {
+        [HttpGet("active-promotions")]
+        public async Task<IActionResult> GetActivePromotions()
+        {
+            var promotions = await promotionService.GetActivePromotionsAsync();
+            return Ok(promotions);
+        }
+        [HttpGet("code/{code}")]
+        public async Task<IActionResult> GetPromotionByCode(string code)
+        {
+            var promotion = await promotionService.GetByCodeAsync(code);
+            if (promotion == null)
+            {
+                return NotFound($"Promotion with code '{code}' not found.");
+            }
+            return Ok(promotion);
+        }
+    }
+
+}

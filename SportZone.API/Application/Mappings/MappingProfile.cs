@@ -1,6 +1,7 @@
 using AutoMapper;
 using SportZone.Application.Dtos;
 using API.Entities;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Mappings
 {
@@ -43,12 +44,16 @@ namespace SportZone.Application.Mappings
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<Order, OrderDetailsDto>()
                 .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment));
+                
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<Payment, PaymentDto>().ReverseMap();
             CreateMap<Product, ProductItemDto>().ReverseMap();
 
             //map category
             CreateMap<Category,CategoryDto>().ReverseMap();
+
+            //map promotion
+            CreateMap<Promotion, PromotionDto>().ReverseMap();
         }
     }
 }
