@@ -56,12 +56,6 @@
                                             liệu</span><span class="font-bold">Vải lưới/Tổng hợp</span></div>
                                     <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Mã sản
                                             phẩm</span><span class="font-bold uppercase">{{product()?.id}}</span></div>
-                                    <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Màu
-                                            sắc</span><span class="font-bold italic"> @for (color of product()?.colors;
-                                            track color.id) {
-                                            <span class="inline-block mr-1">[{{color.name}}]</span>
-                                            }
-                                        </span></div>
                                 </div>
                             </div>
                         </div>
@@ -89,64 +83,81 @@
                     <p class="font-bold text-xl text-red-600">{{this.product()?.price | number:'1.0-0' }}₫</p>
                 </div>
 
-                <div class="flex flex-col gap-3">
-                    <div class="text-sm font-bold uppercase tracking-wide">
-                        Màu sắc: <span class="text-gray-500 font-medium italic"> {{ selectedColorId() || 'Mặc định'
-                            }}</span>
-                    </div>
-                    <div class="flex gap-2 flex-wrap">
-                        @for (color of product()?.colors; track color.id) {
-                        <button (click)="selectColor(color.id)"
-                            class="w-14 h-14 p-0.5 border-b-2 transition-all duration-200 bg-gray-50 hover:border-gray-400"
-                            [class.border-black]="selectedColorId() === color.id"
-                            [class.border-transparent]="selectedColorId() !== color.id"
-                            [class.opacity-50]="selectedColorId() !== color.id">
-                            <img [src]="color.imageUrl" class="w-full h-full object-cover mix-blend-multiply">
-                        </button>
-                        }
-                    </div>
-                </div>
+
 
                 <div class="bg-[#006532] text-white p-4 flex justify-between items-center rounded-sm">
                     <div>
                         <p class="font-bold text-[10px] uppercase tracking-widest opacity-80">adiClub Reward</p>
-                        <p class="font-bold text-base italic">GIẢM THÊM 10% CHO ĐƠN ĐẦU</p>
+                        <p class="font-bold text-base italic">GIẢM THÊM 10% CHO ĐƠN ĐẦU
+
+
+                        </p>
                     </div>
                     <button class="text-[10px] font-bold underline hover:text-gray-200 uppercase">Nhận mã</button>
                 </div>
 
-                <div>
-                    <div class="flex justify-between items-end mb-3">
-                        <p class="font-bold text-sm uppercase tracking-wide">Chọn kích cỡ</p>
-                        <button class="text-xs font-bold underline hover:no-underline text-gray-500 italic">Hướng dẫn
-                            chọn size</button>
-                    </div>
-                    <div class="grid grid-cols-4 gap-1">
-                        @for (s of product()?.sizes; track s.label) {
-                        <button (click)="selectSize(s.label)"
-                            class="h-12 border text-sm font-bold transition-all duration-200"
-                            [class.bg-black]="selectedSize() === s.label"
-                            [class.text-white]="selectedSize() === s.label"
-                            [class.border-black]="selectedSize() === s.label"
-                            [class.border-gray-200]="selectedSize() !== s.label"
-                            [class.hover:border-black]="selectedSize() !== s.label">
-                            {{s.label}}
-                        </button>
-                        }
-                    </div>
-                </div>
+                <div class="space-y-5">
+    <div class="flex justify-between items-end">
+        <div class="flex flex-col gap-1">
+            <p class="font-bold text-base uppercase tracking-wider">Chọn kích cỡ</p>
+        </div>
+        <button class="text-sm font-bold underline hover:no-underline text-gray-400 italic">
+            Hướng dẫn chọn size
+        </button>
+    </div>
 
-                <div class="flex flex-col gap-2">
-                    <p class="font-bold text-sm uppercase tracking-wide">Số lượng</p>
-                    <div class="flex items-center border border-black w-fit">
-                        <button (click)="updateQuantity(-1)"
-                            class="px-4 py-2 hover:bg-gray-100 border-r border-black font-bold">-</button>
-                        <div class="px-8 py-2 font-bold min-w-[60px] text-center">{{ quantity() }}</div>
-                        <button (click)="updateQuantity(1)"
-                            class="px-4 py-2 hover:bg-gray-100 border-l border-black font-bold">+</button>
+    <div class="grid grid-cols-4 gap-3">
+        @for (s of product()?.productSizes; track s.id) {
+            <button 
+                (click)="s.quantity > 0 ? selectSize(s.sizeName) : null"
+                [disabled]="s.quantity <= 0"
+                class="relative h-14 border-2 text-base font-bold transition-all duration-300 group"
+                [class.selected-size]="selectedSize() === s.sizeName"
+                [class.out-of-stock]="s.quantity <= 0"
+            >
+                {{s.sizeName}}
+                
+                @if (s.quantity <= 0) {
+                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
+                        <div class="w-[110%] h-[2px] bg-gray-400 rotate-[35deg]"></div>
                     </div>
-                    <p class="text-[10px] text-gray-400 italic">Còn lại {{ product()?.quantity }} sản phẩm trong kho</p>
+                }
+            </button>
+        }
+    </div>
+</div>
+
+<div class="flex flex-col gap-4 pt-4">
+    <p class="font-bold text-base uppercase tracking-wider">Số lượng mua</p>
+    <div class="flex items-center gap-6">
+        <div class="flex items-center border-2 border-black rounded-sm h-14">
+            <button (click)="updateQuantity(-1)"
+                class="w-14 h-full hover:bg-black hover:text-white transition-colors font-bold text-xl">-</button>
+            <div class="w-16 text-center font-bold text-lg">{{ quantity() }}</div>
+            <button (click)="updateQuantity(1)"
+                class="w-14 h-full hover:bg-black hover:text-white transition-colors font-bold text-xl">+</button>
+        </div>
+        
+        <div class="flex flex-col justify-center">
+            @if (selectedSize()) {
+                <div class="flex items-center gap-2">
+                    <span class="flex h-3 w-3 rounded-full animate-pulse" 
+                        [class.bg-green-500]="stockForSelectedSize() > 5"
+                        [class.bg-orange-500]="stockForSelectedSize() <= 5 && stockForSelectedSize() > 0">
+                    </span>
+                    <span class="text-sm font-black uppercase tracking-tight">
+                        {{ stockForSelectedSize() > 5 ? 'Sẵn hàng' : 'Sắp hết hàng' }} 
+                        <span class="text-gray-500 font-bold">({{ stockForSelectedSize() }})</span>
+                    </span>
                 </div>
+            } @else {
+                <span class="text-sm text-gray-400 uppercase italic font-bold">
+                    Chọn size để xem kho
+                </span>
+            }
+        </div>
+    </div>
+</div>
 
                 <div class="flex flex-col gap-3 mt-4">
                     <button (click)="addToCart()"

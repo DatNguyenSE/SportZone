@@ -11,7 +11,7 @@ using SportZone.Domain.Enums;
 namespace SportZone.API.Controllers
 {
     [ApiController]
-    [Route("api/promotion")]
+    [Route("api/promotions")]
     public class PromotionController(IPromotionService promotionService) : ControllerBase
     {
         [HttpGet("active-promotions")]

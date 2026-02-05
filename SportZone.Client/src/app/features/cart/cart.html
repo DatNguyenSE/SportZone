@@ -12,43 +12,72 @@
 
             <p class="text-sm mb-8">Các mặt hàng trong giỏ hàng của bạn không được bảo lưu — hãy kiểm tra ngay để đặt
                 hàng.</p>
-
-            <div *ngIf="promoBanner().isVisible"
-                class="bg-surface-light dark:bg-surface-dark p-5 mb-8 border border-gray-200 dark:border-gray-800 relative overflow-hidden transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
-
+            @if (cartItems().length > 0) {
+            @if (firstPromotion(); as promo) {
+            <div
+                class="bg-surface-light dark:bg-surface-dark p-5 border border-gray-200 dark:border-gray-800 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-t-xl transition-all">
                 <span
                     class="material-icons-outlined absolute -right-4 -bottom-4 text-9xl opacity-5 rotate-12 pointer-events-none">
-                    {{ promoBanner().icon }}
+                    {{ promo.icon }}
                 </span>
 
                 <div class="relative z-10">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="material-icons-outlined ">{{ promoBanner().icon }}</span>
-                        <h2 class="font-bold text-sm uppercase tracking-wide  dark:text-red-400">
-                            {{ promoBanner().title }}
+                        <span class="material-icons-outlined text-red-500">{{ promo.icon }}</span>
+                        <h2 class="font-bold text-sm uppercase tracking-wide dark:text-red-400">
+                            {{ promo.title }}
                         </h2>
                     </div>
                     <p class="text-sm text-gray-700 dark:text-gray-300">
-                        {{ promoBanner().description }}
+                        {{ promo.description }}
                     </p>
                 </div>
 
-                <div *ngIf="promoBanner().couponCode"
-                    class="relative z-10 flex flex-col items-center md:items-end flex-shrink-0">
+                @if (promo.code) {
+                <div class="relative z-10 flex flex-col items-center md:items-end flex-shrink-0">
                     <span class="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Mã ưu đãi</span>
-
-                    <div class="group relative bg-white dark:bg-zinc-900 border-2 border-dashed border-red-300 dark:border-red-600 rounded-lg px-6 py-2 cursor-pointer hover:border-red-500 transition-colors shadow-sm"
-                        title="Click để copy (Xử lý logic sau)">
-                        <span
-                            class="text-lg font-mono font-black text-red-600 dark:text-red-400 tracking-widest select-all">
-                            {{ promoBanner().couponCode }}
-                        </span>
+                    <div
+                        class="mt-3 font-mono text-sm font-bold text-red-500 border border-dashed border-red-200 px-3 py-1 rounded bg-red-50 dark:bg-red-900/10">
+                        {{ promo.code }}
                     </div>
                 </div>
-
+                }
             </div>
+            }
+
+            @if (remainingPromotions().length > 0) {
+            <button (click)="togglePromotions()"
+                class="w-full py-2 bg-gray-50 dark:bg-zinc-800/50 border-x border-b border-gray-200 dark:border-gray-800 text-xs font-semibold text-gray-500 hover:text-red-500 transition-colors flex items-center justify-center gap-1 mb-4 rounded-b-xl">
+                {{ showAllPromotions() ? 'Thu gọn' : 'Xem thêm ' + remainingPromotions().length + ' ưu đãi khác' }}
+                <span class="material-icons-outlined text-sm">
+                    {{ showAllPromotions() ? 'expand_less' : 'expand_more' }}
+                </span>
+            </button>
+            }
+
+            @if (showAllPromotions()) {
+            <div class="flex flex-col gap-3 mb-8 animate-fade-down"> @for (promo of remainingPromotions(); track
+                promo.id) {
+                <div
+                    class="bg-white dark:bg-zinc-900 p-4 border border-gray-200 dark:border-gray-800 rounded-lg flex items-center justify-between gap-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="material-icons-outlined text-red-500">{{ promo.icon }}</span>
+                        <div>
+                            <h3 class="text-sm font-bold">{{ promo.title }}</h3>
+                            <p class="text-xs text-gray-500">{{ promo.description }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-sm font-bold text-red-500 border border-dashed border-red-200 px-3 py-1 rounded bg-red-50 dark:bg-red-900/10">
+                        {{ promo.code }}
+                    </div>
+                </div>
+                }
+            </div>
+            }
 
             <div class="space-y-6">
+
                 <div *ngFor="let item of cartItems()"
                     class="border border-gray-200 dark:border-gray-800 flex flex-col md:flex-row p-4 relative group">
 
@@ -65,7 +94,7 @@
                             </h3>
 
                             <div class="flex flex-col gap-4">
-                                <button (click)="removeItem(item.productId)"
+                                <button (click)="removeItem(item.productId, item.productSize.sizeName)"
                                     class="hover:text-red-500 transition-colors" title="Xóa">
                                     <span class="material-icons-outlined text-xl">delete</span>
                                 </button>
@@ -75,14 +104,12 @@
                         <div class="text-sm text-gray-600 dark:text-gray-400 mt-1 space-y-0.5">
                             <p class="uppercase text-xs font-semibold text-gray-500">{{ item.product?.brand }}</p>
 
-                            <p *ngIf="item.product?.colors?.length">Màu: {{ item.product?.colors?.[0]?.name }}</p>
-                            <p *ngIf="item.product?.sizes?.length">Size: {{ item.product?.sizes?.[0]?.label }}</p>
+
+                            <p *ngIf="item.product?.productSizes?.length">Size: {{
+                                item.productSize.sizeName }}</p>
 
                             <p *ngIf="item.product?.isNew" class="text-orange-600 font-semibold mt-2 text-xs">🔥 Sản
                                 phẩm mới</p>
-                            <p *ngIf="item.product?.isSportZClub"
-                                class="text-primary dark:text-white font-bold mt-1 text-xs border border-current inline-block px-1 rounded">
-                                SportZ Club</p>
                         </div>
 
                         <div class="mt-8 flex justify-between items-end">
@@ -107,7 +134,24 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+            } @else {
+            <div
+                class="flex flex-col items-center justify-center py-20 bg-gray-50 dark:bg-zinc-900/30 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800">
+                <span class="material-icons-outlined text-7xl text-gray-300 mb-4">shopping_bag</span>
+                <h2 class="text-xl font-bold uppercase tracking-tight mb-2">Giỏ hàng của bạn đang trống</h2>
+                <p class="text-gray-500 text-sm mb-8 text-center px-6">
+                    Có vẻ như bạn chưa thêm sản phẩm nào vào giỏ hàng. <br> Hãy khám phá các bộ sưu tập mới nhất của
+                    chúng tôi.
+                </p>
+                <button routerLink="/"
+                    class="bg-black dark:bg-white dark:text-black text-white px-8 py-3 font-bold uppercase tracking-widest text-xs hover:opacity-80 transition-all flex items-center gap-2">
+                    <span class="material-icons-outlined text-sm">arrow_back</span>
+                    Tiếp tục mua sắm
+                </button>
+            </div>
+            }
         </div>
 
         <div class="w-full lg:w-[380px]">
@@ -143,13 +187,25 @@
                         </span>
                     </div>
                 </div>
-
                 <div class="mb-8">
-                    <button
-                        class="flex items-center gap-2 text-sm font-bold underline uppercase tracking-widest hover:text-gray-600 transition-colors">
+                    <div class="flex items-center gap-2 text-sm font-bold uppercase tracking-widest mb-4">
                         <span class="material-icons-outlined text-lg">local_offer</span>
-                        Sử dụng mã khuyến mãi
-                    </button>
+                        <span class="underline">Sử dụng mã khuyến mãi</span>
+                    </div>
+                    <div class="flex gap-2 animate-fade-in">
+                        <div class="relative flex-grow">
+                            <input type="text" [ngModel]="couponCodeInput()"
+                                (ngModelChange)="couponCodeInput.set($event)" placeholder="Nhập mã giảm giá..."
+                                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 dark:bg-zinc-900 rounded-lg focus:border-black dark:focus:border-white outline-none transition-all font-medium" />
+                        </div>
+                        <button (click)="applyCoupon()" [disabled]="!couponCodeInput()"
+                            class="px-6 py-3 bg-black dark:bg-white dark:text-black text-white font-bold rounded-lg hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-all uppercase text-xs tracking-widest">
+                            Áp dụng
+                        </button>
+                    </div>
+
+                    <p class="text-xs text-gray-600"> *Chỉ được áp dụng 1 mã trên hóa đơn</p>
+
                 </div>
 
                 <button

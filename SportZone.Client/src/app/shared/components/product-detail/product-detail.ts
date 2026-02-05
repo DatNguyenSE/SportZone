@@ -9,33 +9,7 @@ import { HasRole } from "../../directives/has-role";
 import { ToastService } from '../../../core/services/toast-service';
 import { CartService } from '../../../core/services/cart-service';
 
-export interface ProductUI extends Product {
-  reviewCount: number;
-  isAdiClub: boolean;
-  colors: Array<{ id: string; name: string; imageUrl: string }>;
-  sizes: Array<{ label: string; available: boolean }>;
-}
 
-const MOCK_EXTRAS = {
-  reviewCount: 24,
-  isAdiClub: true,
-  colors: [
-    { id: 'White', name: 'Cloud White', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzFnAF9AUV2BJunHgex4bebta2JYAEAj4o_pwvTxdul6bFAuW6sGVTYW2COFFRA_jDTu7OtBmdm-zSkgJdJh3EqNRvdYNGWuNpWoU_OlFkYw0FX5tyI7aSNmY0hD-mm78awiR1JRnhkmzLqjl-FIiyCvcbjCMbL_Yot4aNwqs7_IHATIXGuVBN85ihbuz4A2knoNbr2gfWq60edpjWB2FfzzyA6n4R4yDw1XqK2BuM4O1jKLU8yXa7yCtBjqm_xXVVfzdu81vmE-oB' },
-
-    { id: 'Black', name: 'Core Black', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAc7KnzE29Z9xWyQIjWB1QtILPpPeS2VaHHeznH1z0Vv3io2vPRLlqdpQey4H1IlsBIlwPLiEpdfeLpBa7sRArWxa7BtlMBk-miFvBCDIyCexCWexqNiKo0iJsN4pRYaYmo7_RBoOkpzWbRlK9nqBNWvEa5MkXFL6syt2QINI8Y58VyhKConWsO23hsKOFl-un2uLQPYZqGkBuRnLx1SZ8izbjpgot8ilqPfWsQS5G1Pe8nscA7R0hbxOaUkrB6pJs2AUrdqnhzl7XF' }
-  ],
-  sizes: [
-    { label: '6 UK', available: true },
-    { label: '6.5 UK', available: true },
-    { label: '7 UK', available: true },
-    { label: '7.5 UK', available: true },
-    { label: '8 UK', available: true },
-    { label: '8.5 UK', available: true },
-    { label: '9 UK', available: true },
-    { label: '9.5 UK', available: false },
-    { label: '10 UK', available: true },
-  ]
-};
 
 @Component({
   selector: 'app-product-detail',
@@ -49,7 +23,7 @@ export class ProductDetail {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private toast = inject(ToastService);
-  product = signal<ProductUI | null>(null);
+  product = signal<Product | null>(null);
   productRefer = signal<Product[] | null>(null);
 
   productId = toSignal(
@@ -63,16 +37,8 @@ export class ProductDetail {
       if (id === 0) return;
 
       this.productService.getProductsById(id).subscribe({
-        next: (res: Product) => {
-          const fullProduct: ProductUI = {
-            ...res,          // Lấy toàn bộ dữ liệu thật (id, name, price...)
-            ...MOCK_EXTRAS,   // Đắp thêm dữ liệu giả (colors, sizes...)
-            // Nếu muốn ảnh từ API đè lên ảnh giả thì để res sau, 
-            // còn muốn ảnh giả đè lên thì xử lý thủ công ở đây:
-            imageUrl: res.imageUrl || MOCK_EXTRAS.colors[0].imageUrl
-          };
-          this.product.set(fullProduct);
-
+        next: (res) => {
+          this.product.set(res);
           //call product by category to set ref
           this.productService.getProductsByCategoryId(this.product()?.categoryId).subscribe({
             next: res => this.productRefer.set(res)
@@ -88,55 +54,60 @@ export class ProductDetail {
   // State quản lý bằng Signal
   quantity = signal(1);
   selectedSize = signal<string | null>(null);
-  selectedColorId = signal<string>('White'); // Mặc định chọn màu đầu tiên
   isDescriptionOpen = signal(true);  // Mô tả sản phẩm mặc định mở
 
 
-  // Computed value để lấy thông tin màu đang chọn
-  currentColor = computed(() =>
-    this.product()?.colors.find(c => c.id === this.selectedColorId())
-  );
-
-  // Methods
   selectSize(sizeLabel: string) {
     this.selectedSize.set(sizeLabel);
+    this.quantity.set(1);
   }
 
-  selectColor(colorId: string) {
-    this.selectedColorId.set(colorId);
-  }
+  // Tự động tính toán số lượng tồn kho dựa trên size được chọn
+  stockForSelectedSize = computed(() => {
+    const product = this.product();
+    const sizeName = this.selectedSize();
+
+    if (!product || !sizeName) return 0;
+
+    // Tìm size tương ứng trong mảng productSizes
+    const sizeInfo = product.productSizes?.find(s => s.sizeName === sizeName);
+    return sizeInfo ? sizeInfo.quantity : 0;
+  });
+
+
 
   updateQuantity(amount: number) {
-  const currentQty = this.quantity();
-  const maxQty = this.product()?.quantity ?? 0;
-  const newQty = currentQty + amount;
+    const currentQty = this.quantity();
 
-  if (newQty < 1) {
-    return;
+    const maxQty = this.stockForSelectedSize();
+    const newQty = currentQty + amount;
+
+    if (newQty < 1) return;
+
+    if (maxQty === 0) {
+      this.toast.error('Vui lòng chọn kích cỡ!');
+      return;
+    }
+    if (newQty > maxQty) {
+      this.toast.error(`Rất tiếc, size này chỉ còn ${maxQty} sản phẩm trong kho!`);
+      return;
+    }
+
+    this.quantity.set(newQty);
   }
-
-  if (newQty > maxQty) {
-    // Hiển thị thông báo lỗi
-    this.toast.error(`Rất tiếc, chúng tôi chỉ còn ${maxQty} sản phẩm trong kho!`);
-    return;
-  }
-
-  this.quantity.set(newQty);
-}
 
   addToCart() {
     if (!this.selectedSize()) {
-       this.toast.error('Vui lòng chọn kích cỡ!');
+      this.toast.error('Vui lòng chọn kích cỡ!');
       return;
     }
     console.log('Added to cart:', {
       product: this.product()?.name,
       size: this.selectedSize(),
-      color: this.selectedColorId(),
       quantity: this.quantity()
     });
 
-    this.cartService.addToCart(this.product()!.id, this.quantity()).subscribe({
+    this.cartService.addToCart(this.product()!.id, this.quantity(), this.selectedSize()!).subscribe({
       next: () => {
         this.toast.success('Sản phẩm đã được thêm vào giỏ hàng!');
       },
@@ -146,14 +117,14 @@ export class ProductDetail {
       }
     });
 
-    
+
   }
 
   toggleFavorite() {
     console.log('Toggled favorite');
   }
 
-  
+
 
   toggleDescription() {
     this.isDescriptionOpen.update(v => !v);

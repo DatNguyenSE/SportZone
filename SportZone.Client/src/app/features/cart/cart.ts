@@ -1,23 +1,28 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Cần cho *ngFor, *ngIf, CurrencyPipe
-import { FormsModule } from '@angular/forms';   // Cần cho ngModel (select box)
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms';   
 import { CartService } from '../../core/services/cart-service';
 import { CartItem } from '../../types/cart';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
+import { PromotionService } from '../../core/services/promotion-service';
+import { Promotion } from '../../shared/models/promotion.model';
 
 @Component({
   selector: 'app-cart',
-  standalone: true, // Angular 17+ mặc định là standalone
+  standalone: true, 
   imports: [CommonModule, FormsModule],
   templateUrl: './cart.html',
-  styleUrls: ['./cart.css'], // Lưu ý: styleUrl -> styleUrls (hoặc styleUrl tùy version CLI, nhưng styleUrls an toàn hơn)
+  styleUrls: ['./cart.css'], 
 })
 export class Cart implements OnInit, OnDestroy {
   private cartService = inject(CartService);
-  private updateQuantitySubject = new Subject<{ productId: number, quantity: number }>();
+  private promotionService = inject(PromotionService);
+
+  private updateQuantitySubject = new Subject<{ productId: number, quantity: number, sizeName: string }>();
   private updateSubscription!: Subscription;
 
   protected cartItems = signal<CartItem[]>([]);
+  protected promotions = signal<Promotion[]>([]);
 
   // --- COMPUTED SIGNALS (Tự động tính toán khi cartItems thay đổi) ---
   totalItems = computed(() => 
@@ -48,30 +53,7 @@ export class Cart implements OnInit, OnDestroy {
   );
 
 
-  // SEED DỮ LIỆU BANNER TẠI ĐÂY
-
-  protected promoBanner = signal<PromoBanner>({
-    isVisible: true,
-    title: 'Tặng quà Tết 🧧 Giới hạn thời gian',
-    description: 'Miễn phí vận chuyển cho đơn hàng trên 2.000.000₫.',
-    icon: 'redeem', // Tên icon lấy từ Material Icons
-    type: 'holiday',
-    couponCode: 'YYSS2024' // Mã giảm giá
-  });
-
-  ngOnInit() {
-    this.getCartItems();
-    this.setupDebounceUpdate();
-  }
-  
-  ngOnDestroy() {
-    // Hủy đăng ký khi component bị đóng để tránh rò rỉ bộ nhớ
-    if (this.updateSubscription) {
-      this.updateSubscription.unsubscribe();
-    }
-  }
-
-  getCartItems() {
+   getCartItems() {
     this.cartService.getCartItems().subscribe({
       next: (res) => {
         // Kiểm tra an toàn null/undefined
@@ -83,14 +65,73 @@ export class Cart implements OnInit, OnDestroy {
     });
   }
 
+  getPromotions() {
+    this.promotionService.getPromotions().subscribe({
+      next: (promos) => { 
+        console.log('Khuyến mãi hiện có:', promos);
+        this.promotions.set(promos);
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy khuyến mãi:', err);
+      }
+    });
+  }
+
+
+  ngOnInit() {
+    this.getCartItems();
+    this.getPromotions();
+    this.setupDebounceUpdate();
+  }
+  
+  ngOnDestroy() {
+    // Hủy đăng ký khi component bị đóng để tránh rò rỉ bộ nhớ
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
+  }
+
+
+  // 1. Quản lý trạng thái đóng/mở danh sách khuyến mãi
+  showAllPromotions = signal<boolean>(false);
+
+  // 2. Lấy cái đầu tiên (Featured)
+  firstPromotion = computed(() => {
+    const apps = this.promotions().filter(p => p.isVisible);
+    return apps.length > 0 ? apps[0] : null;
+  });
+
+  // 3. Lấy danh sách còn lại (từ phần tử thứ 2 trở đi)
+  remainingPromotions = computed(() => {
+    const apps = this.promotions().filter(p => p.isVisible);
+    return apps.slice(1);
+  });
+
+  // Hàm toggle trạng thái
+  togglePromotions() {
+    this.showAllPromotions.update(val => !val);
+  }
+
+  
+  // Lưu trữ mã giảm giá người dùng nhập
+  couponCodeInput = signal<string>('');
+  applyCoupon() {
+    const code = this.couponCodeInput().trim();
+    if (code) {
+      console.log('Đang áp dụng mã:', code);
+      // Gọi service để kiểm tra mã ở đây
+    }
+  }
+
+
 // --- CẤU HÌNH DEBOUNCE ---
   setupDebounceUpdate() {
     this.updateSubscription = this.updateQuantitySubject.pipe(
       debounceTime(800), // ⏳ Chờ 800ms sau lần bấm cuối cùng mới chạy tiếp
       switchMap(data => {
         // Gọi API cập nhật
-        console.log(`📡 Đang gọi API update cho SP ${data.productId} với SL ${data.quantity}`);
-        return this.cartService.updateCartItem(data.productId, data.quantity);
+        console.log(`📡 Đang gọi API update cho SP ${data.productId} với SL ${data.quantity} và size ${data.sizeName}`);
+        return this.cartService.updateCartItem(data.productId, data.quantity,data.sizeName) ;
       })
     ).subscribe({
       next: (res) => {
@@ -121,13 +162,25 @@ export class Cart implements OnInit, OnDestroy {
     // 2. Đẩy yêu cầu vào "dòng suối" để chờ xử lý (Debounce)
     this.updateQuantitySubject.next({ 
       productId: item.productId, 
-      quantity: newQty 
+      quantity: newQty,
+      sizeName: item.productSize.sizeName
     });
   }
 
   // Xóa sản phẩm
-  removeItem(productId: number) {
-    // Cập nhật Optimistic UI
+  removeItem(productId: number, sizeName: string) {
+  
+    this.cartService.removeFromCart(productId, sizeName).subscribe({
+      next: () => {
+        console.log(`✅ Đã xóa SP ${productId} thành công trên server`);    
+      },
+      error: (err) => {
+        console.error('❌ Lỗi xóa sản phẩm:', err);
+        alert('Có lỗi xảy ra khi xóa sản phẩm!');
+        return;
+      }
+    });
+    
     this.cartItems.update(items => items.filter(i => i.productId !== productId));
 
     // Gọi API xóa (giả lập)

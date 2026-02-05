@@ -13,24 +13,24 @@ export class CartService {
   
   
 
-  addToCart(productId: number, quantity: number = 1) {
-    return this.http.post(`${this.baseUrl}cart/add`, { productId, quantity });
+  addToCart(productId: number, quantity: number = 1, sizeName: string) {
+    return this.http.post(`${this.baseUrl}cart/add`, { productId, quantity, sizeName });
   }
 
   getCartItems() {
     return this.http.get<Cart>(`${this.baseUrl}cart`);
   }
 
-  removeFromCart(productId: number) {
-    return this.http.delete(`${this.baseUrl}cart/remove/${productId}`);
+  removeFromCart(productId: number, sizeName: string) {
+    return this.http.delete(`${this.baseUrl}cart/remove/${productId}?sizeName=${sizeName}`);
   }
 
   clearCart() {
     return this.http.delete(`${this.baseUrl}cart/clear`);
   }
 
-  updateCartItem(productId: number, quantity: number) : Observable<any> {
-    return this.http.post(`${this.baseUrl}cart/update-item`, { productId, quantity });
+  updateCartItem(productId: number, quantity: number, sizeName: string) : Observable<any> {
+    return this.http.post(`${this.baseUrl}cart/update-item`, { productId, quantity, sizeName });
   }
   
 }
