@@ -48,4 +48,14 @@ namespace SportZone.Application.Dtos
         [DefaultValue(1)]
         public int? CategoryId { get; set; }
     }
+
+     public class ProductInCartDto : CreateProductDto
+    {
+        
+        public int Id { get; set; }
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
+        public string? CategoryName { get; set; }
+    }
+    
 }

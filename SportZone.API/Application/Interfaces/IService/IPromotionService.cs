@@ -8,4 +8,5 @@ public interface IPromotionService
 {
     Task<PromotionDto?> GetByCodeAsync(string code);
     Task<IEnumerable<PromotionDto>> GetActivePromotionsAsync();
+    Task<decimal?> IsPromotionValid(string code, decimal orderValue);
 }

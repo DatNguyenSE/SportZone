@@ -11,15 +11,15 @@ public class CartItemDto
     public int ProductId { get; set; }
     public int Quantity { get; set; }
     public int ProductSizeId { get; set; }
-    public ProductSizeDto ProductSize { get; set; } = null!;
-    public ProductDto? Product { get; set; }
+     public string? SizeName { get; set; }
+    public ProductInCartDto? Product { get; set; }
 }
 
 public class AddCartItemDto
 {
     public int ProductId { get; set; }
     public int Quantity { get; set; }
-    public string SizeName { get; set; } = string.Empty;
+    public string? SizeName { get; set; }
 }
 
 public class UpdateCartItemDto : AddCartItemDto

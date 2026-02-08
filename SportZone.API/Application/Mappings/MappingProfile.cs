@@ -18,18 +18,20 @@ namespace SportZone.Application.Mappings
              .ReverseMap();
             CreateMap<CreateProductDto, Product>();
             CreateMap<UpdateProductDto, Product>();
+            CreateMap<Product, ProductInCartDto>()
+             .ReverseMap();
 
             // Map CartItem -> CartItemDto
             CreateMap<CartItem, CartItemDto>()
                 .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
-                .ForMember(dest => dest.ProductSize, opt => opt.MapFrom(src => src.ProductSize))
+                .ForMember(dest => dest.SizeName, opt => opt.MapFrom(src => src.ProductSize.SizeName))
 
     // 3. Xử lý lại logic gán Quantity (Số lượng mua)
                 .AfterMap((src, dest) =>
                 {
-                    if (dest.ProductSize != null)
+                    if (dest.SizeName != null)
                     {
-                        dest.ProductSize.Quantity = src.Quantity;
+                        dest.Quantity = src.Quantity;
                     }
                 });
             //  Map Cart -> CartDto

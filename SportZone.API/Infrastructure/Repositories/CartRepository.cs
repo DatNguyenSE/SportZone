@@ -37,7 +37,7 @@ public class CartRepository(AppDbContext _context) : GenericRepository<Cart>(_co
                 CartId = cart.Id, 
                 ProductId = productId, 
                 Quantity = quantity,
-                ProductSizeId = ProductSizeId 
+                ProductSizeId = ProductSizeId
             };
             await _context.CartItems.AddAsync(newItem);
         }

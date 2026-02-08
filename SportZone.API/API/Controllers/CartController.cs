@@ -29,7 +29,7 @@ namespace SportZone.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
-            var userId = User.GetUserId();
+            var userId = "ac62e361-dad0-4602-a2ba-e866fe577444";
             var cart =  await cartService.GetCartByUserIdAsync(userId);
             return Ok(cart);
         }

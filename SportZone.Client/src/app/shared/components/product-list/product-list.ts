@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { forkJoin, lastValueFrom, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../models/category.moedel';
+import { Category } from '../../models/category.model';
 import { Product } from '../../models/product.model';
 
 @Component({

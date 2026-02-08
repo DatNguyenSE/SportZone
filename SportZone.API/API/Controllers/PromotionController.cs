@@ -30,6 +30,14 @@ namespace SportZone.API.Controllers
             }
             return Ok(promotion);
         }
+        
+        [HttpGet("validate/{code}")]
+        public async Task<IActionResult> ValidatePromotionCode(string code, decimal orderValue) 
+        {
+            var discountAmount = await promotionService.IsPromotionValid(code, orderValue);
+          
+            return Ok(discountAmount);
+        }
     }
 
 }

@@ -18,5 +18,8 @@ export class PromotionService {
   getPromotionByCode(code: string) {
     return this.http.get<Promotion>(`${this.baseUrl}promotions/code/${code}`);
   }
+  validateCoupon(code: string, orderValue: number) {
+    return this.http.get<number>(`${this.baseUrl}promotions/validate/${code}?orderValue=${orderValue}`);
+  }
 }
 
