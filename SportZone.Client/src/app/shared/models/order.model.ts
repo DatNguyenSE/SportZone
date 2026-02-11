@@ -9,15 +9,19 @@ export interface Order {
   discountAmount: number;
   subTotal: number;
   couponCode?: string;
-  orderItems: OrderItem[];
+  items: OrderItem[];
+  payment: Payment;
 }
 
 export interface OrderItem {
   productId: number;
-  productName: string;
   quantity: number;
   unitPrice: number;
   imageUrl: string;
   payment: Payment;
+  name: string;
+  size: string;
 }
+
+
 

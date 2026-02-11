@@ -19,16 +19,16 @@
                 <div
                     class="flex items-center gap-4 p-4 bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
                     <div class="size-12 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center shrink-0 border-2 border-white dark:border-slate-700 shadow-sm"
-                        [style.background-image]="'url(' + (user?.imageUrl || 'assets/images/default-avatar.png') + ')'">
-                        <span *ngIf="!user?.imageUrl"
+                        [style.background-image]="'url(' + (user()?.imageUrl || 'assets/images/default-avatar.png') + ')'">
+                        <span *ngIf="!user()?.imageUrl"
                             class="flex h-full w-full items-center justify-center text-slate-400">
                             <span class="material-symbols-outlined text-xl">person</span>
                         </span>
                     </div>
                     <div class="flex flex-col overflow-hidden">
                         <span class="text-xs text-slate-500 dark:text-slate-400">Xin chào,</span>
-                        <span class="font-bold text-slate-900 dark:text-white truncate">{{ user?.fullName ||
-                            user?.userName }}</span>
+                        <span class="font-bold text-slate-900 dark:text-white truncate">{{ user()?.fullName ||
+                            user()?.userName }}</span>
                     </div>
                 </div>
 
@@ -102,10 +102,10 @@
                             <div class="flex-1 flex flex-col gap-6">
                                 <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
                                     <label
-                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Tên
-                                        đăng nhập</label>
+                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Email
+                                    </label>
                                     <div class="md:col-span-2 text-slate-900 dark:text-white font-medium pl-1">{{
-                                        user.userName }}</div>
+                                        user()?.userName }}</div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
@@ -113,24 +113,13 @@
                                         class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Họ
                                         và tên</label>
                                     <div class="md:col-span-2">
-                                        <input [(ngModel)]="user.fullName"
-                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm text-sm py-2.5 transition-all"
-                                            type="text" placeholder="Nhập họ tên của bạn" />
+                                        <input [ngModel]="user()?.fullName"
+                                            (ngModelChange)="updateField('fullName', $event)" name="fullName"
+                                            class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-primary outline-none" />
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
-                                    <label
-                                        class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Email</label>
-                                    <div
-                                        class="md:col-span-2 flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-colors">
-                                        <div class="text-slate-900 dark:text-white text-sm truncate">{{ user.email }}
-                                        </div>
-                                        <button
-                                            class="text-xs font-medium text-primary hover:underline whitespace-nowrap ml-2">Thay
-                                            đổi</button>
-                                    </div>
-                                </div>
+
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 md:items-center gap-2 md:gap-4">
                                     <label
@@ -138,22 +127,16 @@
                                         tính</label>
                                     <div class="md:col-span-2 flex gap-6 pl-1">
                                         <label class="flex items-center gap-2 cursor-pointer group">
-                                            <input type="radio" name="gender" value="male" [(ngModel)]="user.gender"
-                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
-                                            <span
-                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Nam</span>
+                                            <input type="radio" name="gender" value="male" [ngModel]="user()?.gender"
+                                                (ngModelChange)="updateField('gender', 'male')"
+                                                class="text-primary focus:ring-primary" />
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Nam</span>
                                         </label>
                                         <label class="flex items-center gap-2 cursor-pointer group">
-                                            <input type="radio" name="gender" value="female" [(ngModel)]="user.gender"
-                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
-                                            <span
-                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Nữ</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer group">
-                                            <input type="radio" name="gender" value="other" [(ngModel)]="user.gender"
-                                                class="text-primary focus:ring-primary border-slate-300 dark:border-slate-600 dark:bg-slate-800" />
-                                            <span
-                                                class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Khác</span>
+                                            <input type="radio" name="gender" value="female" [ngModel]="user()?.gender"
+                                                (ngModelChange)="updateField('gender', 'female')"
+                                                class="text-primary focus:ring-primary" />
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">Nữ</span>
                                         </label>
                                     </div>
                                 </div>
@@ -163,10 +146,10 @@
                                         class="text-sm font-medium text-slate-500 dark:text-slate-400 md:text-right">Ngày
                                         sinh</label>
                                     <div class="md:col-span-2">
-                                        <div
-                                            class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 shadow-sm text-sm px-3 py-2.5">
-                                            {{ user.dateOfBirth || 'Chưa cập nhật' }}
-                                        </div>
+                                        <input type="text" [ngModel]="user()?.dateOfBirth"
+                                            (ngModelChange)="updateField('dateOfBirth', $event)"
+                                            placeholder="dd/mm/yyyy"
+                                            class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-transparent dark:text-white focus:ring-2 focus:ring-primary outline-none" />
                                     </div>
                                 </div>
 
@@ -187,7 +170,7 @@
                                     <div
                                         class="size-36 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-700 shadow-md ring-1 ring-slate-200 dark:ring-slate-600">
                                         <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                                            [style.background-image]="'url(' + (user?.imageUrl || 'assets/images/default-avatar.png') + ')'">
+                                            [style.background-image]="'url(' + (user()?.imageUrl || 'assets/images/default-avatar.png') + ')'">
                                         </div>
                                     </div>
                                     <div
@@ -217,35 +200,66 @@
                     class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-slate-900 dark:text-white">Địa chỉ nhận hàng</h3>
-                        <button class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
-                            <span class="material-symbols-outlined text-base">settings</span>
-                            Quản lý
+                        <button *ngIf="isEditingAddress()" (click)="toggleEditAddress()"
+                            class="text-slate-500 text-sm font-medium hover:underline">
+                            Hủy bỏ
                         </button>
                     </div>
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div
-                            class="flex-1 p-4 border border-primary/30 rounded-xl bg-primary/5 dark:bg-primary/10 relative group transition-all hover:shadow-md">
-                            <div class="flex items-center flex-wrap gap-2 mb-2">
-                                <span class="font-bold text-slate-900 dark:text-white">{{ user?.fullName }}</span>
-                                <span class="text-slate-300 dark:text-slate-600">|</span>
-                                <span class="text-slate-600 dark:text-slate-300 font-medium">{{ user?.phone }}</span>
-                                <span
-                                    class="bg-primary text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded ml-auto">Mặc
-                                    định</span>
-                            </div>
-                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
-                                {{ user?.address || 'Chưa cập nhật địa chỉ' }}
-                            </p>
-                            <button class="text-sm font-medium text-primary hover:text-blue-700 transition-colors">Chỉnh
-                                sửa</button>
-                        </div>
 
-                        <button
-                            class="flex items-center justify-center gap-2 p-4 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-slate-500 hover:text-primary hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 transition-all md:w-1/3 min-h-[100px]">
-                            <span class="material-symbols-outlined">add_circle</span>
-                            <span class="font-medium">Thêm địa chỉ mới</span>
-                        </button>
-                    </div>
+                   <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex-1 p-4 border border-primary/30 rounded-xl bg-primary/5 dark:bg-primary/10 relative group transition-all hover:shadow-md">
+
+        <div class="flex items-center flex-wrap gap-2 mb-2">
+            <span class="font-bold text-slate-900 dark:text-white">{{ user()?.fullName }}</span>
+            <span class="text-slate-300 dark:text-slate-600">|</span>
+            
+            <span *ngIf="!isEditingAddress()" class="text-slate-600 dark:text-slate-300 font-medium">
+                {{ user()?.phoneNumber || 'Chưa có SĐT' }}
+            </span>
+
+            <span class="bg-primary text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded ml-auto">Mặc định</span>
+        </div>
+
+        <ng-container *ngIf="!isEditingAddress()">
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3 min-h-[40px]">
+                {{ user()?.address || 'Chưa cập nhật địa chỉ' }}
+            </p>
+            <button (click)="toggleEditAddress()"
+                class="text-sm font-medium text-primary hover:text-green-700 transition-colors flex items-center gap-1">
+                Chỉnh sửa thông tin giao hàng
+            </button>
+        </ng-container>
+
+        <div *ngIf="isEditingAddress()" class="space-y-3 mb-3">
+            <div>
+                <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Số điện thoại nhận hàng</label>
+                <input [ngModel]="user()?.phoneNumber" (ngModelChange)="updateField('phoneNumber', $event)"
+                    type="tel"
+                    class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Nhập số điện thoại mới..." />
+            </div>
+
+            <div>
+                <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Địa chỉ chi tiết</label>
+                <textarea [ngModel]="user()?.address" (ngModelChange)="updateField('address', $event)"
+                    rows="2"
+                    class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Nhập địa chỉ giao hàng..."></textarea>
+            </div>
+
+            <div class="flex gap-2">
+                <button (click)="onSave()"
+                    class="text-xs bg-primary text-green-900 px-4 py-2 rounded-md font-bold shadow-sm">
+                    Xác nhận lưu
+                </button>
+                <button (click)="toggleEditAddress()"
+                    class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md font-bold">
+                    Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
 
             </main>

@@ -14,7 +14,8 @@ public class OrderRepository(AppDbContext _context) : GenericRepository<Order>(_
         return await _context.Orders
             .Include(o => o.Payment)       
             .Include(o => o.Items)          
-                .ThenInclude(i => i.Product) 
+                .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.ProductSizes)
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
     }
 

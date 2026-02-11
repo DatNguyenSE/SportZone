@@ -16,7 +16,7 @@ export type UserProfile = {
     token: string;
     imageUrl?: string;
     address?: string;
-    phone?: string;
+    phoneNumber?: string;
     gender?: 'male' | 'female' | 'other';
     dateOfBirth?: string;
 }

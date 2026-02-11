@@ -33,7 +33,8 @@ export class Cart implements OnInit, OnDestroy {
 
   // --- COMPUTED SIGNALS (Tự động tính toán khi cartItems thay đổi) ---
   totalItems = computed(() =>
-    this.cartItems().length
+    this.cartItems().reduce((sum, item) => sum + item.quantity, 0 
+  )
   );
 
   // 2. Tổng tiền hàng trước thuế và phí vận chuyển
@@ -216,9 +217,9 @@ export class Cart implements OnInit, OnDestroy {
       next: (order) => {
         console.log('Đơn hàng đã được tạo:', order);
         console.log(`Tổng tiền: ${this.finalTotal().toLocaleString()} VND`);
-        // this.router.navigate(['/order-success', order.id], {
-        //   state: { orderData: order }
-        // });
+        this.router.navigate(['/order', order.id, 'detail'], {
+          state: { orderData: order, couponCode: code }
+        });
       }
     });
   }

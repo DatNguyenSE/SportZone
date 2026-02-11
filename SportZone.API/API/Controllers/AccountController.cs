@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using SportZone.API.Extensions;
+using SportZone.Application.Dtos.SportZone.Application.Dtos;
 
 namespace SportZone.API.Controllers
 {
@@ -122,11 +123,11 @@ namespace SportZone.API.Controllers
         {
             var userId = User.GetUserId();
             var profile = await userManager.FindByIdAsync(userId);
-            
+
             // var profileUser = UserService.GetProfile();
 
             if (profile == null) return Unauthorized();
-        
+
             return Ok(new UserProfileDto
             {
                 Id = profile.Id,
@@ -134,11 +135,58 @@ namespace SportZone.API.Controllers
                 Email = profile.Email!,
                 ImageUrl = profile.ImageUrl,
                 FullName = profile.FullName,
-                Address = "55/11 lo lu , truong thanh, tp.hcm",
-                Gender = "Male",
-                DateOfBirth = "6/11/2005",
-                Phone = "091992492"
-                
+                Address = profile.Address,
+                Gender = profile.Gender,
+                DateOfBirth = profile.DateOfBirth?.ToString("dd/MM/yyyy"),
+                PhoneNumber = profile.PhoneNumber
+            });
+        }
+
+        [Authorize]
+        [HttpPut("profile")] // Dùng HttpPut cho hành động cập nhật
+        public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateDto)
+        {
+            var userId = User.GetUserId();
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null) return Unauthorized();
+
+            // 2. Cập nhật các thông tin
+            user.FullName = updateDto.FullName;
+            user.Address = updateDto.Address;
+            user.Gender = updateDto.Gender;
+            user.PhoneNumber = updateDto.PhoneNumber;
+            user.ImageUrl = updateDto.ImageUrl;
+
+            if (!string.IsNullOrEmpty(updateDto.DateOfBirth))
+            {
+                if (DateTime.TryParseExact(updateDto.DateOfBirth, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dob))
+                {
+                    user.DateOfBirth = DateTime.SpecifyKind(dob, DateTimeKind.Utc);
+                }
+            }
+
+            // 4. Lưu vào 
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest("Không thể cập nhật hồ sơ cá nhân.");
+
+            return Ok(new
+            {
+                Message = "Cập nhật hồ sơ thành công!",
+                User = new UserProfileDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email!,
+                    ImageUrl = user.ImageUrl,
+                    FullName = user.FullName,
+                    Address = user.Address,
+                    Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth?.ToString("dd/MM/yyyy"),
+                    PhoneNumber = user.PhoneNumber
+                }
             });
         }
 

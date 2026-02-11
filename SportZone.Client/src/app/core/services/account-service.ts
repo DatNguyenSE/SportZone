@@ -43,14 +43,7 @@ export class AccountService {
   }
 
   getProfile() {
-    return this.http.get<UserProfile>(this.baseUrl + 'account/profile').pipe(
-      tap(userProfile => {
-        if(userProfile) {
-          this.currentProfile.set(userProfile);
-        }
-      })
-    )
-    
+    return this.http.get<UserProfile>(this.baseUrl + 'account/profile')
     }
 
 
@@ -62,6 +55,10 @@ export class AccountService {
       }
     })
 
+  }
+
+  updateProfile(profile: UserProfile) {
+    return this.http.put<UserProfile>(this.baseUrl + 'account/profile', profile)
   }
 
   startTokenRefreshInterval() {
