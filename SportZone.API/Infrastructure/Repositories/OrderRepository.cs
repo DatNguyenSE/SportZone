@@ -1,7 +1,7 @@
 using System;
 using SportZone.Application.Interfaces.IRepositories;
 using SportZone.Domain.Enums;
-using API.Entities;
+using SportZone.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using SportZone.Infrastructure.Data;
 
@@ -14,7 +14,8 @@ public class OrderRepository(AppDbContext _context) : GenericRepository<Order>(_
         return await _context.Orders
             .Include(o => o.Payment)       
             .Include(o => o.Items)          
-                .ThenInclude(i => i.Product) 
+                .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.ProductSizes)
             .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
     }
 

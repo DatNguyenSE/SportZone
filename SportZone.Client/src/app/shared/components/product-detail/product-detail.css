@@ -19,3 +19,33 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
+    /* Tăng độ đậm và kích thước cho nút size */
+.selected-size {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #000 !important;
+    font-size: 1.125rem; /* ~18px */
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+/* Hiệu ứng khi hover vào size (chưa chọn) */
+
+
+/* Tăng kích thước font cho tên sản phẩm và giá nếu cần */
+h1 {
+    font-size: 2.5rem !important; /* To hơn nữa cho tiêu đề */
+    line-height: 1 !important;
+}
+
+.text-red-600 {
+    font-size: 1.5rem !important; /* Giá tiền to rõ ràng */
+    font-weight: 900;
+}
+
+/* Custom cho nút Add to Cart to hơn */
+.add-to-cart-btn {
+    height: 4rem !important;
+    font-size: 1.125rem !important;
+}

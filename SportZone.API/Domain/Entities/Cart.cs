@@ -1,5 +1,4 @@
-﻿namespace API.Entities
-{
+﻿namespace SportZone.Domain.Entities{
     public class Cart
     {
         public int Id { get; set; }

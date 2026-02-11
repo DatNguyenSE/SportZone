@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using API.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sport.Application.IService;
@@ -12,7 +11,7 @@ using SportZone.Domain.Enums;
 namespace SportZone.API.Controllers
 {
     [ApiController]
-    [Route("api/promotion")]
+    [Route("api/promotions")]
     public class PromotionController(IPromotionService promotionService) : ControllerBase
     {
         [HttpGet("active-promotions")]
@@ -30,6 +29,14 @@ namespace SportZone.API.Controllers
                 return NotFound($"Promotion with code '{code}' not found.");
             }
             return Ok(promotion);
+        }
+        
+        [HttpGet("validate/{code}")]
+        public async Task<IActionResult> ValidatePromotionCode(string code, decimal orderValue) 
+        {
+            var discountAmount = await promotionService.IsPromotionValid(code, orderValue);
+          
+            return Ok(discountAmount);
         }
     }
 

@@ -2,9 +2,9 @@ using SportZone.Application.Dtos;
 using SportZone.Application.Interfaces;
 using SportZone.Application.Interfaces.IService;
 using SportZone.Domain.Exceptions;
-using API.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Services
 {
@@ -26,13 +26,6 @@ namespace SportZone.Application.Services
 
             var entity = mapper.Map<Product>(createDto);
 
-            // 1:1 relationship 
-            entity.Inventory = new Inventory
-            {
-                Quantity = createDto.Quantity,
-            };
-
-
             await uow.ProductRepository.AddAsync(entity);
             await uow.Complete();
             return mapper.Map<ProductDto>(entity);
@@ -50,7 +43,7 @@ namespace SportZone.Application.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = await uow.ProductRepository.GetAllProductWithInventoryAndCategoryAsync();
+            var products = await uow.ProductRepository.GetAllProductsDetailAsync();
             return mapper.Map<IEnumerable<ProductDto>>(products);
         }
 

@@ -1,5 +1,4 @@
 using SportZone.Application.Interfaces;
-using API.Entities;
 using Microsoft.EntityFrameworkCore;
 using SportZone.Infrastructure.Data;
 using SportZone.Domain.Entities;

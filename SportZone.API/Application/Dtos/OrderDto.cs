@@ -33,13 +33,11 @@ public class OrderItemDto
     public int Quantity { get; set; }
     
     public decimal UnitPrice { get; set; } 
-    
-    public ProductItemDto? Product { get; set; }
-}
 
-public class ProductItemDto
-{
+    public string SizeName { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
     
 }
+

@@ -2,10 +2,10 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportZone.Application.Dtos;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Infrastructure.Data;
 
@@ -16,9 +16,9 @@ public class Seed
     {
         if (await context.Categories.AnyAsync()) return;
 
-        var categoryData = await File.ReadAllTextAsync("D:/Documents/Project/SportZone/SportZone.API/Infrastructure/Data/CategorySeedData.json");
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; 
-    var categories = JsonSerializer.Deserialize<List<Category>>(categoryData, options);
+        var categoryData = await File.ReadAllTextAsync("D:/Documents/SportZone/SportZone.API/Infrastructure/Data/CategorySeedData.json");
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var categories = JsonSerializer.Deserialize<List<Category>>(categoryData, options);
 
         if (categories == null) return;
 
@@ -28,13 +28,15 @@ public class Seed
         }
         await context.SaveChangesAsync();
     }
+
+    // HÀM 2: SEED PRODUCTS
     public static async Task SeedProducts(AppDbContext context)
     {
         if (await context.Products.AnyAsync()) return;
 
-        var productData = await File.ReadAllTextAsync("D:/Documents/Project/SportZone/SportZone.API/Infrastructure/Data/ProductSeedData.json");
+        var productData = await File.ReadAllTextAsync("D:/Documents/SportZone/SportZone.API/Infrastructure/Data/ProductSeedData.json");
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    var products = JsonSerializer.Deserialize<List<SeedProductDto>>(productData, options);
+        var products = JsonSerializer.Deserialize<List<SeedProductDto>>(productData, options);
 
         if (products == null)
         {
@@ -54,16 +56,37 @@ public class Seed
                 ImageUrl = item.ImageUrl,
                 IsDeleted = item.IsDeleted,
                 CategoryId = item.CategoryId,
-                Inventory = new Inventory
-                {
-                    ProductId = item.Id,
-                    Quantity = item.Quantity
-                }
+                PublicId = item.PublicId,
+                Featured = item.Featured,
+                IsNew = item.IsNew,
+                Discount = item.Discount,
             };
-            
+
             context.Products.Add(product);
         }
-          
+
         await context.SaveChangesAsync();
     }
+
+
+    // --- HÀM 3: SEED PRODUCT SIZES  ---
+    public static async Task SeedProductSizes(AppDbContext context)
+    {
+        if (await context.ProductSizes.AnyAsync()) return;
+    
+        var sizeData = await File.ReadAllTextAsync("D:/Documents/SportZone/SportZone.API/Infrastructure/Data/SizesSeed.json");
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        // Deserialize thẳng vào Entity ProductSize vì JSON khớp cấu trúc (ProductId, Name, Quantity)
+        var sizes = JsonSerializer.Deserialize<List<ProductSize>>(sizeData, options);
+
+        if (sizes == null) return;
+
+         foreach (var size in sizes)
+        {
+            context.ProductSizes.Add(size);
+        }
+        await context.SaveChangesAsync();
+    }
+
 }

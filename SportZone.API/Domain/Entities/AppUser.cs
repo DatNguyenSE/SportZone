@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace API.Entities
+namespace SportZone.Domain.Entities
 {
     public class AppUser : IdentityUser
     {
         public string? FullName { get; set; }
         public string? ImageUrl { get; set; }
         public string? Address { get; set; }
+        public string? Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+
 
         // Auth
         public string? RefreshToken { get; set; }

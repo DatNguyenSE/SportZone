@@ -1,6 +1,6 @@
 using SportZone.Application.Dtos;
 using SportZone.Application.Interfaces.IService;
-using API.Entities;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Extensions
 {

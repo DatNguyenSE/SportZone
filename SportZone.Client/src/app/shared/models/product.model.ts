@@ -12,19 +12,12 @@ export interface Product {
 
   discount?: number;
   isNew?: boolean;
-  sizes?: ProductSize[];
-  colors?: ProductColor[];
-  reviewCount?: number;
-  isSportZClub?: boolean; // Để hiện box voucher
+  productSizes?: ProductSize[];
+  peatured?: string;
 }
 
 export interface ProductSize {
-  label: string;
-  available: boolean;
-}
-
-export interface ProductColor {
-  id: string;
-  name: string; // VD: Team Solar Pink
-  imageUrl: string;
+  id: number;
+  sizeName: string;
+  quantity: number;
 }

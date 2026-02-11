@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Category } from '../../shared/models/category.moedel';
+import { Category } from '../../shared/models/category.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { tap } from 'rxjs';
