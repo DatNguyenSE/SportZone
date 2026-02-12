@@ -5,7 +5,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { ProductService } from '../../../core/services/product-service';
-import { HasRole } from "../../directives/has-role";
 import { ToastService } from '../../../core/services/toast-service';
 import { CartService } from '../../../core/services/cart-service';
 
@@ -13,7 +12,7 @@ import { CartService } from '../../../core/services/cart-service';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [CommonModule, RouterLink, HasRole],
+  imports: [CommonModule, RouterLink],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
 })

@@ -5,3 +5,8 @@ export interface Payment {
   paidAt: Date;
   paymentStatus: string;
 }
+
+export interface PaymentInput {
+  orderId: number,
+  description: string;
+}

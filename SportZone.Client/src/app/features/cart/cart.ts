@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart-service';
 import { CartItem } from '../../types/cart';
-import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
+import { debounceTime, of, Subject, Subscription, switchMap } from 'rxjs';
 import { PromotionService } from '../../core/services/promotion-service';
 import { Promotion } from '../../shared/models/promotion.model';
 import { Router, RouterLink } from '@angular/router';
@@ -33,8 +33,8 @@ export class Cart implements OnInit, OnDestroy {
 
   // --- COMPUTED SIGNALS (Tự động tính toán khi cartItems thay đổi) ---
   totalItems = computed(() =>
-    this.cartItems().reduce((sum, item) => sum + item.quantity, 0 
-  )
+    this.cartItems().reduce((sum, item) => sum + item.quantity, 0
+    )
   );
 
   // 2. Tổng tiền hàng trước thuế và phí vận chuyển
@@ -154,7 +154,7 @@ export class Cart implements OnInit, OnDestroy {
   // --- CẤU HÌNH DEBOUNCE ---
   setupDebounceUpdate() {
     this.updateSubscription = this.updateQuantitySubject.pipe(
-      debounceTime(800), // ⏳ Chờ 800ms sau lần bấm cuối cùng mới chạy tiếp
+      debounceTime(800),
       switchMap(data => {
         // Gọi API cập nhật
         console.log(`update cho SP ${data.productId} với SL ${data.quantity} và size ${data.sizeName}`);
@@ -194,10 +194,11 @@ export class Cart implements OnInit, OnDestroy {
 
     this.cartService.removeFromCart(productId, sizeName).subscribe({
       next: () => {
-        console.log(`✅ Đã xóa SP ${productId} thành công trên server`);
+        this.toast.info(` Đã xóa SP ${productId} thành công trên server`)
+        console.log(` Đã xóa SP ${productId} thành công trên server`);
       },
       error: (err) => {
-        console.error('❌ Lỗi xóa sản phẩm:', err);
+        console.error(' Lỗi xóa sản phẩm:', err);
         alert('Có lỗi xảy ra khi xóa sản phẩm!');
         return;
       }
@@ -205,22 +206,62 @@ export class Cart implements OnInit, OnDestroy {
 
     this.cartItems.update(items => items.filter(i => i.productId !== productId));
 
-    // Gọi API xóa (giả lập)
-    // this.cartService.removeItem(productId).subscribe(...)
+
   }
 
 
-  addOrder() {
+  onContinueInfoOrder() {
+    if (this.cartItems().length === 0) {
+      this.toast.error("Giỏ hàng hiện đang trống.");
+      return;
+    }
+
     const code = this.couponCodeInput().trim();
-    const paymentMethodId = 1;
-    this.orderService.addOrder(code, paymentMethodId).subscribe({
-      next: (order) => {
-        console.log('Đơn hàng đã được tạo:', order);
-        console.log(`Tổng tiền: ${this.finalTotal().toLocaleString()} VND`);
-        this.router.navigate(['/order', order.id, 'detail'], {
-          state: { orderData: order, couponCode: code }
-        });
+    const currentFinalTotal = this.finalTotal();
+
+    const couponCheck$ = code
+      ? this.promotionService.validateCoupon(code, currentFinalTotal)
+      : of(0); // Nếu không có mã, trả về 0 ngay lập tức
+
+    couponCheck$.subscribe({
+      next: (res) => {
+        let finalDiscount = 0;
+
+        if (code) {
+          if (res && res > 0) {
+            finalDiscount = res;
+            this.discount.set(res);
+            this.toast.success(`Đã áp dụng mã giảm giá: ${res.toLocaleString()} VND`);
+          } else {
+            this.toast.warning("Mã giảm giá không hợp lệ và sẽ không được áp dụng.");
+            this.discount.set(0);
+          }
+        }
+
+
+        this.navigateToProcess(code, finalDiscount);
+      },
+      error: err => {
+        console.error('Lỗi kiểm tra mã:', err);
+        this.toast.error("Mã không hợp lệ hoặc đã hết hạn.");
+        this.discount.set(0);
+        //  chuyển trang nhưng không áp mã
+        this.navigateToProcess('', 0);
       }
     });
   }
+
+  private navigateToProcess(code: string, discountAmount: number) {
+    this.router.navigate(['/order-detail/process'], {
+      state: {
+        discount: discountAmount,
+        couponCode: code,
+        taxAmount: this.taxAmount(),
+        subTotal: this.subTotal(),
+        finalTotal: this.finalTotal(), 
+        totalItems: this.totalItems()
+      }
+    });
+  }
+
 }

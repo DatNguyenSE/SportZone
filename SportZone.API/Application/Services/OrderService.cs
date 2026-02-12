@@ -238,6 +238,12 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         await uow.Complete();
     }
 
+    public async Task UpdateOrder(int orderId, OrderDetailsDto dto)
+    {
+        var order = uow.OrderRepository.GetByIdAsync(orderId);
+
+    }
+
     public async Task CompletedOrderStatus(int orderId)
     {
         var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId); //include Payment

@@ -10,11 +10,18 @@ import { ProductDetail } from './shared/components/product-detail/product-detail
 import { adminGuard } from './core/guards/admin-guard';
 import { Cart } from './features/cart/cart';
 import { OrderDetail } from './features/order-detail/order-detail';
+import { OrderUser } from './shared/components/order-user/order-user';
+import { PaymentFail } from './shared/components/payment-fail/payment-fail';
 
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'category/:id', component: ProductList },
     { path: 'product-detail/:id', component: ProductDetail},
+    { path: 'payment-fail/:orderId', component: PaymentFail},
+
+
+    
+     
     {
         path: '',
         runGuardsAndResolvers: 'always',
@@ -23,7 +30,10 @@ export const routes: Routes = [
             { path: 'my-account/profile', component: AccountProfile },
             { path: 'cart', component: Cart},
             { path: 'product-manager', component: ProductManager, canActivate: [adminGuard] },
-            { path: 'order/:id/detail', component: OrderDetail }
+            { path: 'order-detail/process', component: OrderDetail },
+            { path: 'order-user', component: OrderUser }
+
+
         ]
 
     }

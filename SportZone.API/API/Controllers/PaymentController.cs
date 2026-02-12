@@ -11,7 +11,7 @@ using SportZone.Domain.Enums;
 namespace SportZone.API.Controllers
 {
     [ApiController]
-    [Route("api/payment")]
+    [Route("api/payments")]
     public class PaymentController : ControllerBase
     {
         private readonly IVnPayService _vnPayService;
@@ -43,12 +43,12 @@ namespace SportZone.API.Controllers
                 OrderDescription = $"Pay for order - {order.Id}"
 
             };
-            var returnUrl = "http://localhost:5144/api/Payment/Callback";
+            var returnUrl = "http://localhost:5144/api/payments/callback";
             var url = _vnPayService.CreatePaymentUrl(paymentModel, HttpContext, returnUrl);
             return Ok(new { url });
         }
 
-        [HttpGet("Callback")]
+        [HttpGet("callback")]
         public async Task<IActionResult> PaymentCallback()
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
@@ -87,7 +87,8 @@ namespace SportZone.API.Controllers
                 await _orderService.CompletedOrderStatus(orderId);
             }
             // Redirect về trang thành công 
-            return Redirect($"http://localhost:3000/payment-success?orderId={response.OrderId}");
+            // return Redirect($"http://localhost:4200/order-detail?orderId={response.OrderId}");
+            return Redirect($"http://localhost:4200/category/123");
         }
     }
 }
