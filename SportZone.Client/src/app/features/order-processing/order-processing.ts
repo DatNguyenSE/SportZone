@@ -13,12 +13,12 @@ import { PaymentService } from '../../core/services/payment-service';
 import { PaymentInput } from '../../shared/models/payment.model';
 
 @Component({
-  selector: 'app-order-detail',
+  selector: 'app-order-processing',
   imports: [FormsModule, CommonModule, RouterLink],
-  templateUrl: './order-detail.html',
-  styleUrl: './order-detail.css',
+  templateUrl: './order-processing.html',
+  styleUrl: './order-processing.css',
 })
-export class OrderDetail implements OnInit {
+export class OrderProcessing implements OnInit {
   protected accountService = inject(AccountService);
   protected cartService = inject(CartService);
   protected orderService = inject(OrderService);

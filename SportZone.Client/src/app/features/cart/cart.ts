@@ -252,7 +252,7 @@ export class Cart implements OnInit, OnDestroy {
   }
 
   private navigateToProcess(code: string, discountAmount: number) {
-    this.router.navigate(['/order-detail/process'], {
+    this.router.navigate(['/order-processing'], {
       state: {
         discount: discountAmount,
         couponCode: code,

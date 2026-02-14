@@ -20,7 +20,7 @@ export interface OrderItem {
   imageUrl: string;
   payment: Payment;
   name: string;
-  size: string;
+  sizeName: string;
 }
 
 

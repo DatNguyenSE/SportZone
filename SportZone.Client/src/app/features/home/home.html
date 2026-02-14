@@ -1,6 +1,35 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
 <main class="w-full flex flex-col items-center">
   <div class="w-full">
-<!-- panel -->
+
+    @if (pendingOrdersCount() !== 0) {
+    <div class="w-full px-4 md:px-10 mt-6">
+      <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex items-center justify-between group">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="material-icons-outlined text-amber-500">priority_high</span>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-amber-800 font-bold uppercase tracking-tight">
+              Bạn có <span class="text-amber-600 underline">{{ pendingOrdersCount() }} đơn hàng</span> đang chờ thanh
+              toán!
+            </p>
+            <p class="text-[11px] text-amber-700 font-medium uppercase mt-0.5">
+              Vui lòng hoàn tất để SportZone có thể giao hàng sớm nhất cho bạn.
+            </p>
+          </div>
+        </div>
+        <a routerLink="/order-user"
+          class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-amber-600 hover:text-amber-800 transition-colors">
+          Kiểm tra ngay
+          <span class="material-icons-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+    }
+    <!-- panel -->
     <section class="w-full py-8 relative group">
 
       <button (click)="scroll('left')"
@@ -70,7 +99,9 @@
       </button>
 
     </section>
-<!-- Sản phẩm dành cho bạn  -->
+
+
+    <!-- Sản phẩm dành cho bạn  -->
     <section class="px-4 md:px-10 py-12">
 
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
@@ -108,7 +139,7 @@
           <div
             class="relative w-full aspect-square bg-[#eceff1] mb-3 overflow-hidden border border-transparent hover:border-black transition-colors duration-300">
             <button class="absolute top-4 right-4 z-10 text-black hover:opacity-60 transition-opacity">
-            <!-- icon heart -->
+              <!-- icon heart -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="square" stroke-linejoin="miter"

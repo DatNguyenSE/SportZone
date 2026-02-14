@@ -9,9 +9,10 @@ import { ProductManager } from './shared/components/product-manager/product-mana
 import { ProductDetail } from './shared/components/product-detail/product-detail';
 import { adminGuard } from './core/guards/admin-guard';
 import { Cart } from './features/cart/cart';
-import { OrderDetail } from './features/order-detail/order-detail';
+import { OrderProcessing } from './features/order-processing/order-processing';
 import { OrderUser } from './shared/components/order-user/order-user';
 import { PaymentFail } from './shared/components/payment-fail/payment-fail';
+import { OrderDetail } from './shared/components/order-detail/order-detail';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -30,8 +31,10 @@ export const routes: Routes = [
             { path: 'my-account/profile', component: AccountProfile },
             { path: 'cart', component: Cart},
             { path: 'product-manager', component: ProductManager, canActivate: [adminGuard] },
-            { path: 'order-detail/process', component: OrderDetail },
-            { path: 'order-user', component: OrderUser }
+            { path: 'order-processing', component: OrderProcessing },
+            { path: 'order-user', component: OrderUser },
+            { path: 'order-detail/:orderId', component: OrderDetail }
+
 
 
         ]
