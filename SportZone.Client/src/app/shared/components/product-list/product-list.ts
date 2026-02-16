@@ -20,14 +20,14 @@ export class ProductList implements OnInit {
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService); // Inject thêm service category
 
-  private readonly allShoesIds = 123;
+  private readonly SHOES_SLUG = 'shoes';
   private readonly SUB_IDS = [1, 2, 3];
   isLoading = signal<boolean>(false);
 
   // Lấy ID từ URL
-  categoryId = toSignal(
-    this.route.params.pipe(map(p => +p['id'] || 0)),
-    { initialValue: 0 }
+  routeParam = toSignal(
+    this.route.paramMap.pipe(map(params => params.get('id'))), // Lấy chuỗi raw
+    { initialValue: null }
   );
 
 
@@ -41,28 +41,36 @@ export class ProductList implements OnInit {
 
   constructor() {
     effect(() => {
-      const id = this.categoryId();
-      if (id === 0) return;
+      const param = this.routeParam(); // Nhận về string hoặc null
+      if (!param) return;
 
+      // Reset state cũ
       this.products.set([]);
       this.allMergedProducts.set([]);
       this.subCategories.set([]); 
       this.activeFilterId.set(0); 
 
-      if (id === this.allShoesIds) {
+      // --- THAY ĐỔI 3: Kiểm tra nếu param là 'shoes' ---
+      if (param === this.SHOES_SLUG) {
         this.categoryName.set('GIÀY BÓNG ĐÁ');
-        this.loadFootballData(); 
-      } else {
-        // Logic danh mục thường (không đổi)
-        this.categoryService.getCategoryById(id).subscribe({
-          next: (cate) => this.categoryName.set(cate.categoryName),
-          error: () => this.categoryName.set('DANH MỤC')
-        });
+        this.loadFootballData(); // Gọi hàm load đặc biệt
+      } 
+      else {
+        // --- THAY ĐỔI 4: Nếu không phải 'shoes', thử ép kiểu về số cho các mục khác ---
+        const id = Number(param);
         
-        this.productService.getProductsByCategoryId(id).subscribe({
-          next: (data) => this.products.set(data),
-          error: (err) => console.error(err)
-        });
+        if (!isNaN(id) && id > 0) {
+           // Logic danh mục thường (giữ nguyên logic cũ của bạn)
+           this.categoryService.getCategoryById(id).subscribe({
+            next: (cate) => this.categoryName.set(cate.categoryName),
+            error: () => this.categoryName.set('DANH MỤC')
+          });
+          
+          this.productService.getProductsByCategoryId(id).subscribe({
+            next: (data) => this.products.set(data),
+            error: (err) => console.error(err)
+          });
+        }
       }
     }, { allowSignalWrites: true });
   }

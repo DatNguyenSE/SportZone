@@ -4,7 +4,7 @@
 <main class="w-full flex flex-col items-center">
   <div class="w-full">
 
-    @if (pendingOrdersCount() !== 0) {
+    @if (pendingOrdersCount() !== undefined) {
     <div class="w-full px-4 md:px-10 mt-6">
       <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex items-center justify-between group">
         <div class="flex items-center">
@@ -102,7 +102,7 @@
 
 
     <!-- Sản phẩm dành cho bạn  -->
-    <section class="px-4 md:px-10 py-12">
+    <section class="px-4 pb-17 md:px-10 py-12">
 
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
         <div class="flex flex-col gap-4 w-full">
@@ -174,71 +174,203 @@
         }
       </div>
     </section>
-    <section class="px-4 md:px-10 py-10 bg-white/50 dark:bg-card-dark/20 rounded-3xl mx-0 md:mx-4 lg:mx-10 my-6">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="_heading--title_52ixl_99">
-          <span>Sản phẩm bạn quan tâm</span>
+ <section class="mb-2 w-full">
+  <div class="grid grid-cols-1 md:grid-cols-2 w-full h-auto md:h-[650px]">
+
+    <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
+      <img alt="World Cup Trophy Celebration" 
+           class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+           src="https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=2670&auto=format&fit=crop" />
+      
+      <div class="absolute inset-0 bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
+
+      <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
+        <h2 class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+          CHẠM TAY VÀO<br>VINH QUANG
         </h2>
-        <div class="flex gap-2">
-          <button
-            class="p-2 rounded-full border border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-card-dark hover:shadow-md transition-all"><span
-              class="material-symbols-outlined">chevron_left</span></button>
-          <button
-            class="p-2 rounded-full border border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-card-dark hover:shadow-md transition-all bg-white dark:bg-card-dark"><span
-              class="material-symbols-outlined">chevron_right</span></button>
+        <div>
+          <button class="bg-black text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black hover:border-transparent transition-all border border-black">
+            SỞ HỮU NGAY
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative h-[450px] md:h-full w-full group overflow-hidden">
+      <img alt="World Cup Stadium Atmosphere" 
+           class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+           src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=2831&auto=format&fit=crop" />
+      
+      <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+
+      <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
+        <h2 class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+          SỐNG CÙNG<br>ĐAM MÊ
+        </h2>
+        <div>
+          <button class="bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors border border-white">
+            XEM BỘ SƯU TẬP
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+  <section class="max-w-[1440px] mx-auto py-10 px-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-0.5 bg-gray-200 border border-gray-200">
+      
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <button class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="material-icons text-xl">favorite_border</span>
+          </button>
+          <img alt="Giày Predator Elite" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JI1095_01_standard.jpg" />
+          <div class="absolute bottom-0 left-0 bg-white px-2 py-1 text-[11px] font-bold text-black border-t border-r border-gray-100">NEW</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <div class="flex flex-col mb-2">
+            <span class="text-sm font-bold text-black italic">7.000.000₫</span>
+          </div>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Giày Bóng Đá Predator Elite FG</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Football</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div *ngFor="let product of products()"
-          class="group bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-xl transition-shadow duration-300">
-          <div class="relative w-full aspect-[4/5] overflow-hidden bg-gray-100 dark:bg-gray-800">
-
-            <div *ngIf="product.price"
-              class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-              -{{ product.id }}%
-            </div>
-            <div *ngIf="product.name"
-              class="absolute top-3 left-3 z-10 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-              New
-            </div>
-
-            <button
-              class="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white dark:hover:bg-black text-primary">
-              <span class="material-symbols-outlined text-sm">favorite</span>
-            </button>
-
-            <img [src]="product.imageUrl" [alt]="product.name"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          </div>
-
-          <div class="p-4">
-            <p class="text-sm text-text-sub-light dark:text-text-sub-dark mb-1">{{ product.categoryId }}</p>
-            <h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-2 truncate"
-              [title]="product.name">
-              {{ product.name }}
-            </h3>
-            <div class="flex items-center justify-between">
-              <div class="flex flex-col">
-                <span class="text-primary font-bold text-lg">{{ product.price | number:'1.0-0' }}₫</span>
-                <span *ngIf="product.price" class="text-text-sub-light dark:text-text-sub-dark text-xs line-through">
-                  {{ product.price | number:'1.0-0' }}₫
-                </span>
-              </div>
-              <button
-                class="bg-primary/10 hover:bg-primary text-primary hover:text-white p-2 rounded-lg transition-colors">
-                <span class="material-symbols-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </div>
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <img alt="Áo Real Madrid" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IX8095_21_model.jpg" />
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="text-sm font-bold text-black mb-2 italic">3.200.000₫</span>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Áo Đấu Sân Nhà Real Madrid 24/25</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Jersey</p>
         </div>
       </div>
-    </section>
+
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <img alt="Bóng UCL Pro" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IN9340_01_standard.jpg" />
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="text-sm font-bold text-black mb-2 italic">4.000.000₫</span>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Bóng Thi Đấu UCL Pro London 24</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Accessories</p>
+        </div>
+      </div>
+
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <img alt="Găng Tay Thủ Môn" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JJ3533_01_standard.jpg" />
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="text-sm font-bold text-black mb-2 italic">3.000.000₫</span>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Găng Tay Thủ Môn Predator Pro</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Goalkeeper</p>
+        </div>
+      </div>
+
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <img alt="Giày Messi" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/ID0710_01_standard.jpg" />
+          <div class="absolute bottom-0 left-0 bg-white px-2 py-1 text-[11px] font-bold text-sale-red">-10%</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <div class="flex flex-col mb-2">
+            <span class="text-sm font-bold text-sale-red italic">6.500.000₫</span>
+            <span class="text-[11px] text-gray-400 line-through">7.200.000₫</span>
+          </div>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Giày X Crazyfast Messi Elite FG</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Messi</p>
+        </div>
+      </div>
+
+      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
+        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
+          <img alt="Áo Tiro 24" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IS1658_21_model.jpg" />
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <div class="flex flex-col mb-2">
+            <span class="text-sm font-bold text-black italic">1.200.000₫</span>
+          </div>
+          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Áo Tập Luyện Tiro 24 Competition</p>
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Training</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-[1440px] mx-auto px-6">
+      <h2 class="text-4xl font-black uppercase italic font-condensed mb-10 tracking-tighter">WHAT'S HOT</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="flex flex-col group cursor-pointer">
+          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
+            <img alt="Predator Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JI1095_43_detail.jpg" />
+          </div>
+          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">CÔNG NGHỆ PREDATOR</h3>
+          <p class="text-xs text-gray-600 mb-4 h-10">Kiểm soát bóng tuyệt đối cùng lớp da Strikeskin.</p>
+          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Khám phá</a>
+        </div>
+
+        <div class="flex flex-col group cursor-pointer">
+          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
+             <img alt="Messi Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/ID0710_43_detail.jpg" />
+          </div>
+          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">TỐC ĐỘ CỦA MESSI</h3>
+          <p class="text-xs text-gray-600 mb-4 h-10">Thiết kế siêu nhẹ dành cho những pha bứt tốc.</p>
+          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Xem Ngay</a>
+        </div>
+
+        <div class="flex flex-col group cursor-pointer">
+          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
+             <img alt="UCL Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IN9340_42_detail.jpg" />
+          </div>
+          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">UEFA CHAMPIONS LEAGUE</h3>
+          <p class="text-xs text-gray-600 mb-4 h-10">Trải nghiệm quả bóng chính thức của trận chung kết.</p>
+          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Mua ngay</a>
+        </div>
+
+        <div class="flex flex-col group cursor-pointer">
+          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
+             <img alt="Real Madrid Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IX8095_41_detail.jpg" />
+          </div>
+          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">HOÀNG GIA TÂY BAN NHA</h3>
+          <p class="text-xs text-gray-600 mb-4 h-10">Bộ sưu tập áo đấu mùa giải 2024/2025.</p>
+          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Xem tất cả</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-white py-16">
+    <div class="max-w-[1440px] mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div class="max-w-xl">
+        <h2 class="text-5xl font-black italic uppercase mb-6 leading-none">THAM GIA TEAM ADIDAS</h2>
+        <p class="text-lg text-gray-400 mb-8 uppercase tracking-widest">Nhận ưu đãi 15% cho đơn hàng đầu tiên và quyền truy cập sớm.</p>
+        <button class="bg-white text-black px-10 py-4 font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
+          ĐĂNG KÝ MIỄN PHÍ
+        </button>
+      </div>
+      <div class="w-full md:w-1/2 h-[400px] overflow-hidden">
+        <img alt="Team Huddle" src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" />
+      </div>
+    </div>
+  </section>
 
     <section class="w-full max-w-[1440px] mx-auto px-4 lg:px-10 py-12 mb-12">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-1 h-auto md:h-[600px]">

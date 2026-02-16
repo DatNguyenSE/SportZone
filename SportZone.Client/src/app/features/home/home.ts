@@ -37,6 +37,7 @@ export class Home implements OnInit {
 
   private readonly FOOTBALL_SHOES_GROUP = [1, 2, 3];
   readonly FOOTBALL_CATEGORY_ID = 123;
+  private readonly FOOTBALL_SLUG = 'shoes';
 
 
 
@@ -44,7 +45,7 @@ export class Home implements OnInit {
     effect(() => {
       const cats = this.categories();
       if (cats.length > 0 && this.selectedCategoryId() === 0) {
-        this.selectedCategoryId.set(this.FOOTBALL_CATEGORY_ID);
+        this.selectedCategoryId.set(4); // clb shirt
       }
     }, { allowSignalWrites: true });
   }
@@ -84,13 +85,17 @@ export class Home implements OnInit {
   displayCategories = computed(() => {
     const originalCats = this.categories();
 
-    // 1. Lọc bỏ 3 category lẻ (IC, FG, TF)
-    const filtered = originalCats.filter(c => !this.FOOTBALL_SHOES_GROUP.includes(c.id));
+    // 1. Định nghĩa danh sách ID các danh mục MUỐN HIỆN (Ví dụ: Áo, Quần, Găng tay...)
+    // Bạn cần biết ID chính xác từ database (ví dụ: 'CLOTHING', 'ACCESSORIES', 'BALL')
+    const ALLOWED_IDS = [4, 6];
 
-    // 2. Thêm "Giày bóng đá" vào danh sách
+    // 2. Lọc: Chỉ giữ lại category nào có ID nằm trong danh sách trên
+    const filtered = originalCats.filter(c => ALLOWED_IDS.includes(c.id));
+
+    // 3. Thêm "Giày bóng đá" (nhóm gộp) vào đầu danh sách
     const footballGroup = { id: this.FOOTBALL_CATEGORY_ID, categoryName: 'Giày Bóng Đá', imageUrl: "👟" };
 
-    return [footballGroup, ...filtered];
+    return [ ...filtered, footballGroup];
   });
 
   selectCategory(id: number) {
@@ -99,7 +104,15 @@ export class Home implements OnInit {
 
 
   onSeeMoreProducts() {
-    this.router.navigate(['/category', this.selectedCategoryId()]);
+    const currentId = this.selectedCategoryId();
+
+    if (currentId === this.FOOTBALL_CATEGORY_ID) {
+        // Nếu là tab Giày -> Đi tới /category/shoes
+        this.router.navigate(['/category', this.FOOTBALL_SLUG]);
+    } else {
+        // Nếu là tab khác -> Đi tới /category/4, /category/6...
+        this.router.navigate(['/category', currentId]);
+    }
   }
 
 
