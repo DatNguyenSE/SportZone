@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = () => {
   const routers = inject(Router);
   if (accountService.currentUser()) return true;
   else {
-    toast.error('You shall not pass');
+    toast.error('Hãy đăng nhập trước.');
     routers.navigateByUrl('/');
     return false;
   }

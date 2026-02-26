@@ -2,11 +2,12 @@ import { Component, computed, effect, inject, Input, signal } from '@angular/cor
 import { Product } from '../../models/product.model';
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { ProductService } from '../../../core/services/product-service';
 import { ToastService } from '../../../core/services/toast-service';
 import { CartService } from '../../../core/services/cart-service';
+import { AccountService } from '../../../core/services/account-service';
 
 
 
@@ -19,9 +20,11 @@ import { CartService } from '../../../core/services/cart-service';
 
 export class ProductDetail {
   private route = inject(ActivatedRoute);
+  private accountService = inject(AccountService)
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private toast = inject(ToastService);
+  private router = inject(Router)
   product = signal<Product | null>(null);
   productRefer = signal<Product[] | null>(null);
 
@@ -96,6 +99,10 @@ export class ProductDetail {
   }
 
   addToCart() {
+    if(this.accountService.currentUser() === null) {
+      this.toast.error('Vui lòng đăng nhập!');
+      return;
+    }
     if (!this.selectedSize()) {
       this.toast.error('Vui lòng chọn kích cỡ!');
       return;
@@ -109,6 +116,7 @@ export class ProductDetail {
     this.cartService.addToCart(this.product()!.id, this.quantity(), this.selectedSize()!).subscribe({
       next: () => {
         this.toast.success('Sản phẩm đã được thêm vào giỏ hàng!');
+        this.router.navigate(['/cart'])
       },
       error: (err) => {
         console.error(err);

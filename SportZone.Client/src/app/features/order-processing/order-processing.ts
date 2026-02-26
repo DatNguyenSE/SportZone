@@ -50,7 +50,7 @@ export class OrderProcessing implements OnInit {
   ngOnInit(): void {
     this.getProfile();
     this.getCartItems();
-    if(this.totalItems === '') {
+    if (this.totalItems === '') {
       this.router.navigate(['/cart'])
     }
     // this.getItemOrder();
@@ -119,18 +119,22 @@ export class OrderProcessing implements OnInit {
     this.orderService.addOrder(code, paymentMethod).subscribe({
       next: (order) => {
         console.log('Đơn hàng đã được tạo:', order);
-        this.orderId = order.id; 
+        this.orderId = order.id;
 
 
         if (paymentMethod === 2) {
           this.handleOnlinePayment(order.id);
-        }else if(paymentMethod === 3) {
+        } else if (paymentMethod === 3) {
           this.toast.success("Đặt hàng thành công!, thanh toán bằng | CreditCard");
-          this.router.navigateByUrl('/checkout/success');
+          this.router.navigate(['/checkout-success'], { 
+        queryParams: { orderId: order.id } 
+      });
         }
-        else{
-           this.toast.success("Đặt hàng thành công!, thanh toán bằng | COD");
-          this.router.navigateByUrl('/checkout/success');
+        else {
+          this.toast.success("Đặt hàng thành công!, thanh toán bằng | COD");
+         this.router.navigate(['/checkout-success'], { 
+        queryParams: { orderId: order.id } 
+      });
         }
       },
       error: (err) => {

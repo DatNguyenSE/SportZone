@@ -1,34 +1,123 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet">
 
+@if (pendingOrdersCount() !== 0 && pendingOrdersCount() !== undefined ) {
+<div class="w-full mt-6">
+  <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex items-center justify-between group">
+    <div class="flex items-center">
+      <div class="flex-shrink-0">
+        <span class="material-icons-outlined text-amber-500">priority_high</span>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-amber-800 font-bold uppercase tracking-tight">
+          Bạn có <span class="text-amber-600 underline">{{ pendingOrdersCount() }} đơn hàng</span> đang chờ thanh
+          toán!
+        </p>
+        <p class="text-[11px] text-amber-700 font-medium uppercase mt-0.5">
+          Vui lòng hoàn tất để SportZone có thể giao hàng sớm nhất cho bạn.
+        </p>
+      </div>
+    </div>
+    <a routerLink="/order-user"
+      class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-amber-600 hover:text-amber-800 transition-colors">
+      Kiểm tra ngay
+      <span class="material-icons-outlined text-sm">arrow_forward</span>
+    </a>
+  </div>
+</div>
+}
+
+<section class="relative w-full aspect-[24/8.7] min-h-[600px] overflow-hidden bg-slate-900">
+  <div class="absolute inset-0 bg-cover bg-center" data-alt="Đội tuyển bóng đá quốc gia Việt Nam"
+    [style.background-image]="'url(' + pageImages.heroBanner + ')'">
+  </div>
+
+  <div class="absolute inset-0 bg-gradient-to-r from-red-900/80 via-black/40 to-transparent"></div>
+
+  <div class="relative h-full flex flex-col justify-center px-10 lg:px-20 max-w-[1440px] mx-auto text-white">
+    <div class="max-w-2xl">
+      <h1 class="text-6xl lg:text-8xl italic-black leading-[0.9] mb-4 uppercase">
+        TỰ HÀO<br />CHIẾN BINH SAO VÀNG
+      </h1>
+      <p class="text-lg font-medium mb-8 max-w-lg uppercase tracking-tight">
+        Sát cánh cùng Đội tuyển Việt Nam trên mọi hành trình.
+        Sở hữu ngay bộ trang phục thi đấu chính thức và trang bị chuyên nghiệp nhất.
+      </p>
+
+      <div class="flex flex-wrap gap-4">
+        <button routerLink="/product-detail/5"
+          class="bg-white text-black px-8 py-4 text-sm font-black uppercase flex items-center gap-2 hover:bg-yellow-400 hover:text-black transition-all group">
+          SẮM ÁO ĐỘI TUYỂN
+          <span class="material-icons-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+
+        <button routerLink="/category/shoes"
+          class="bg-transparent border-2 border-white text-white px-8 py-4 text-sm font-black uppercase flex items-center gap-2 hover:bg-white hover:text-black transition-all group">
+          TRANG BỊ RA SÂN
+          <span class="material-icons-outlined group-hover:translate-x-1 transition-transform">sports_soccer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Categories "What's Hot" -->
+<section class="w-screen py-16 px-6 lg:px-16">
+
+  <h2 class="text-5xl font-black uppercase italic font-condensed mb-10 tracking-tighter">WHAT'S HOT</h2>
+
+
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+
+    @for (item of hotCategories; track item.title) {
+
+    <div class="group relative h-[65vh] overflow-hidden cursor-pointer">
+
+      <div class="absolute inset-0 bg-cover bg-center transition duration-[1200ms] group-hover:scale-110"
+        [style.background-image]="'url(' + item.image + ')'"></div>
+
+
+      <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500"></div>
+
+
+      <div class="absolute bottom-8 left-6 text-white">
+
+        <p class="text-sm font-bold uppercase tracking-widest mb-2">
+
+          {{ item.label }}
+
+        </p>
+
+
+        <h3 class="text-xl font-black uppercase underline underline-offset-4">
+
+          {{ item.title }}
+
+        </h3>
+
+
+      </div>
+
+
+    </div>
+
+    }
+
+
+  </div>
+
+</section>
+
+<!-- Notificate order -->
 <main class="w-full flex flex-col items-center">
   <div class="w-full">
 
-    @if (pendingOrdersCount() !== undefined) {
-    <div class="w-full px-4 md:px-10 mt-6">
-      <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex items-center justify-between group">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <span class="material-icons-outlined text-amber-500">priority_high</span>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm text-amber-800 font-bold uppercase tracking-tight">
-              Bạn có <span class="text-amber-600 underline">{{ pendingOrdersCount() }} đơn hàng</span> đang chờ thanh
-              toán!
-            </p>
-            <p class="text-[11px] text-amber-700 font-medium uppercase mt-0.5">
-              Vui lòng hoàn tất để SportZone có thể giao hàng sớm nhất cho bạn.
-            </p>
-          </div>
-        </div>
-        <a routerLink="/order-user"
-          class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-amber-600 hover:text-amber-800 transition-colors">
-          Kiểm tra ngay
-          <span class="material-icons-outlined text-sm">arrow_forward</span>
-        </a>
-      </div>
-    </div>
-    }
+
     <!-- panel -->
     <section class="w-full py-8 relative group">
 
@@ -133,38 +222,55 @@
             [&::-webkit-scrollbar-track]:bg-gray-100
             [&::-webkit-scrollbar-thumb]:bg-black 
             [&::-webkit-scrollbar-thumb]:hover:bg-gray-800">
-
         @for (product of filteredProducts(); track product.id) {
-        <div class="group cursor-pointer flex flex-col flex-shrink-0 snap-start w-[280px] md:w-[320px]">
-          <div
-            class="relative w-full aspect-square bg-[#eceff1] mb-3 overflow-hidden border border-transparent hover:border-black transition-colors duration-300">
-            <button class="absolute top-4 right-4 z-10 text-black hover:opacity-60 transition-opacity">
-              <!-- icon heart -->
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="square" stroke-linejoin="miter"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-              </svg>
+        <div class="group cursor-pointer relative bg-white flex flex-col flex-shrink-0 snap-start w-[280px] md:w-[320px] 
+     hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all duration-300">
+
+          <div class="relative bg-[#f5f5f5] aspect-square overflow-hidden">
+
+            @if (product.discount && product.discount > 0) {
+            <div class="absolute top-0 left-0 bg-[#e32b2b] text-white text-[12px] font-black px-3 py-1.5 z-10 italic">
+              -{{ product.discount }}%
+            </div>
+            }
+
+            <button class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="material-icons-outlined text-xl">favorite_border</span>
             </button>
 
-            <div class="absolute bottom-2 left-2 bg-white px-2 py-1 z-10">
-              <span class="text-sm font-medium tracking-tight">
-                {{ product.price | number:'1.0-0' }}₫
-              </span>
-            </div>
-
             <img [routerLink]="['/product-detail', product.id]" [src]="product.imageUrl" [alt]="product.name"
-              class="w-full h-full object-cover object-top mix-blend-multiply group-hover:scale-105 transition-transform duration-500">
+              class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
+
+            @if (product.isNew ) {
+            <div
+              class="absolute bottom-0 left-0 bg-white px-2 py-1 text-[11px] font-bold text-black border-t border-r border-gray-200 uppercase tracking-tighter">
+              New Arrival
+            </div>
+            }
           </div>
 
-          <div class="flex flex-col gap-1">
-            <h3
-              class="text-sm font-normal text-black leading-tight uppercase group-hover:underline line-clamp-2 tracking-wide">
+          <div class="p-4 flex flex-col flex-grow">
+
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+
+              <span class="text-sm font-black italic" [class.text-[#e32b2b]]="product.discount && product.discount > 0">
+                {{ (product.price * (1 - (product.discount ?? 0) / 100)) | number:'1.0-0' }}₫
+              </span>
+
+              @if (product.discount && product.discount > 0) {
+              <span class="text-[11px] text-gray-400 line-through decoration-1">
+                {{ product.price | number:'1.0-0' }}₫
+              </span>
+              }
+            </div>
+
+            <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2 font-medium min-h-[32px]">
               {{ product.name }}
-            </h3>
-            <span class="text-xs text-gray-500 uppercase tracking-wide">
+            </p>
+
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
               {{ product.categoryName }}
-            </span>
+            </p>
           </div>
         </div>
         } @empty {
@@ -174,268 +280,76 @@
         }
       </div>
     </section>
- <section class="mb-2 w-full">
-  <div class="grid grid-cols-1 md:grid-cols-2 w-full h-auto md:h-[650px]">
+    <section class="mb-2 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full h-auto md:h-[650px]">
 
-    <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
-      <img alt="World Cup Trophy Celebration" 
-           class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
-           src="https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=2670&auto=format&fit=crop" />
-      
-      <div class="absolute inset-0 bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
+       <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
+          <img alt="World Cup Trophy Celebration"
+            class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+            [src]="pageImages.passionStadium" />
 
-      <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
-        <h2 class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
-          CHẠM TAY VÀO<br>VINH QUANG
-        </h2>
-        <div>
-          <button class="bg-black text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black hover:border-transparent transition-all border border-black">
-            SỞ HỮU NGAY
-          </button>
-        </div>
-      </div>
-    </div>
+          <div class="absolute inset-0 bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
 
-    <div class="relative h-[450px] md:h-full w-full group overflow-hidden">
-      <img alt="World Cup Stadium Atmosphere" 
-           class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
-           src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=2831&auto=format&fit=crop" />
-      
-      <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-
-      <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
-        <h2 class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
-          SỐNG CÙNG<br>ĐAM MÊ
-        </h2>
-        <div>
-          <button class="bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors border border-white">
-            XEM BỘ SƯU TẬP
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-  <section class="max-w-[1440px] mx-auto py-10 px-4">
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-0.5 bg-gray-200 border border-gray-200">
-      
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <button class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span class="material-icons text-xl">favorite_border</span>
-          </button>
-          <img alt="Giày Predator Elite" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JI1095_01_standard.jpg" />
-          <div class="absolute bottom-0 left-0 bg-white px-2 py-1 text-[11px] font-bold text-black border-t border-r border-gray-100">NEW</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex flex-col mb-2">
-            <span class="text-sm font-bold text-black italic">7.000.000₫</span>
-          </div>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Giày Bóng Đá Predator Elite FG</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Football</p>
-        </div>
-      </div>
-
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <img alt="Áo Real Madrid" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IX8095_21_model.jpg" />
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="text-sm font-bold text-black mb-2 italic">3.200.000₫</span>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Áo Đấu Sân Nhà Real Madrid 24/25</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Jersey</p>
-        </div>
-      </div>
-
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <img alt="Bóng UCL Pro" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IN9340_01_standard.jpg" />
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="text-sm font-bold text-black mb-2 italic">4.000.000₫</span>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Bóng Thi Đấu UCL Pro London 24</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Accessories</p>
-        </div>
-      </div>
-
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <img alt="Găng Tay Thủ Môn" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JJ3533_01_standard.jpg" />
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="text-sm font-bold text-black mb-2 italic">3.000.000₫</span>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Găng Tay Thủ Môn Predator Pro</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Goalkeeper</p>
-        </div>
-      </div>
-
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <img alt="Giày Messi" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/ID0710_01_standard.jpg" />
-          <div class="absolute bottom-0 left-0 bg-white px-2 py-1 text-[11px] font-bold text-sale-red">-10%</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex flex-col mb-2">
-            <span class="text-sm font-bold text-sale-red italic">6.500.000₫</span>
-            <span class="text-[11px] text-gray-400 line-through">7.200.000₫</span>
-          </div>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Giày X Crazyfast Messi Elite FG</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Messi</p>
-        </div>
-      </div>
-
-      <div class="group cursor-pointer relative bg-white flex flex-col hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all p-0">
-        <div class="relative bg-adidas-gray aspect-square overflow-hidden">
-          <img alt="Áo Tiro 24" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-            src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IS1658_21_model.jpg" />
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex flex-col mb-2">
-            <span class="text-sm font-bold text-black italic">1.200.000₫</span>
-          </div>
-          <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2">Áo Tập Luyện Tiro 24 Competition</p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Training</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="py-16 bg-white">
-    <div class="max-w-[1440px] mx-auto px-6">
-      <h2 class="text-4xl font-black uppercase italic font-condensed mb-10 tracking-tighter">WHAT'S HOT</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
-        <div class="flex flex-col group cursor-pointer">
-          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
-            <img alt="Predator Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/JI1095_43_detail.jpg" />
-          </div>
-          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">CÔNG NGHỆ PREDATOR</h3>
-          <p class="text-xs text-gray-600 mb-4 h-10">Kiểm soát bóng tuyệt đối cùng lớp da Strikeskin.</p>
-          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Khám phá</a>
-        </div>
-
-        <div class="flex flex-col group cursor-pointer">
-          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
-             <img alt="Messi Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/ID0710_43_detail.jpg" />
-          </div>
-          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">TỐC ĐỘ CỦA MESSI</h3>
-          <p class="text-xs text-gray-600 mb-4 h-10">Thiết kế siêu nhẹ dành cho những pha bứt tốc.</p>
-          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Xem Ngay</a>
-        </div>
-
-        <div class="flex flex-col group cursor-pointer">
-          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
-             <img alt="UCL Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IN9340_42_detail.jpg" />
-          </div>
-          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">UEFA CHAMPIONS LEAGUE</h3>
-          <p class="text-xs text-gray-600 mb-4 h-10">Trải nghiệm quả bóng chính thức của trận chung kết.</p>
-          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Mua ngay</a>
-        </div>
-
-        <div class="flex flex-col group cursor-pointer">
-          <div class="overflow-hidden mb-4 aspect-[4/5] bg-gray-100">
-             <img alt="Real Madrid Detail" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/IX8095_41_detail.jpg" />
-          </div>
-          <h3 class="text-sm font-black uppercase mb-1 tracking-tighter">HOÀNG GIA TÂY BAN NHA</h3>
-          <p class="text-xs text-gray-600 mb-4 h-10">Bộ sưu tập áo đấu mùa giải 2024/2025.</p>
-          <a class="inline-block text-sm font-black uppercase border-b-2 border-black pb-0.5 hover:bg-black hover:text-white transition-all w-max">Xem tất cả</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-black text-white py-16">
-    <div class="max-w-[1440px] mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-10">
-      <div class="max-w-xl">
-        <h2 class="text-5xl font-black italic uppercase mb-6 leading-none">THAM GIA TEAM ADIDAS</h2>
-        <p class="text-lg text-gray-400 mb-8 uppercase tracking-widest">Nhận ưu đãi 15% cho đơn hàng đầu tiên và quyền truy cập sớm.</p>
-        <button class="bg-white text-black px-10 py-4 font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
-          ĐĂNG KÝ MIỄN PHÍ
-        </button>
-      </div>
-      <div class="w-full md:w-1/2 h-[400px] overflow-hidden">
-        <img alt="Team Huddle" src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" />
-      </div>
-    </div>
-  </section>
-
-    <section class="w-full max-w-[1440px] mx-auto px-4 lg:px-10 py-12 mb-12">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-1 h-auto md:h-[600px]">
-        <!-- Large Left Panel -->
-        <div class="md:col-span-6 relative h-[500px] md:h-full group overflow-hidden">
-          <div class="w-full h-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
-            data-alt="Urban streetwear fashion model sitting"
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCxoEfGUrmSWONPaDXxnCvBq9PSKWCfwQAPhmFQnxmh4LO9eM-SL_iMHlQ8HNF2Jm_Fltja5KbGNxqsCLOYflr9FduBB2m_FWUUrH7UsuLw0nIPilsrVokT-M5uyvYBT2PnV8WiSFrBBgYyst8RZFSRT6giuC1UOoUmZZzBzgHIL6LIy7NYIEeWUO2ABoH8J-o_RaLZr7vpe_jKYV9aEFdrI9x6P2dM2WLY5rOJhL_21HVlOxpcweEsas15sVKv5z_cO60z8Sa4KejT');">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 p-8 w-full">
-            <div class="bg-white p-6 max-w-md">
-              <h2 class="text-3xl font-black italic uppercase leading-none mb-3 tracking-tighter">Lunar New Year</h2>
-              <p class="text-sm mb-6 font-medium text-gray-800">Celebrate the Year of the Dragon with exclusive styles
-                combining tradition and modern streetwear.</p>
+          <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
+            <h2
+              class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+              CHẠM TAY VÀO<br>VINH QUANG
+            </h2>
+            <div>
               <button
-                class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:bg-black hover:text-white px-5 py-3 border border-black transition-colors w-fit group/btn">
-                Buy Now
-                <span
-                  class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                class="bg-black text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black hover:border-transparent transition-all border border-black">
+                SỞ HỮU NGAY
               </button>
             </div>
           </div>
         </div>
-        <!-- Middle Panel -->
-        <div class="md:col-span-3 h-[300px] md:h-full relative overflow-hidden group">
-          <div class="w-full h-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
-            data-alt="Close up detail of red sneaker texture"
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCukv51NqKFCPJ1aXEmEtZGKG_1bWPIiSzi0XmTcKwhSRtgzSPPtf-ojKaq6K_DBWgfYE_JqnVoOSSUV5Lwma-KdCoD7DOSj6Bv8vwy3aTYjgQTdBzBNw4mDHx9hg1YcDNm7aGwclqqf7nHQunlmSmqsLVCxZ67EG8TDaRAOR2p9UrvxEhcCZS-gnP78Dz7evbxvmOZmQPvEQvCReqeQWzJhAS7IyRMbz4xmwMQmZmTNLKp6bWmMS3nOVgnYH95IKZ3L7RrPBtw492R');">
-          </div>
-          <div class="absolute bottom-6 left-6">
-            <span class="bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider">Details</span>
+        <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
+          <img alt="World Cup Trophy Celebration"
+            class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+            [src]="pageImages.gloryTrophy" />
+          <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+
+          <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
+            <h2
+              class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+              SỐNG CÙNG<br>ĐAM MÊ
+            </h2>
+            <div>
+              <button
+                class="bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors border border-white">
+                XEM BỘ SƯU TẬP
+              </button>
+            </div>
           </div>
         </div>
-        <!-- Right Panel -->
-        <div class="md:col-span-3 h-[300px] md:h-full relative overflow-hidden group">
-          <div class="w-full h-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
-            data-alt="Portrait of person with red lighting"
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAplCdlVF6_IgchvDx0qSMMz9yO9aaREFYMV9oFuXbIPv_eeEChRntVGmwBOR8en3cr8yOaEw9dSX5F6YkFBu_CccBvNgJr8bV3yuRB2RrAo-A--ziCDf-GGO6foqPz3j6h65A2n2E_TQl8KJbxW--bVuwrXS0u0RP1lhUbKkR4W3TYyXGWVuPjrTpAvNHtWY_WIvHRLBwIqXGK2dZNb_WYdBxtuQeaGNaIomVJp7ROL1Wd_16DAUpvxxoZLjMWIg1SuMLQcZnNBcgS');">
-          </div>
-          <div class="absolute top-6 right-6">
-            <span class="bg-primary text-white px-3 py-1 text-xs font-bold uppercase tracking-wider">Limited</span>
-          </div>
-        </div>
+
       </div>
     </section>
 
-    <section class="px-4 md:px-10 py-6">
-      <div
-        class="relative rounded-2xl overflow-hidden bg-primary px-6 py-12 md:px-12 md:py-16 flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="absolute inset-0 opacity-20"
-          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHMyQ_WiMXPbSvYFRn37EGhUbYIFbtAWbAkw9HnoortYzj_65o6Gk31gna46jOyiaQdWF-BDi6I3J4QLwag2vp0ObkBX50P3aiXLtG0KOPvoIaoLQhJe6il1JeN9EjXTxRjEYo5qDYWtHh5SErHUE9BZK053eM8mQ4J0K2CvXx0saVM7qjIyP76amFKVjGjnVpMXAyKXBWpTiRLH49AuteAoj_-h2RCGmv0BuwjrKHsPWFfdpggE8qUBrwcJ7tykkqJ3J78Itafr4");'>
-        </div>
-        <div class="relative z-10 flex-1 text-center md:text-left">
-          <h2 class="text-2xl md:text-4xl font-black text-white mb-4">Mùa Hè Năng Động - Giảm Ngay 30%</h2>
-          <p class="text-white/90 text-lg mb-0 max-w-xl">Cho tất cả các phụ kiện thể thao khi mua kèm giày. Ưu đãi chỉ
-            diễn ra trong tuần này.</p>
-        </div>
-        <div class="relative z-10">
+
+
+
+    <section class="bg-black text-white py-16">
+      <div class="max-w-[1440px] mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-10">
+        <div class="max-w-xl">
+          <h2 class="text-5xl font-black italic uppercase mb-6 leading-none">THAM GIA TEAM ADIDAS</h2>
+          <p class="text-lg text-gray-400 mb-8 uppercase tracking-widest">Nhận ưu đãi 15% cho đơn hàng đầu tiên và quyền
+            truy cập sớm.</p>
           <button
-            class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow-lg transition-colors">Mua
-            Ngay</button>
+            class="bg-white text-black px-10 py-4 font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
+            ĐĂNG KÝ MIỄN PHÍ
+          </button>
         </div>
+       <div class="w-full md:w-1/2 h-[400px] overflow-hidden">
+  <img alt="Team Huddle"
+    [src]="pageImages.teamHuddle"
+    class="w-full h-full object-cover opacity-80" />
+</div>
       </div>
     </section>
+
+
+
 
 
 

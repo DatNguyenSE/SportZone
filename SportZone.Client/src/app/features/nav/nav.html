@@ -30,33 +30,70 @@
     <nav class="hidden lg:flex items-center gap-6 absolute left-1/2 transform -translate-x-1/2">
       <a routerLink="/category/shoes" routerLinkActive="text-red-600"
         class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Giày</a>
-      <a routerLink="/ui" routerLinkActive="text-red-600"
+      <a routerLink="/category/jersey" routerLinkActive="text-red-600"
         class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Áo
         Thể
         thao</a>
-      <a routerLink="/q" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nam</a>
-      <a routerLink="/a" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Nữ</a>
-      <a routerLink="/g" routerLinkActive="text-red-600"
+      <a routerLink="/category/accessory" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Phụ
+        kiện</a>
+      <a routerLink="/category/new" routerLinkActive="text-red-600"
+        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Mới</a>
+      <a routerLink="/category/sale" routerLinkActive="text-red-600"
         class="text-sm font-bold  uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Sale</a>
     </nav>
 
     <div class="flex items-center gap-4 flex-1 justify-end">
       <!-- search -->
-      <div class="hidden md:block relative w-30 lg:w-45">
-        <input
-          class="w-full bg-gray-100 text-gray-900 text-sm font-medium px-4 py-2 pl-4 pr-10 border border-transparent focus:bg-white focus:border-gray-300 outline-none transition-all placeholder-gray-500"
-          placeholder="Tìm kiếm" type="text" />
-        <span
-          class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 text-xl font-bold cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
+      <div class="hidden md:block relative w-48 lg:w-64">
+        <div class="relative">
+          <input #searchInput (input)="onSearch(searchInput.value)"
+            (focus)="isSearching = filteredProducts().length > 0"
+            class="w-full bg-gray-100 text-gray-900 text-sm font-medium px-4 py-2 pr-10 border border-transparent focus:bg-white focus:border-gray-300 outline-none transition-all placeholder-gray-500"
+            placeholder="Tìm kiếm" type="text" />
 
-        </span>
+          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </span>
+        </div>
+
+        <div *ngIf="isSearching && filteredProducts().length > 0"
+          class="absolute top-full left-0 w-[300px] mt-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-2xl rounded-sm overflow-hidden z-[999]">
+
+          <div
+            class="p-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800">
+            Kết quả tìm kiếm ({{filteredProducts().length}})
+          </div>
+
+          <ul class="max-h-[400px] overflow-y-auto">
+            <li *ngFor="let product of filteredProducts()" (click)="goToProduct(product.id)"
+              class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors border-b border-gray-50 dark:border-zinc-800 last:border-none">
+
+              <img [src]="product.imageUrl" class="w-12 h-12 object-cover bg-gray-100">
+
+              <div class="flex flex-col flex-1 min-w-0">
+                <span class="text-sm font-bold text-black dark:text-white truncate uppercase italic">{{ product.name
+                  }}</span>
+                <span class="text-xs text-zinc-500">{{ product.price | number }}đ</span>
+              </div>
+
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="size-4 text-gray-300">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </li>
+          </ul>
+
+          <div class="p-2 bg-zinc-50 dark:bg-zinc-800/50 text-center">
+            <button class="text-[10px] font-black uppercase hover:underline italic">Xem tất cả</button>
+          </div>
+        </div>
+
+        <div *ngIf="isSearching" (click)="isSearching = false" class="fixed inset-0 bg-transparent z-[998]"></div>
       </div>
       <!-- user -->
 
@@ -100,7 +137,7 @@
 
 @if(this.accountService.currentUser() === null){
 <div *ngIf="isLoginModalOpen"
-  class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+  class="fixed inset-0 z-[60] flex items-center justify-center backdrop-blur-[2px]  p-4">
 
   <div class="bg-white w-full max-w-[480px] p-6 md:p-10 relative shadow-2xl animate-fade-in-up transition-all">
 
@@ -280,7 +317,7 @@
 
   <body class="bg-white text-black overflow-hidden font-sans antialiased">
 
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 flex justify-end transition-opacity">
 
       <div
         class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">
@@ -288,7 +325,7 @@
         <div class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
           <div class="flex items-center gap-2">
             <div class="bg-black text-white p-1">
-              <span class="material-icons-outlined text-sm font-bold">Logo</span>
+              <img class="h-11 w-17" src="logo.png">
             </div>
             <span class="font-black uppercase tracking-widest text-lg text-black">SportZone</span>
           </div>
@@ -456,7 +493,7 @@
     </div>
     <!-- for admin  -->
     <div *appHasRole="['Admin']"
-      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex justify-end transition-opacity">
+      class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 flex justify-end transition-opacity">
 
       <div
         class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">

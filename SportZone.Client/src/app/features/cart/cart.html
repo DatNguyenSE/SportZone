@@ -1,6 +1,5 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="flex flex-col lg:flex-row gap-12">
 
@@ -81,12 +80,22 @@
                 <div *ngFor="let item of cartItems()"
                     class="border border-gray-200 dark:border-gray-800 flex flex-col md:flex-row p-4 relative group">
 
-                    <div
-                        class="w-full md:w-48 h-48 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden mb-4 md:mb-0">
-                        <img [src]="item.product?.imageUrl || 'assets/placeholder.jpg'" [alt]="item.product?.name"
-                            class="object-cover w-full h-full mix-blend-multiply dark:mix-blend-normal">
-                    </div>
 
+
+                    <div class="relative bg-[#f5f5f5] aspect-square overflow-hidden">
+
+                        @if (item.product?.discount) {
+                        <div
+                            class="absolute top-0 left-0 bg-[#e32b2b] text-white text-[12px] font-black px-3 py-1.5 z-10 italic">
+                            -{{ item.product?.discount }}%
+                        </div>
+                        }
+                        <div
+                            class="w-full md:w-48 h-48 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden mb-4 md:mb-0">
+                            <img [src]="item.product?.imageUrl || 'assets/placeholder.jpg'" [alt]="item.product?.name"
+                                class="object-cover w-full h-full mix-blend-multiply dark:mix-blend-normal">
+                        </div>
+                    </div>
                     <div class="md:ml-6 flex-grow">
                         <div class="flex justify-between items-start">
                             <h3 class="font-bold text-sm uppercase tracking-tight max-w-md">
@@ -122,13 +131,14 @@
                             </div>
 
                             <div class="text-right">
-                                <span *ngIf="item.product?.discount && item.product?.discount! > 0"
-                                    class="text-sm text-gray-400 line-through mr-2">
-                                    {{ (item.product?.price! + item.product?.discount!) |
-                                    currency:'VND':'symbol':'1.0-0' }}
+                                @if (item.product?.discount && item.product?.discount! > 0) {
+                                <span class="text-xs text-gray-400 line-through block">
+                                    {{ (item.product?.price!) | currency:'VND':'':'1.0-0' }}₫
                                 </span>
-                                <div class="text-lg font-bold">
-                                    {{ item.product?.price | currency:'VND':'symbol':'1.0-0' }}
+                                }
+                                <div class="text-lg font-[900] italic tracking-tighter">
+                                    {{ (item.product?.price! * (1 - (item.product?.discount ?? 0)/100)) |
+                                    currency:'VND':'':'1.0-0' }}₫
                                 </div>
                             </div>
                         </div>
@@ -161,6 +171,7 @@
                 <div class="space-y-4 text-sm mb-6">
                     <div class="flex justify-between">
                         <span>Giá gốc</span>
+
                         <span>{{ subTotal() | number:'1.0-0' }}</span>
                     </div>
                     <div class="flex justify-between">

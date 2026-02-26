@@ -13,12 +13,15 @@ import { OrderProcessing } from './features/order-processing/order-processing';
 import { OrderUser } from './shared/components/order-user/order-user';
 import { PaymentFail } from './shared/components/payment-fail/payment-fail';
 import { OrderDetail } from './shared/components/order-detail/order-detail';
+import { CheckoutSuccess } from './shared/components/checkout-success/checkout-success';
 
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'category/:id', component: ProductList },
     { path: 'product-detail/:id', component: ProductDetail},
     { path: 'payment-fail/:orderId', component: PaymentFail},
+    { path: 'checkout-success/:orderId', component: CheckoutSuccess},
+
 
 
     

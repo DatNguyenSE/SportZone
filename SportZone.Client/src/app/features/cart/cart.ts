@@ -37,13 +37,22 @@ export class Cart implements OnInit, OnDestroy {
     )
   );
 
+
+
   // 2. Tổng tiền hàng trước thuế và phí vận chuyển
   subTotal = computed(() =>
-    this.cartItems().reduce((total, item) => {
-      const price = item.product?.price || 0;
-      return total + (price * item.quantity);
-    }, 0)
-  );
+  this.cartItems().reduce((total, item) => {
+    const price = item.product?.price || 0;
+    const discountPercent = item.product?.discount || 0;
+
+    // 1. Tính giá sau khi giảm của 1 sản phẩm
+    // Công thức: Giá gốc * (1 - %giảm/100)
+    const discountedUnitPrice = price * (1 - discountPercent / 100);
+
+    // 2. Cộng dồn vào tổng (Giá đã giảm * Số lượng)
+    return total + (discountedUnitPrice * item.quantity);
+  }, 0)
+);
 
   // 3. Thuế (Giả sử 8% trên subTotal - discount)
   taxRate = 0.03; // 3% thuế VAT

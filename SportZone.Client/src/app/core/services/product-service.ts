@@ -62,11 +62,11 @@ export class ProductService {
     // Append dữ liệu như lúc Create
     formData.append('id', id.toString()); // Một số BE cần ID trong body
     formData.append('name', productData.name);
-    formData.append('price', productData.price.toString());
+    formData.append('price', (productData.price ?? 0).toString());
     formData.append('brand', productData.brand || '');
     formData.append('description', productData.description || '');
-    formData.append('categoryId', productData.categoryId.toString());
-    formData.append('quantity', productData.quantity.toString());
+    formData.append('categoryId', (productData.categoryId ?? 0).toString());
+    formData.append('quantity', (productData.quantity ?? 1).toString());
 
     // Nếu có chọn file ảnh MỚI thì gửi lên
     if (file) {

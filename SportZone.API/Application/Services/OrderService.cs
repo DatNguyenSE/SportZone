@@ -26,7 +26,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         // 2. TỐI ƯU: Load Inventory và chuyển sang Dictionary để tra cứu nhanh O(1)
         var productIds = userCart.Items.Select(i => i.ProductId).Distinct().ToList();
         var productSizeIds = userCart.Items.Select(i => i.ProductSizeId).Distinct().ToList();
-        
+
         var productSizes = await uow.ProductSizeRepository.GetListByProductIdsAsync(productIds, productSizeIds);
 
         // Key là ProductId, Value là Inventory Object
@@ -63,11 +63,20 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
             // Update stock (Memory)
             productSize.Quantity -= cartItem.Quantity;
 
+
+            decimal discountPercent = (decimal)(cartItem.Product.Discount ?? 0);
+
+            decimal unitPrice = discountPercent > 0
+                ? cartItem.Product.Price * (1 - discountPercent / 100)
+                : cartItem.Product.Price;
+
+
             var orderItem = new OrderItem
             {
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity,
-                UnitPrice = cartItem.Product.Price,
+
+                UnitPrice = unitPrice,
                 ProductSizeId = cartItem.ProductSizeId,
                 SizeName = productSize.SizeName
             };
@@ -76,8 +85,8 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
             order.Items.Add(orderItem);
         }
         // 5. XỬ LÝ KHUYẾN MÃI (PROMOTION)
-      decimal discountAmount = 0;
-        
+        decimal discountAmount = 0;
+
         if (!string.IsNullOrEmpty(couponCode))
         {
             // Cần thêm PromotionRepository vào UnitOfWork
@@ -100,7 +109,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
                         else if (promotion.DiscountType == "PERCENT")
                         {
                             discountAmount = subTotal * (promotion.DiscountValue / 100);
-                            
+
                             // Check giảm tối đa
                             if (promotion.MaxDiscountAmount.HasValue && discountAmount > promotion.MaxDiscountAmount.Value)
                             {
@@ -193,8 +202,8 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         }
 
         // Update status
-        if (order.Payment != null) 
-        order.Payment.PaymentStatus = PaymentStatus.Failed;
+        if (order.Payment != null)
+            order.Payment.PaymentStatus = PaymentStatus.Failed;
         order.Status = OrderStatus.Cancelled;
 
         // REFUND QUANTITY 
@@ -284,7 +293,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
 
     public async Task<OrderDetailsDto> GetOrderWithPaymentAsync(int orderId)
     {
-       var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId);
-       return mapper.Map<OrderDetailsDto>(order);
+        var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId);
+        return mapper.Map<OrderDetailsDto>(order);
     }
 }

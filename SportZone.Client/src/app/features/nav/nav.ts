@@ -7,6 +7,8 @@ import { themes } from '../../types/theme';
 import { BusyService } from '../../core/services/busy-service';
 import { CommonModule } from '@angular/common';
 import { HasRole } from "../../shared/directives/has-role";
+import { ProductService } from '../../core/services/product-service';
+import { Product } from '../../shared/models/product.model';
 
 
 @Component({
@@ -18,9 +20,11 @@ import { HasRole } from "../../shared/directives/has-role";
 export class Nav implements OnInit {
  
   protected accountService = inject(AccountService);
+  protected productService = inject(ProductService);
   protected busyService = inject(BusyService);
   private router = inject(Router);
   private toast = inject(ToastService);
+
   protected creds: any = {
     step: 1,
     email: '',
@@ -71,6 +75,7 @@ export class Nav implements OnInit {
         
         this.toast.success(res.message);
         this.toggleLoginModal(); 
+        window.location.reload();
       },
       error: (error) => {
         console.log('error from interceptor:', error);
@@ -107,5 +112,40 @@ export class Nav implements OnInit {
   }
 
 
+  allProducts = this.productService.products;
+  filteredProducts = signal<Product[]>([]);
 
+  constructor() {
+    // Ban đầu hiển thị tất cả
+    this.filteredProducts.set(this.allProducts());
+  }
+
+  protected isSearching = false;
+
+// Thay vì set trong constructor, ta dùng effect hoặc logic trực tiếp trong onSearch
+onSearch(value: string) {
+  const query = value.toLowerCase().trim();
+  
+  if (!query) {
+    this.isSearching = false;
+    this.filteredProducts.set([]);
+    return;
+  }
+
+  this.isSearching = true;
+
+  // Lọc sản phẩm: tìm trong tên hoặc mô tả
+  const result = this.allProducts().filter(product => 
+    product.name.toLowerCase().includes(query)
+  ).slice(0, 6); // Giới hạn 6 kết quả cho đẹp giao diện
+
+  this.filteredProducts.set(result);
+}
+
+// Hàm điều hướng khi click vào sản phẩm
+goToProduct(productId: number | string) {
+  this.isSearching = false;
+  
+  this.router.navigate(['/product-detail', productId]); // Giả sử route của bạn là /product/:id
+}
 }
