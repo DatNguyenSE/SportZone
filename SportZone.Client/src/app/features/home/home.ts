@@ -20,6 +20,7 @@ export interface HotCategory {
   label: string;
   title: string;
   image: string;
+  link: string;
 }
 
 @Component({
@@ -168,22 +169,26 @@ export class Home implements OnInit {
     {
       label: 'Professional Grip',
       title: 'ELITE CATCH',
-      image: 'https://images.unsplash.com/photo-1600250395178-40fe752e5189?q=80&w=1000&auto=format&fit=crop'
+      image: 'https://images.unsplash.com/photo-1600250395178-40fe752e5189?q=80&w=1000&auto=format&fit=crop',
+      link:  'features/goalkeeper'
     },
     {
       label: 'Master the Ball',
       title: 'PRECISION GRIP',
-      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop'
+      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop',
+       link:  'features/ballcontrol'
     },
     {
       label: 'Kits & Jerseys',
       title: 'OFFICIAL TEAMWEAR',
-      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772091873/0a379d9f6d490c7ac35c80ac2ab70344_e0zevp.jpg'
+      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772091873/0a379d9f6d490c7ac35c80ac2ab70344_e0zevp.jpg',
+       link:  'features/teamwear'
     },
     {
-      label: 'Socks & Foot protection ',
-      title: 'EQUIP',
-      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772092801/upload_dd540d88f8d74c7a99de64ea2e38a3e4_master_q4gfvp.jpg' 
+      label: 'Official Match Ball',
+      title: 'AERODYNAMICS',
+      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772119951/bong_thi_dau_chinh_thuc_cho_mua_giai_moi__5__76c74ffb117b4694a64685e4d487f034_u8yjqn.jpg' ,
+       link:  'features/ball'
     }
   ];
 

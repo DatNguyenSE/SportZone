@@ -22,6 +22,13 @@ namespace API.Controllers
             return Ok(product);
         }
 
+        // [HttpGet("CATCH/{productId:int}")]
+        // public async Task<IActionResult> GetProductById(int productId)
+        // {
+        //     var product = await productService.GetByIdAsync(productId);
+        //     return Ok(product);
+        // }
+
         [HttpGet("category/{categoryId:int}")]
         public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByCategoryId(int categoryId)
         {
@@ -40,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPost("add_image")]
-        public async Task<ActionResult<ProductDto>> AddProductWithImage( [FromForm] CreateProductDto productDto, IFormFile file)
+        public async Task<ActionResult<ProductDto>> AddProductWithImage( [FromForm] CreateProductDto productDto, IFormFile? file)
         {
             if (file == null || file.Length == 0)
             {

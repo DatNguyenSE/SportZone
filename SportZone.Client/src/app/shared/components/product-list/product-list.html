@@ -106,6 +106,12 @@
                         -{{ p.discount }}%
                     </div>
                     }
+                    @if (p.isNew) {
+                <div [style.top]="(p.discount && p.discount > 0) ? '31px' : '0px'"
+                    class="absolute left-0 bg-black text-white text-[10px] font-bold px-2 py-1 z-10 uppercase tracking-tighter">
+                    Hàng mới
+                </div>
+                }
 
                     <button class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                         <span class="material-icons-outlined text-xl">favorite_border</span>

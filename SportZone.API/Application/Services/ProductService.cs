@@ -68,32 +68,24 @@ namespace SportZone.Application.Services
 
         public async Task<ProductDto?> UpdateAsync(int id, UpdateProductDto productDto, IFormFile? file)
         {
-            var product = await uow.ProductRepository.GetByIdAsync(id);
+            
+            var product = await uow.ProductRepository.GetProductByIdAsync(id);
+            
+
             if (product == null)
             {
                 throw new NotFoundException($"Product with id {id} not found.");
             }
 
+      
+            mapper.Map(productDto, product);
 
-            if (!string.IsNullOrEmpty(productDto.Name)) product.Name = productDto.Name;
-            
-            if (!string.IsNullOrEmpty(productDto.Description)) product.Description = productDto.Description;
-
-            if (!string.IsNullOrEmpty(productDto.Brand)) product.Brand = productDto.Brand;
-            
-            if (productDto.CategoryId != 0) product.CategoryId = productDto.CategoryId;
-
-
-           
-            if (productDto.Price > 0)  product.Price = productDto.Price;
-    
-
+          
             if (file != null)
             {
                 if (!string.IsNullOrEmpty(product.PublicId))
                 {
-                    var deleteResult = await photoService.DeletePhotoAsync(product.PublicId);
-
+                    await photoService.DeletePhotoAsync(product.PublicId);
                 }
 
                 var uploadResult = await photoService.AddPhotoAsync(file);
@@ -103,10 +95,25 @@ namespace SportZone.Application.Services
                 product.PublicId = uploadResult.PublicId;
             }
 
+         
+            if (productDto.ProductSizes != null)
+            {
+         
+                product.ProductSizes.Clear();
+
+             
+                var newSizes = mapper.Map<List<ProductSize>>(productDto.ProductSizes);
+                foreach (var size in newSizes)
+                {
+                    product.ProductSizes.Add(size);
+                }
+            }
+
             uow.ProductRepository.Update(product);
             await uow.Complete();
+
+         
             return mapper.Map<ProductDto>(product);
         }
-
     }
 }

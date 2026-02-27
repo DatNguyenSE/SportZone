@@ -1,0 +1,44 @@
+<div class="min-h-screen bg-[#0a0a0a] text-white">
+  <section class="relative h-[70vh] flex items-center overflow-hidden">
+    <div class="absolute inset-0">
+      <img [src]="pageData().image" class="w-full h-full object-cover opacity-50 scale-105">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 px-10 lg:px-20 max-w-5xl">
+      <span class="font-black uppercase tracking-[0.4em] text-sm mb-4 block" [style.color]="pageData().themeColor">
+        {{ pageData().label }}
+      </span>
+      <h1 class="text-7xl md:text-9xl font-black italic uppercase leading-[0.85] mb-8 tracking-tighter">
+        {{ pageData().title }}
+      </h1>
+      <p class="text-gray-400 text-lg max-w-lg uppercase font-medium leading-tight border-l-4 p-4" [style.border-color]="pageData().themeColor">
+        {{ pageData().desc }}
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 px-10">
+    <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-6">
+      <h2 class="text-2xl font-black uppercase italic tracking-tighter">Sản phẩm tiêu biểu</h2>
+      <a routerLink="/product-list" class="text-[10px] font-bold uppercase tracking-widest hover:opacity-70">Xem tất cả</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      @for (product of relatedProducts(); track product.id) {
+        <div [routerLink]="['/product-detail', product.id]" class="group bg-[#111] p-5 border border-white/5 hover:border-white/20 transition-all">
+          <div class="aspect-square bg-[#1a1a1a] mb-4 overflow-hidden">
+            <img [src]="product.imageUrl" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+          </div>
+          <h3 class="text-xs font-bold uppercase mb-2 truncate">{{ product.name }}</h3>
+          <div class="flex justify-between items-center">
+             <span class="text-sm font-black italic" [style.color]="pageData().themeColor">{{ product.price | number }}₫</span>
+             <button class="text-[10px] font-black uppercase border border-white/20 px-3 py-1 hover:bg-white hover:text-black transition-colors">Mua</button>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-gray-500 uppercase font-bold py-10">Đang cập nhật sản phẩm...</p>
+      }
+    </div>
+  </section>
+</div>
