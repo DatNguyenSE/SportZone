@@ -18,8 +18,13 @@ export class OrderService {
 
     return this.http.post<Order>(`${this.apiUrl}order/add`, null, { params });
   }
+
   getOrderDetail(orderId: number) {
     return this.http.get<Order>(`${this.apiUrl}order/${orderId}/details`);
+  }
+
+  getUserOrders() {
+    return this.http.get<Order[]>(`${this.apiUrl}order/user-orders`);
   }
 
 }

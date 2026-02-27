@@ -1,61 +1,76 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
 
-<div class="min-h-screen bg-white">
-    <div
-        class="mx-auto px-4 py-4 flex items-center gap-2 text-[10px] md:text-xs font-medium uppercase tracking-wide text-gray-500">
+<div class="min-h-screen bg-white text-black font-['Inter']">
+    <nav
+        class="max-w-[1440px] mx-auto px-4 py-6 flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-400">
         <a routerLink="/" class="hover:text-black transition-colors">Trang chủ</a>
         <span>/</span>
-        @if ([1, 2, 3].includes(this.product()?.categoryId ?? 0)) {
-        <a [routerLink]="['/category', 123]" class="hover:text-black transition-colors">Giày bóng đá</a>
+        @if ([1, 2, 3].includes(product()?.categoryId ?? 0)) {
+        <a [routerLink]="['/category', 'shoes']" class="hover:text-black">Giày bóng đá</a>
+        <span>/</span>
+        } @else if ([4, 5].includes(product()?.categoryId ?? 0)) {
+        <a [routerLink]="['/category', 'jersey']" class="hover:text-black">Áo bóng đá</a>
         <span>/</span>
         }
-        <a [routerLink]="['/category', this.product()?.categoryId]" class="hover:text-black transition-colors">
-            {{this.product()?.categoryName}}
-        </a>
-    </div>
+        <span class="text-black">{{ product()?.categoryName }}</span>
+    </nav>
 
-    <div class="mx-auto px-0 lg:px-4 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-10">
+    <div class="max-w-[1440px] mx-auto px-0 lg:px-4 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-16">
 
         <div class="lg:col-span-8 order-2 lg:order-1">
-            <div class="w-full relative bg-[#ECEDED] group cursor-zoom-in overflow-hidden rounded-sm shadow-sm">
-                <div class="absolute top-6 left-6 z-10">
+            <div class="w-full relative bg-[#F6F6F6] group overflow-hidden shadow-sm">
+                <div class="absolute top-6 left-6 z-10 flex flex-col gap-2">
+                    @if (product()?.discount && product()?.discount! > 0) {
                     <span
-                        class="bg-white text-black text-[11px] font-bold px-3 py-1.5 uppercase tracking-widest shadow-sm border border-gray-100">
-                        Mới
+                        class="bg-[#e32b2b] text-white text-[12px] font-[900] px-4 py-1.5 uppercase italic tracking-tighter shadow-lg">
+                        giảm giá {{ product()?.discount }}%
                     </span>
+                    }
+                    @if (product()?.isNew) {
+                    <span
+                        class="bg-black text-white text-[11px] font-bold px-4 py-1.5 uppercase tracking-widest shadow-sm">
+                        HÀNG MỚI
+                    </span>
+                    }
                 </div>
-                <div class="w-full flex items-center justify-center min-h-[400px] md:min-h-[600px]">
-                    <img [src]="this.product()?.imageUrl"
-                        class="w-full h-full object-contain mix-blend-multiply p-8 md:p-16 lg:p-20 transition-transform duration-700 ease-out group-hover:scale-105"
-                        [alt]="this.product()?.name">
+
+                <div class="w-full flex items-center justify-center min-h-[450px] md:min-h-[650px] cursor-zoom-in">
+                    <img [src]="product()?.imageUrl"
+                        class="w-full h-full object-contain mix-blend-multiply p-8 md:p-12 transition-transform duration-700 ease-out group-hover:scale-110"
+                        [alt]="product()?.name">
                 </div>
             </div>
 
-            <div class="mt-10 px-4 lg:px-0">
-                <div class="border-t border-gray-200">
+            <div class="mt-12 px-4 lg:px-0 max-w-3xl">
+                <div class="border-t-2 border-black">
                     <button (click)="toggleDescription()"
-                        class="w-full py-6 flex justify-between items-center group hover:bg-gray-50 transition-colors px-2">
-                        <span class="font-bold text-lg uppercase tracking-wide italic">Mô tả sản phẩm</span>
-                        <span class="material-symbols-outlined transition-transform duration-300"
+                        class="w-full py-8 flex justify-between items-center group transition-colors">
+                        <span class="font-[900] text-2xl uppercase tracking-tighter italic">Thông tin chi tiết</span>
+                        <span class="material-symbols-outlined transition-transform duration-500 text-3xl"
                             [class.rotate-180]="isDescriptionOpen()">
                             expand_more
                         </span>
                     </button>
 
-                    <div class="grid transition-[grid-template-rows] duration-500 ease-out"
+                    <div class="grid transition-[grid-template-rows] duration-500 ease-in-out"
                         [class.grid-rows-[1fr]]="isDescriptionOpen()" [class.grid-rows-[0fr]]="!isDescriptionOpen()">
                         <div class="overflow-hidden">
-                            <div class="pb-6 px-2 text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-                                {{ this.product()?.description || 'Đang cập nhật mô tả...' }}
+                            <div class="pb-10 text-sm text-gray-700 leading-relaxed tracking-wide">
+                                <p class="whitespace-pre-line mb-8">{{ product()?.description || 'Đang cập nhật mô
+                                    tả...' }}</p>
 
-                                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-6">
-                                    <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Dáng sản
-                                            phẩm</span><span class="font-bold">Regular Fit</span></div>
-                                    <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Chất
-                                            liệu</span><span class="font-bold">Vải lưới/Tổng hợp</span></div>
-                                    <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Mã sản
-                                            phẩm</span><span class="font-bold uppercase">{{product()?.id}}</span></div>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 border-t border-gray-100 pt-8 text-[11px] uppercase font-bold tracking-widest">
+                                    <div class="flex justify-between border-b border-gray-50 pb-2"><span
+                                            class="text-gray-400">Dòng sản phẩm</span><span>Performance</span></div>
+                                    <div class="flex justify-between border-b border-gray-50 pb-2"><span
+                                            class="text-gray-400">Thương hiệu</span><span>{{ product()?.brand }}</span>
+                                    </div>
+                                    <div class="flex justify-between border-b border-gray-50 pb-2"><span
+                                            class="text-gray-400">Mã định danh</span><span>#SPZ-{{ product()?.id
+                                            }}</span></div>
+                                    ext
                                 </div>
                             </div>
                         </div>
@@ -64,156 +79,173 @@
             </div>
         </div>
 
-        <div class="lg:col-span-4 order-1 lg:order-2 px-4 lg:px-0 mb-8 lg:mb-0">
-            <div class="lg:sticky lg:top-10 flex flex-col gap-5">
+        <div class="lg:col-span-4 order-1 lg:order-2 px-6 lg:px-0">
+            <div class="lg:sticky lg:top-10 flex flex-col gap-6">
 
-                <div class="flex justify-between items-center">
-                    <span
-                        class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">{{this.product()?.brand}}</span>
-                    <div class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm fill-1 text-black">star</span>
-                        <span class="text-xs font-bold underline">4.8 (120)</span>
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">{{ product()?.brand
+                        }}</span>
+                    <div class="flex items-center gap-1 bg-zinc-100 px-2 py-1">
+                        <span class="material-symbols-outlined text-sm fill-1">star</span>
+                        <span class="text-[10px] font-black underline">4.9 | 2.5K Reviews</span>
                     </div>
                 </div>
 
                 <div>
-                    <h1 class="font-bold text-3xl md:text-4xl uppercase leading-[0.9] italic tracking-tighter mb-3">
-                        {{this.product()?.name}}
+                    <h1 class="font-[900] text-4xl md:text-5xl uppercase leading-[0.85] italic tracking-tighter mb-4">
+                        {{ product()?.name }}
                     </h1>
-                    <p class="font-bold text-xl text-red-600">{{this.product()?.price | number:'1.0-0' }}₫</p>
+                        @if (product()?.featured ) {
+                            <div class="bg-zinc-100 px-2 py-1 "> <p class="font-bold text-lg text-black-300  ">
+                            {{ product()?.featured }}
+                        </p></div>
+                        
+                        }
+                    <div class="flex items-baseline gap-3">
+                        <p class="font-[900] text-3xl text-[#e32b2b] italic tracking-tighter">
+                            {{ (product()?.price! * (1 - (product()?.discount ?? 0) / 100)) | number:'1.0-0' }}₫
+                        </p>
+                        @if (product()?.discount && product()?.discount! > 0) {
+                        <p class="font-bold text-lg text-gray-300 line-through decoration-2 ">
+                            {{ product()?.price | number:'1.0-0' }}₫
+                        </p>
+                        }
+                    </div>
+                    @if (product()?.discount && product()?.discount! > 0) {
+                    <p class="text-[10px] font-black text-green-600 uppercase tracking-widest mt-1">
+                        Tiết kiệm: {{ (product()?.price! * (product()?.discount! / 100)) | number:'1.0-0' }}₫
+                    </p>
+                    }
                 </div>
 
-
-
-                <div class="bg-[#006532] text-white p-4 flex justify-between items-center rounded-sm">
+                <div class="bg-black text-white p-5 flex justify-between items-center">
                     <div>
-                        <p class="font-bold text-[10px] uppercase tracking-widest opacity-80">adiClub Reward</p>
-                        <p class="font-bold text-base italic">GIẢM THÊM 10% CHO ĐƠN ĐẦU
-
-
-                        </p>
+                        <p class="font-black text-[10px] uppercase tracking-[0.2em] text-zinc-400 mb-1">Đặc quyền hội
+                            viên</p>
+                        <p class="font-bold text-sm italic uppercase">Giảm thêm 10% & Freeship</p>
                     </div>
-                    <button class="text-[10px] font-bold underline hover:text-gray-200 uppercase">Nhận mã</button>
+                    <button
+                        class="px-4 py-2 border border-white text-[10px] font-black uppercase hover:bg-white hover:text-black transition-all">Đăng
+                        ký</button>
                 </div>
 
                 <div class="space-y-5">
-    <div class="flex justify-between items-end">
-        <div class="flex flex-col gap-1">
-            <p class="font-bold text-base uppercase tracking-wider">Chọn kích cỡ</p>
-        </div>
-        <button class="text-sm font-bold underline hover:no-underline text-gray-400 italic">
-            Hướng dẫn chọn size
-        </button>
-    </div>
-
-    <div class="grid grid-cols-4 gap-3">
-        @for (s of product()?.productSizes; track s.id) {
-            <button 
-                (click)="s.quantity > 0 ? selectSize(s.sizeName) : null"
-                [disabled]="s.quantity <= 0"
-                class="relative h-14 border-2 text-base font-bold transition-all duration-300 group"
-                [class.selected-size]="selectedSize() === s.sizeName"
-                [class.out-of-stock]="s.quantity <= 0"
-            >
-                {{s.sizeName}}
-                
-                @if (s.quantity <= 0) {
-                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
-                        <div class="w-[110%] h-[2px] bg-gray-400 rotate-[35deg]"></div>
+                    <div class="flex justify-between items-end">
+                        <div class="flex flex-col gap-1">
+                            <p class="font-bold text-base uppercase tracking-wider">Chọn kích cỡ</p>
+                        </div>
+                        <button class="text-sm font-bold underline hover:no-underline text-gray-400 italic">
+                            Hướng dẫn chọn size
+                        </button>
                     </div>
+
+                    <div class="grid grid-cols-4 gap-3">
+                        @for (s of product()?.productSizes; track s.id) {
+                        <button (click)="s.quantity > 0 ? selectSize(s.sizeName) : null" [disabled]="s.quantity <= 0"
+                            class="relative h-14 border-2 text-base font-bold transition-all duration-300 group"
+                            [class.selected-size]="selectedSize() === s.sizeName"
+                            [class.out-of-stock]="s.quantity <= 0">
+                            {{s.sizeName}}
+
+                            @if (s.quantity <= 0) { <div
+                                class="absolute inset-0 flex items-center justify-center opacity-40">
+                                <div class="w-[110%] h-[2px] bg-gray-400 rotate-[35deg]"></div>
+                    </div>
+                    }
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="py-6 border-y border-gray-100 flex items-center justify-between">
+                <div class="flex items-center border-2 border-black h-12">
+                    <button (click)="updateQuantity(-1)"
+                        class="w-12 h-full hover:bg-black hover:text-white transition-colors font-black text-lg">-</button>
+                    <div class="w-12 text-center font-black text-sm">{{ quantity() }}</div>
+                    <button (click)="updateQuantity(1)"
+                        class="w-12 h-full hover:bg-black hover:text-white transition-colors font-black text-lg">+</button>
+                </div>
+
+                <div class="text-right">
+                    @if (selectedSize()) {
+                    <div class="flex items-center justify-end gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                                [class.bg-green-400]="stockForSelectedSize() > 0"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2"
+                                [class.bg-green-500]="stockForSelectedSize() > 0"></span>
+                        </span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                            Còn {{ stockForSelectedSize() }} sản phẩm
+                        </span>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button (click)="addToCart()" [disabled]="!selectedSize()"
+                    class="w-full bg-black text-white py-5 font-black uppercase tracking-[0.3em] text-xs hover:bg-zinc-800 transition-all flex items-center justify-between px-10 disabled:bg-zinc-300 disabled:cursor-not-allowed">
+                    <span>THÊM VÀO GIỎ HÀNG</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+
+                <button
+                    class="w-full border-2 border-black py-5 font-black uppercase tracking-[0.3em] text-xs flex items-center justify-center gap-3 hover:bg-zinc-50 transition-all">
+                    <span class="material-symbols-outlined text-base">favorite</span>
+                    <span>DANH SÁCH YÊU THÍCH</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <div class="flex items-center gap-3 p-3 bg-zinc-50">
+                    <span class="material-symbols-outlined text-xl">local_shipping</span>
+                    <span class="text-[9px] font-bold uppercase leading-tight">Giao hàng hỏa tốc 2h</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-zinc-50">
+                    <span class="material-symbols-outlined text-xl">verified_user</span>
+                    <span class="text-[9px] font-bold uppercase leading-tight">Bảo hành chính hãng</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="max-w-[1440px] mx-auto px-4 mt-5 pb-20 border-t border-gray-100 pt-20">
+    <h2 class="font-[900] text-3xl md:text-5xl uppercase italic tracking-tighter mb-12">BẠN CÓ THỂ CŨNG THÍCH</h2>
+    <div class="flex overflow-x-auto gap-6 pb-10 no-scrollbar snap-x">
+        @for (pr of productRefer(); track pr.id) {
+        @if(product()?.id !== pr.id) {
+        <div class="flex-shrink-0 w-[280px] snap-start group cursor-pointer" [routerLink]="['/product-detail', pr.id]">
+            <div
+                class="relative bg-[#F6F6F6] aspect-[3/4] mb-4 overflow-hidden group-hover:shadow-xl transition-all duration-500">
+                <img [src]="pr.imageUrl"
+                    class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700">
+
+                <div class="absolute bottom-4 left-0 bg-black text-white px-3 py-1 text-xs font-black italic">
+                    {{ (pr.price * (1 - (pr.discount ?? 0) / 100)) | number:'1.0-0' }}₫
+                </div>
+
+                @if (pr.discount && pr.discount > 0) {
+                <div class="absolute top-4 left-0 bg-[#e32b2b] text-white px-2 py-0.5 text-[9px] font-black italic">
+                    -{{ pr.discount }}%
+                </div>
                 }
-            </button>
+                @if (pr.isNew) {
+                <div [style.top]="(pr.discount && pr.discount > 0) ? '31px' : '0px'"
+                    class="absolute left-0 bg-black text-white text-[10px] font-bold px-2 py-1 z-10 uppercase tracking-tighter">
+                    Hàng mới
+                </div>
+                }
+            </div>
+            <p class="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">{{ pr.brand }}</p>
+            <h3
+                class="font-black text-sm uppercase italic tracking-tighter group-hover:text-red-600 transition-colors leading-tight">
+                {{ pr.name }}
+            </h3>
+        </div>
+        }
         }
     </div>
-</div>
-
-<div class="flex flex-col gap-4 pt-4">
-    <p class="font-bold text-base uppercase tracking-wider">Số lượng mua</p>
-    <div class="flex items-center gap-6">
-        <div class="flex items-center border-2 border-black rounded-sm h-14">
-            <button (click)="updateQuantity(-1)"
-                class="w-14 h-full hover:bg-black hover:text-white transition-colors font-bold text-xl">-</button>
-            <div class="w-16 text-center font-bold text-lg">{{ quantity() }}</div>
-            <button (click)="updateQuantity(1)"
-                class="w-14 h-full hover:bg-black hover:text-white transition-colors font-bold text-xl">+</button>
-        </div>
-        
-        <div class="flex flex-col justify-center">
-            @if (selectedSize()) {
-                <div class="flex items-center gap-2">
-                    <span class="flex h-3 w-3 rounded-full animate-pulse" 
-                        [class.bg-green-500]="stockForSelectedSize() > 5"
-                        [class.bg-orange-500]="stockForSelectedSize() <= 5 && stockForSelectedSize() > 0">
-                    </span>
-                    <span class="text-sm font-black uppercase tracking-tight">
-                        {{ stockForSelectedSize() > 5 ? 'Sẵn hàng' : 'Sắp hết hàng' }} 
-                        <span class="text-gray-500 font-bold">({{ stockForSelectedSize() }})</span>
-                    </span>
-                </div>
-            } @else {
-                <span class="text-sm text-gray-400 uppercase italic font-bold">
-                    Chọn size để xem kho
-                </span>
-            }
-        </div>
-    </div>
-</div>
-
-                <div class="flex flex-col gap-3 mt-4">
-                    <button (click)="addToCart()"
-                        class="w-full bg-black text-white h-14 font-bold uppercase tracking-[0.2em] hover:bg-[#333] transition-all flex items-center justify-between px-8 group shadow-lg">
-                        <span>Thêm vào giỏ hàng</span>
-                        <span
-                            class="material-symbols-outlined transition-transform group-hover:translate-x-2">arrow_forward</span>
-                    </button>
-
-                    <button
-                        class="w-full border border-black h-14 font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-gray-50 transition-all">
-                        <span class="material-symbols-outlined">favorite</span>
-                        Yêu thích
-                    </button>
-                </div>
-
-                <div class="flex flex-col gap-2 mt-4 text-xs font-bold  uppercase">
-                    <div class="flex items-center gap-3 text-xs">
-                        <span class="material-symbols-outlined text-sm">local_shipping</span>
-                        <a href="#"
-                            class="hover:bg-black hover:text-white underline inline-block w-fit px-1 py-0.5 transition-colors">Giao
-                            hàng
-                            miễn phí cho thành viên</a>
-                    </div>
-                    <div class="flex items-center gap-3 text-xs">
-                        <span class="material-symbols-outlined text-sm">assignment_return</span>
-                        <a href="#"
-                            class="hover:bg-black hover:text-white underline inline-block w-fit px-1 py-0.5 transition-colors">Trả
-                            hàng dễ dàng trong 30 ngày</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="max-w-[1440px] mx-auto px-4 mt-20 border-t border-gray-200 pt-16 mb-20">
-        <h2 class="font-bold text-3xl uppercase italic mb-10 tracking-tighter">Có thể bạn cũng thích</h2>
-        <div class="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory no-scrollbar">
-            @for (pr of productRefer(); track pr.id) {
-            @if(this.product()?.id !== pr.id) {
-            <div class="flex-shrink-0 w-[280px] snap-start group cursor-pointer">
-                <div [routerLink]="['/product-detail', pr.id]"
-                    class="relative bg-[#F5F5F5] aspect-square mb-4 overflow-hidden border border-transparent hover:border-black transition-all duration-300">
-                    <img [src]="pr.imageUrl"
-                        class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute bottom-3 left-0 bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                        {{ pr.price | number:'1.0-0' }}₫
-                    </div>
-                </div>
-                <p class="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-1">{{ pr.brand }}</p>
-                <h3 class="font-bold text-sm uppercase leading-tight group-hover:underline line-clamp-2 italic">
-                    {{ pr.name }}
-                </h3>
-            </div>
-            }
-            }
-        </div>
-    </section>
+</section>
 </div>

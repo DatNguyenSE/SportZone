@@ -33,51 +33,88 @@
           </button>
         </div>
 
-        <form (ngSubmit)="onSubmit()" class="space-y-2">
-          <div class="space-y-2">
+        <form (ngSubmit)="onSubmit()" class="space-y-4">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Tên sản phẩm <span
-                  class="text-red-500">*</span></label>
-              <input type="text" [(ngModel)]="newProduct.name" name="name" required [disabled]="isLoading"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-medium text-sm p-2.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                placeholder="VD: Nike Air....">
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">Tên sản phẩm <span class="text-red-500">*</span></label>
+              <input type="text" [(ngModel)]="newProduct.name" name="name" required
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white rounded text-sm p-2.5">
             </div>
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Thương hiệu</label>
-              <input type="text" [(ngModel)]="newProduct.brand" name="brand" [disabled]="isLoading"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-medium text-sm p-2.5 transition-all disabled:opacity-60"
-                placeholder="VD: Nike">
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">Thương hiệu</label>
+              <input type="text" [(ngModel)]="newProduct.brand" name="brand"
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white rounded text-sm p-2.5">
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-3">
-            <div class="col-span-1">
-              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Giá <span
-                  class="text-red-500">*</span></label>
-              <input type="number" [(ngModel)]="newProduct.price" name="price" required [disabled]="isLoading"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-mono font-bold text-sm p-2.5 disabled:opacity-60"
-                placeholder="0">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">Giá <span class="text-red-500">*</span></label>
+              <input type="number" [(ngModel)]="newProduct.price" name="price" required
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded font-mono text-sm p-2.5">
             </div>
-            <div class="col-span-1">
-              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Số lượng</label>
-              <input type="number" [(ngModel)]="newProduct.quantity" name="quantity" [disabled]="isLoading"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-mono font-bold text-sm p-2.5 disabled:opacity-60"
-                placeholder="1">
+            <div>
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">Giảm giá (%)</label>
+              <input type="number" [(ngModel)]="newProduct.discount" name="discount"
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded font-mono text-sm p-2.5">
             </div>
-            <div class="col-span-1">
-              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Loại ID</label>
-              <input type="number" [(ngModel)]="newProduct.categoryId" name="categoryId" [disabled]="isLoading"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-mono font-bold text-sm p-2.5 disabled:opacity-60">
+           
+          </div>
+           <div>
+              <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">
+                Thể loại <span class="text-red-500">*</span>
+              </label>
+
+              <select [(ngModel)]="newProduct.categoryId" name="categoryId" required [disabled]="isLoading"
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-medium text-sm p-2.5 transition-all disabled:opacity-60">
+                <option [value]="undefined"  >-- Chọn thể loại --</option>
+
+                <option *ngFor="let cat of categories()" [value]="cat.id">
+                  {{ cat.categoryName }}
+                </option>
+              </select>
             </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">Nhãn (Featured)</label>
+              <select [(ngModel)]="newProduct.featured" name="featured"
+                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded text-sm p-2.5">
+                <option [ngValue]="null">Không có</option>
+                <option value="New Arrival">New Arrival</option>
+                <option value="Best Seller">Best Seller</option>
+                <option value="Trending">Trending</option>
+              </select>
+            </div>
+            <div class="flex items-center gap-2 mt-6">
+              <input type="checkbox" [(ngModel)]="newProduct.isNew" name="isNew" id="isNew"
+                class="rounded text-green-600">
+              <label for="isNew" class="text-[11px] font-bold text-zinc-500 uppercase">Sản phẩm mới</label>
+            </div>
+          </div>
+
+          <div class="p-3 bg-zinc-50 rounded-lg border border-zinc-200">
+            <label class="text-[11px] font-bold text-zinc-500 uppercase mb-2 block">Quản lý Kích thước & Tồn kho</label>
+            <div *ngFor="let s of newProduct.productSizes; let i = index" class="flex gap-2 mb-2">
+              <input type="text" [(ngModel)]="s.sizeName" [name]="'sizeName' + i" placeholder="Size (VD: 42)"
+                class="flex-1 bg-white border border-zinc-200 rounded text-xs p-2">
+              <input type="number" [(ngModel)]="s.quantity" [name]="'sizeQty' + i" placeholder="SL"
+                class="w-20 bg-white border border-zinc-200 rounded text-xs p-2">
+              <button type="button" (click)="removeSize(i)" class="text-red-400 hover:text-red-600">
+                <span class="material-icons-outlined text-sm">delete</span>
+              </button>
+            </div>
+            <button type="button" (click)="addSize()"
+              class="mt-2 text-[10px] font-bold text-blue-600 hover:text-blue-800 uppercase">
+              + Thêm Size
+            </button>
           </div>
 
           <div>
-            <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Mô tả</label>
-            <textarea [(ngModel)]="newProduct.description" name="description" rows="3" [disabled]="isLoading"
-              class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-medium text-sm p-2.5 disabled:opacity-60"
-              placeholder="Nhập thông tin chi tiết sản phẩm..."></textarea>
+            <label class="text-[11px] font-bold text-zinc-500 uppercase">Mô tả</label>
+            <textarea [(ngModel)]="newProduct.description" name="description" rows="2"
+              class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded text-sm p-2.5"></textarea>
           </div>
-
           <div>
             <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide mb-1 block">Hình ảnh</label>
             <div
@@ -99,14 +136,18 @@
           <button type="submit" [disabled]="isLoading"
             class="w-full text-white font-semibold uppercase text-xs tracking-widest py-3 rounded transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
             [ngClass]="isEditing ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-500/30' : 'bg-green-900 hover:bg-green-600 shadow-zinc-900/20'">
-            
-            <svg *ngIf="isLoading" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+
+            <svg *ngIf="isLoading" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
             </svg>
 
             <span>{{ isLoading ? 'Đang xử lý...' : (isEditing ? 'Lưu Thay Đổi' : 'Tạo Sản Phẩm') }}</span>
           </button>
+
         </form>
       </div>
     </div>
@@ -125,11 +166,8 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-zinc-100">
-            <tr *ngFor="let p of products()" (click)="!isLoading && onEdit(p)"
-              class="transition-colors group"
-              [class.cursor-pointer]="!isLoading"
-              [class.cursor-not-allowed]="isLoading"
-              [class.opacity-50]="isLoading"
+            <tr *ngFor="let p of products()" (click)="!isLoading && onEdit(p)" class="transition-colors group"
+              [class.cursor-pointer]="!isLoading" [class.cursor-not-allowed]="isLoading" [class.opacity-50]="isLoading"
               [class.bg-blue-50]="isEditing && newProduct.id === p.id"
               [class.hover:bg-zinc-50]="(!isEditing || newProduct.id !== p.id) && !isLoading">
 
@@ -152,28 +190,49 @@
               </td>
               <td class="p-4 align-top">
                 <div class="flex flex-col gap-1">
-                  <span class="font-mono font-bold text-zinc-800"> {{ p.price | number:'1.0-0' }}₫</span>
-                  <span class="text-[10px] font-bold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded w-fit group-hover:bg-white transition-colors">
-                    sl: {{p.quantity}}
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono font-bold text-red-800">{{ p.price | number:'1.0-0' }}₫</span>
+                    <span *ngIf="p.discount !== undefined && p.discount > 0">
+                      -{{ p.discount }}%
+                    </span>
+
+                    
+                  </div>
+
+                  <div class="flex flex-wrap gap-1 mt-1">
+                    <span *ngFor="let size of p.productSizes"
+                      class="text-[9px] font-bold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded border border-zinc-200">
+                      {{size.sizeName}}: {{size.quantity}}
+                    </span>
+                  </div>
+
+                  <span *ngIf="p.featured" class="text-[9px] text-blue-500 font-bold uppercase tracking-tighter italic">
+                    #{{p.featured}}
                   </span>
                 </div>
               </td>
               <td class="p-4 text-right align-top">
                 <div class="flex justify-end gap-2">
-                  <button [disabled]="isLoading" class="text-zinc-300 hover:text-blue-500 transition-colors p-1 disabled:hover:text-zinc-300">
-                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-  <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-  <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-</svg>
-</span>
+                  <button [disabled]="isLoading"
+                    class="text-zinc-300 hover:text-blue-500 transition-colors p-1 disabled:hover:text-zinc-300">
+                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path
+                          d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                        <path
+                          d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                      </svg>
+                    </span>
                   </button>
 
                   <button (click)="onDelete(p.id); $event.stopPropagation()" [disabled]="isLoading"
                     class="text-zinc-300 hover:text-red-500 transition-colors p-1 disabled:hover:text-zinc-300 disabled:cursor-not-allowed">
-                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-</svg>
-</span>
+                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                    </span>
                   </button>
                 </div>
               </td>

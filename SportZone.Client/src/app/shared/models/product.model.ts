@@ -10,10 +10,10 @@ export interface Product {
   imageUrl?: string;
   isDelete?: boolean;
 
-  discount?: number;
+  discount?: number; 
   isNew?: boolean;
   productSizes?: ProductSize[];
-  peatured?: string;
+  featured?: string;
 }
 
 export interface ProductSize {

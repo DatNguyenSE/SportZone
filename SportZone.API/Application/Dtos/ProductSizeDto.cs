@@ -6,3 +6,9 @@ public class ProductSizeDto
     public string SizeName { get; set; } = string.Empty;
     public int Quantity { get; set; }
 }
+
+public class CreateProductSizeDto
+{
+    public string SizeName { get; set; } = string.Empty;
+    public int Quantity { get; set; }
+}

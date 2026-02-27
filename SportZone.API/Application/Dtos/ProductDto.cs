@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using SportZone.Domain.Entities;
 
 namespace SportZone.Application.Dtos
 {
@@ -19,9 +20,9 @@ namespace SportZone.Application.Dtos
         public int CategoryId { get; set; }
  
         public double? Discount { get; set; } = 0.0;
-        public bool IsNew { get; set; } = true;
+        public bool? IsNew { get; set; } = true;
         public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
-
+        public List<CreateProductSizeDto>? ProductSizes { get; set; }
     }
 
     public class ProductDto : CreateProductDto
@@ -31,7 +32,6 @@ namespace SportZone.Application.Dtos
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
         public string? CategoryName { get; set; }
-        public List<ProductSizeDto>? ProductSizes { get; set; }
     }
 
     public class UpdateProductDto
@@ -47,6 +47,10 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; } 
         [DefaultValue(1)]
         public int? CategoryId { get; set; }
+        public double? Discount { get; set; } = 0.0;
+        public bool? IsNew { get; set; } = true;
+        public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
+        public List<ProductSizeDto>? ProductSizes { get; set; }
     }
 
      public class ProductInCartDto : CreateProductDto

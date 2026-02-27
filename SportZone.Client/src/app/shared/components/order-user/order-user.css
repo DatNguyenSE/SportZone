@@ -1,0 +1,29 @@
+  body {
+            font-family: 'AdihausDIN', Arial, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        h1,
+        h2,
+        h3,
+        .btn-adidas {
+            font-family: 'ITC Avant Garde Gothic', sans-serif;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .adidas-border {
+            border: 1px solid #ebedee;
+        }
+
+        .dark .adidas-border {
+            border: 1px solid #2d2d2d;
+        }
+
+
+    
+  /* Custom Scrollbar cho danh sách sản phẩm */
+  .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #000; }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #fff; }
