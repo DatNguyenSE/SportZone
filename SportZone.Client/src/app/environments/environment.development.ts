@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:5144/api/',
+    apiUrl: 'https://sportzone-api-h0zz.onrender.com/api/',
 };
