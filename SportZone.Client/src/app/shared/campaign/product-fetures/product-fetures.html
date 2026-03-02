@@ -1,19 +1,19 @@
 <div class="min-h-screen bg-[#0a0a0a] text-white">
   <section class="relative h-[70vh] flex items-center overflow-hidden">
     <div class="absolute inset-0">
-      <img [src]="pageData().image" class="w-full h-full object-cover opacity-50 scale-105">
+      <img [src]="pageData()?.image" class="w-full h-full object-cover opacity-50 scale-105">
       <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
     </div>
 
     <div class="relative z-10 px-10 lg:px-20 max-w-5xl">
-      <span class="font-black uppercase tracking-[0.4em] text-sm mb-4 block" [style.color]="pageData().themeColor">
-        {{ pageData().label }}
+      <span class="font-black uppercase tracking-[0.4em] text-sm mb-4 block" >
+        {{ pageData()?.label }}[
       </span>
       <h1 class="text-7xl md:text-9xl font-black italic uppercase leading-[0.85] mb-8 tracking-tighter">
-        {{ pageData().title }}
+        {{ pageData()?.title }}
       </h1>
-      <p class="text-gray-400 text-lg max-w-lg uppercase font-medium leading-tight border-l-4 p-4" [style.border-color]="pageData().themeColor">
-        {{ pageData().desc }}
+      <p class="text-gray-400 text-lg max-w-lg uppercase font-medium leading-tight border-l-4 p-4" >
+        {{ pageData()?.desc }}
       </p>
     </div>
   </section>
@@ -32,7 +32,7 @@
           </div>
           <h3 class="text-xs font-bold uppercase mb-2 truncate">{{ product.name }}</h3>
           <div class="flex justify-between items-center">
-             <span class="text-sm font-black italic" [style.color]="pageData().themeColor">{{ product.price | number }}₫</span>
+             <span class="text-sm font-black italic" >{{ product.price | number }}₫</span>
              <button class="text-[10px] font-black uppercase border border-white/20 px-3 py-1 hover:bg-white hover:text-black transition-colors">Mua</button>
           </div>
         </div>

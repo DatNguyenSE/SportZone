@@ -43,7 +43,13 @@ namespace SportZone.Infrastructure.Repositories
             return true;
         }
 
-        
+        public async Task<IEnumerable<Product?>> GetListByFeatureAsync(string feature)
+        {
+            return await _context.Products
+                .Where(p => p.Featured == feature)
+                 .Include(p => p.ProductSizes)
+                 .ToListAsync();
+        }
     }
 
 }

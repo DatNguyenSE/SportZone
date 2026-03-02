@@ -21,3 +21,4 @@ export interface ProductSize {
   sizeName: string;
   quantity: number;
 }
+

@@ -7,6 +7,7 @@ import { ProductService } from '../../core/services/product-service';
 import { OrderService } from '../../core/services/order-service';
 import { Order } from '../../shared/models/order.model';
 import { Product } from '../../shared/models/product.model';
+import { Features } from '../../shared/models/features.model';
 
 interface Slide {
   id: number;
@@ -14,13 +15,6 @@ interface Slide {
   title: string;
   subtitle: string;
   category: string;
-}
-
-export interface HotCategory {
-  label: string;
-  title: string;
-  image: string;
-  link: string;
 }
 
 @Component({
@@ -110,10 +104,10 @@ export class Home implements OnInit {
         };
       });
 
-    const footballGroup = { 
-      id: this.FOOTBALL_CATEGORY_ID, 
-      categoryName: 'Giày Bóng Đá 👟', 
-      imageUrl: "👟" 
+    const footballGroup = {
+      id: this.FOOTBALL_CATEGORY_ID,
+      categoryName: 'Giày Bóng Đá 👟',
+      imageUrl: "👟"
     };
 
     return [...filtered, footballGroup];
@@ -126,9 +120,9 @@ export class Home implements OnInit {
   onSeeMoreProducts() {
     const currentId = this.selectedCategoryId();
     if (currentId === this.FOOTBALL_CATEGORY_ID) {
-        this.router.navigate(['/category', this.FOOTBALL_SLUG]);
+      this.router.navigate(['/category', this.FOOTBALL_SLUG]);
     } else {
-        this.router.navigate(['/category', currentId]);
+      this.router.navigate(['/category', currentId]);
     }
   }
 
@@ -137,7 +131,7 @@ export class Home implements OnInit {
   slides: Slide[] = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?q=80&w=2574&auto=format&fit=crop',
+      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772119951/bong_thi_dau_chinh_thuc_cho_mua_giai_moi__5__76c74ffb117b4694a64685e4d487f034_u8yjqn.jpg',
       title: 'PREDATOR ELITE',
       subtitle: 'Kiểm soát bóng, làm chủ cuộc chơi.',
       category: 'FIRM GROUND'
@@ -149,13 +143,7 @@ export class Home implements OnInit {
       subtitle: 'Tốc độ xé gió, bứt phá mọi giới hạn.',
       category: 'SPEED BOOTS'
     },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=2670&auto=format&fit=crop',
-      title: 'COPA PURE 2',
-      subtitle: 'Cảm giác bóng chân thực nhất.',
-      category: 'SÂN CỎ TỰ NHIÊN'
-    },
+
     {
       id: 4,
       image: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=2549&auto=format&fit=crop',
@@ -165,32 +153,32 @@ export class Home implements OnInit {
     }
   ];
 
-   hotCategories: HotCategory[] = [
-    {
-      label: 'Professional Grip',
-      title: 'ELITE CATCH',
-      image: 'https://images.unsplash.com/photo-1600250395178-40fe752e5189?q=80&w=1000&auto=format&fit=crop',
-      link:  'features/goalkeeper'
-    },
-    {
-      label: 'Master the Ball',
-      title: 'PRECISION GRIP',
-      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop',
-       link:  'features/ballcontrol'
-    },
-    {
-      label: 'Kits & Jerseys',
-      title: 'OFFICIAL TEAMWEAR',
-      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772091873/0a379d9f6d490c7ac35c80ac2ab70344_e0zevp.jpg',
-       link:  'features/teamwear'
-    },
-    {
-      label: 'Official Match Ball',
-      title: 'AERODYNAMICS',
-      image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772119951/bong_thi_dau_chinh_thuc_cho_mua_giai_moi__5__76c74ffb117b4694a64685e4d487f034_u8yjqn.jpg' ,
-       link:  'features/ball'
-    }
-  ];
+  features: Features[] = [
+  {
+    label: 'GoalKeeper Elite',
+    title: 'Elite catch',
+    image: 'https://images.unsplash.com/photo-1600250395178-40fe752e5189?q=80&w=1000&auto=format&fit=crop',
+    desc: 'Advanced latex technology providing superior adhesive grip and shock absorption for ultimate goalkeeper performance.'
+  },
+  {
+    label: 'CURVE MASTER',
+    title: 'Spin & curve technology',
+    image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772352606/images_rhphsf.webp',
+    desc: 'Engineered strike zones with 3D ridges designed to maximize ball rotation for devastating finesses and trivela shots.'
+  },
+  {
+    label: 'Master the Ball',
+    title: 'Touch & control',
+    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop',
+    desc: 'Experience an unparalleled first touch with a high-definition texture surface that offers precise ball feel and elegant handling.'
+  },
+  {
+    label: 'PRO FAST-TRACK',
+    title: 'Acceleration ability',
+    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=2670&auto=format&fit=crop',
+    desc: 'Ultralight materials combined with a specialized traction pattern for explosive speed and rapid changes of direction.'
+  }
+];
 
   scroll(direction: 'left' | 'right') {
     const container = this.scrollContainer.nativeElement;
