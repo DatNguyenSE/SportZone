@@ -16,4 +16,5 @@ public interface IOrderService
     Task<OrderDto> GetOrderByIdAsync(int orderId);
     Task CompletedOrderStatus(int orderId);
     Task<OrderDetailsDto> GetOrderWithPaymentAsync(int orderId);
+    Task CancelOrderBackgroundAsync(int orderId);
 }

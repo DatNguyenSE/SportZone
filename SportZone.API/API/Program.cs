@@ -17,6 +17,8 @@ using SportZone.API.Middlewares;
 using Sport.Application.IService;
 using Sport.Infrastructure.Service;
 using SportZone.Domain.Entities;
+using Hangfire;
+using Hangfire.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,10 +60,20 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+//Cấu hình DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// THÊM CẤU HÌNH HANGFIRE 
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UsePostgreSqlStorage(c => c.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
+// Thêm Hangfire Server để xử lý job ngầm
+builder.Services.AddHangfireServer();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -97,6 +109,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// 3. THÊM DASHBOARD (Cho phép bạn xem các job tại /hangfire)
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(); 
+    app.UseHangfireDashboard(); // Thêm dòng này
+}
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();

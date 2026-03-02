@@ -78,6 +78,13 @@ namespace API.Controllers
             await productService.DeleteAsync(productId);
             return NoContent();
         }
+
+        [HttpGet("features-items/{feature}")]
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByFeature(string feature)
+        {
+            var products = await productService.GetListByFeatureAsync(feature);
+            return Ok(products);
+        }
     }
 }
 

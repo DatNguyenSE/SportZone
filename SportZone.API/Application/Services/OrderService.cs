@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using SportZone.Domain.Entities;
+using Hangfire;
 
 namespace SportZone.Application.Services;
 
@@ -162,8 +163,15 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         // 7. Save changes
         await uow.OrderRepository.AddAsync(order);
         await uow.CartRepository.ClearCartAsync(userId);
-        await uow.Complete(); // Commit Transaction
+        await uow.Complete();
 
+        // Lên lịch: Sau 15 phút sẽ gọi hàm CancelOrderBackgroundAsync
+        if (paymentMethod == PaymentMethod.OnlineBanking)
+        {
+            BackgroundJob.Schedule<IOrderService>(
+                service => service.CancelOrderBackgroundAsync(order.Id),
+                TimeSpan.FromMinutes(1));
+        }
         return mapper.Map<OrderDetailsDto>(order);
     }
 
@@ -206,31 +214,9 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
             order.Payment.PaymentStatus = PaymentStatus.Failed;
         order.Status = OrderStatus.Cancelled;
 
-        // REFUND QUANTITY 
-        if (order.Items != null && order.Items.Count != 0)
-        {
-            var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
-            var productSizes = await uow.ProductSizeRepository.GetListByProductIdsAsync(productIds, order.Items.Select(i => i.ProductSizeId));
+        // REFUND ITEMS QUANTITY 
+        await RefundStockAsync(order);
 
-            // Dùng Dictionary để map nhanh
-            var productSizeDict = productSizes.ToDictionary(i => (i.ProductId, i.Id), i => i);
-
-            foreach (var orderItem in order.Items)
-            {
-                if (productSizeDict.TryGetValue((orderItem.ProductId, orderItem.ProductSizeId), out var productSize))
-                {
-                    productSize.Quantity += orderItem.Quantity;
-                }
-                else
-                {
-                    logger.LogWarning(
-                        "Refund Warning: Order {OrderId} cancelled but Inventory for ProductId {ProductId} not found. Stock could not be restored.",
-                        orderId,
-                        orderItem.ProductId
-                    );
-                }
-            }
-        }
 
         await uow.Complete();
     }
@@ -295,5 +281,43 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
     {
         var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId);
         return mapper.Map<OrderDetailsDto>(order);
+    }
+
+    public async Task CancelOrderBackgroundAsync(int orderId)
+    {
+      
+        var order = await uow.OrderRepository.GetOrderForBackgroundCancelAsync(orderId); //không check userId
+
+        if (order != null && order.Status == OrderStatus.Pending)
+        {
+            logger.LogInformation($"Hangfire: Tự động hủy đơn hàng {orderId} do hết hạn thanh toán.");
+
+            order.Status = OrderStatus.Cancelled;
+            if (order.Payment != null) order.Payment.PaymentStatus = PaymentStatus.Failed;
+
+
+            // REFUND ITEMS
+            await RefundStockAsync(order);
+
+            await uow.Complete();
+        }
+    }
+    private async Task RefundStockAsync(Order order)
+    {
+        if (order.Items == null || !order.Items.Any()) return;
+
+        var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
+        var sizeIds = order.Items.Select(i => i.ProductSizeId).Distinct().ToList();
+
+        var productSizes = await uow.ProductSizeRepository.GetListByProductIdsAsync(productIds, sizeIds);
+        var productSizeDict = productSizes.ToDictionary(i => (i.ProductId, i.Id), i => i);
+
+        foreach (var item in order.Items)
+        {
+            if (productSizeDict.TryGetValue((item.ProductId, item.ProductSizeId), out var productSize))
+            {
+                productSize.Quantity += item.Quantity;
+            }
+        }
     }
 }

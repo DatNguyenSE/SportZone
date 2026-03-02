@@ -10,4 +10,6 @@ public interface IOrderRepository : IGenericRepository<Order>
     Task<Order?> GetOrderWithDetailsAsync(int OrderId, string userId);
     Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId);
     Task<Order?> GetOrderWithPaymentAsync(int orderId);
+    Task<Order?> GetOrderForBackgroundCancelAsync(int orderId);
+
 }

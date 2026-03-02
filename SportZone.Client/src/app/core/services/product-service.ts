@@ -27,6 +27,10 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.baseUrl}products/category/` + categoryId)
   }
 
+  getProductsByFeature(feature: string){
+    return this.http.get<Product[]>(`${this.baseUrl}products/features-items/`+feature);
+  }
+
   getProductsById(productId: number) {
     return this.http.get<Product>(`${this.baseUrl}products/` + productId)
   }
