@@ -3,7 +3,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # 2. Copy TỪNG file .csproj vào đúng thư mục tương ứng
-# (Tôi đang giả sử thư mục chứa API của bạn tên là "SportZone.API" và thư mục thứ 4 là "Domain")
 COPY ["SportZone.API/SportZone.API.csproj", "SportZone.API/"]
 COPY ["Application/SportZone.Application.csproj", "Application/"]
 COPY ["Infrastructure/SportZone.Infrastructure.csproj", "Infrastructure/"]
