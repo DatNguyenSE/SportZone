@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportZone.Infrastructure.Data;
@@ -11,9 +12,11 @@ using SportZone.Infrastructure.Data;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260303053656_RenameFeatureToLabelAndAddNewFeatureTable")]
+    partial class RenameFeatureToLabelAndAddNewFeatureTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,21 +182,6 @@ namespace API.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Product_Features", b =>
-                {
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("FeatureId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Product_Features");
                 });
 
             modelBuilder.Entity("SportZone.Domain.Entities.AppUser", b =>
@@ -378,12 +366,17 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Features");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Feature");
                 });
 
             modelBuilder.Entity("SportZone.Domain.Entities.Order", b =>
@@ -699,21 +692,6 @@ namespace API.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Product_Features", b =>
-                {
-                    b.HasOne("SportZone.Domain.Entities.Feature", null)
-                        .WithMany()
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportZone.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SportZone.Domain.Entities.Cart", b =>
                 {
                     b.HasOne("SportZone.Domain.Entities.AppUser", "User")
@@ -750,6 +728,17 @@ namespace API.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductSize");
+                });
+
+            modelBuilder.Entity("SportZone.Domain.Entities.Feature", b =>
+                {
+                    b.HasOne("SportZone.Domain.Entities.Product", "Product")
+                        .WithMany("Features")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SportZone.Domain.Entities.Order", b =>
@@ -869,6 +858,8 @@ namespace API.Data.Migrations
             modelBuilder.Entity("SportZone.Domain.Entities.Product", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("Features");
 
                     b.Navigation("OrderItems");
 

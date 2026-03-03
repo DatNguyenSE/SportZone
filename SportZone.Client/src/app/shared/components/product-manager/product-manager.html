@@ -79,13 +79,13 @@
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">Tính năng/ nhãn</label>
+              <label class="text-[11px] font-bold text-zinc-500 uppercase">chọn nhãn</label>
 
-              <input [(ngModel)]="newProduct.featured" name="featured" list="featuredOptions"
+              <input [(ngModel)]="newProduct.label" name="label" list="labelOptions"
                 placeholder="Chọn hoặc tự nhập..."
                 class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded text-sm p-2.5 outline-none" />
 
-              <datalist id="featuredOptions">
+              <datalist id="labelOptions">
                 <option value="New Arrival"></option>
                 <option value="Best Seller"></option>
                 <option value="Trending"></option>
@@ -210,8 +210,8 @@
                     </span>
                   </div>
 
-                  <span *ngIf="p.featured" class="text-[9px] text-blue-500 font-bold uppercase tracking-tighter italic">
-                    #{{p.featured}}
+                  <span *ngIf="p.label" class="text-[9px] text-blue-500 font-bold uppercase tracking-tighter italic">
+                    #{{p.label}}
                   </span>
                 </div>
               </td>

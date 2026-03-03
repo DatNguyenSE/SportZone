@@ -39,7 +39,7 @@ export class ProductManager implements OnInit {
       categoryId: 1,
       discount: 0,
       isNew: true,
-      featured: null,
+      label: null,
       productSizes: [] as ProductSize[] 
     };
   }

@@ -5,24 +5,24 @@
   rel="stylesheet">
 
 @if (pendingOrdersCount() !== 0 && pendingOrdersCount() !== undefined ) {
-<div class="w-full mt-6">
-  <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex items-center justify-between group">
-    <div class="flex items-center">
-      <div class="flex-shrink-0">
+<div class="w-full mt-4 md:mt-6 px-4 md:px-0">
+  <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 group">
+    <div class="flex items-start sm:items-center">
+      <div class="flex-shrink-0 mt-0.5 sm:mt-0">
         <span class="material-icons-outlined text-amber-500">priority_high</span>
       </div>
       <div class="ml-3">
-        <p class="text-sm text-amber-800 font-bold uppercase tracking-tight">
+        <p class="text-xs sm:text-sm text-amber-800 font-bold uppercase tracking-tight">
           Bạn có <span class="text-amber-600 underline">{{ pendingOrdersCount() }} đơn hàng</span> đang chờ thanh
           toán!
         </p>
-        <p class="text-[11px] text-amber-700 font-medium uppercase mt-0.5">
+        <p class="text-[10px] sm:text-[11px] text-amber-700 font-medium uppercase mt-0.5">
           Vui lòng hoàn tất để SportZone có thể giao hàng sớm nhất cho bạn.
         </p>
       </div>
     </div>
     <a routerLink="/order-user"
-      class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-amber-600 hover:text-amber-800 transition-colors">
+      class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-amber-600 hover:text-amber-800 transition-colors ml-9 sm:ml-0">
       Kiểm tra ngay
       <span class="material-icons-outlined text-sm">arrow_forward</span>
     </a>
@@ -30,32 +30,32 @@
 </div>
 }
 
-<section class="relative w-full aspect-[24/8.7] min-h-[600px] overflow-hidden bg-slate-900">
+<section class="relative w-full aspect-[24/8.7] min-h-[450px] md:min-h-[600px] overflow-hidden bg-slate-900">
   <div class="absolute inset-0 bg-cover bg-center" data-alt="Đội tuyển bóng đá quốc gia Việt Nam"
     [style.background-image]="'url(' + pageImages.heroBanner + ')'">
   </div>
 
-  <div class="absolute inset-0 bg-gradient-to-r from-red-900/80 via-black/40 to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-red-900/80 via-black/50 md:via-black/40 to-transparent"></div>
 
-  <div class="relative h-full flex flex-col justify-center px-10 lg:px-20 max-w-[1440px] mx-auto text-white">
-    <div class="max-w-2xl">
-      <h1 class="text-6xl lg:text-8xl italic-black leading-[0.9] mb-4 uppercase">
+  <div class="relative h-full flex flex-col justify-center px-6 md:px-10 lg:px-20 max-w-[1440px] mx-auto text-white">
+    <div class="max-w-2xl mt-12 md:mt-0">
+      <h1 class="text-5xl sm:text-6xl lg:text-8xl italic-black leading-[0.9] mb-4 uppercase">
         TỰ HÀO<br />CHIẾN BINH SAO VÀNG
       </h1>
-      <p class="text-lg font-medium mb-8 max-w-lg uppercase tracking-tight">
+      <p class="text-base md:text-lg font-medium mb-6 md:mb-8 max-w-lg uppercase tracking-tight">
         Sát cánh cùng Đội tuyển Việt Nam trên mọi hành trình.
         Sở hữu ngay bộ trang phục thi đấu chính thức và trang bị chuyên nghiệp nhất.
       </p>
 
-      <div class="flex flex-wrap gap-4">
+      <div class="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
         <button routerLink="/product-detail/5"
-          class="bg-white text-black px-8 py-4 text-sm font-black uppercase flex items-center gap-2 hover:bg-yellow-400 hover:text-black transition-all group">
+          class="bg-white text-black px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm font-black uppercase flex items-center justify-center gap-2 hover:bg-yellow-400 hover:text-black transition-all group">
           SẮM ÁO ĐỘI TUYỂN
           <span class="material-icons-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
 
         <button routerLink="/category/shoes"
-          class="bg-transparent border-2 border-white text-white px-8 py-4 text-sm font-black uppercase flex items-center gap-2 hover:bg-white hover:text-black transition-all group">
+          class="bg-transparent border-2 border-white text-white px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm font-black uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group">
           TRANG BỊ RA SÂN
           <span class="material-icons-outlined group-hover:translate-x-1 transition-transform">sports_soccer</span>
         </button>
@@ -64,26 +64,25 @@
   </div>
 </section>
 
-<!-- Trending Categories "What's Type" -->
-<section class="w-screen py-16 px-6 lg:px-16">
-  <h2 class="text-5xl font-black uppercase italic font-condensed mb-10 tracking-tighter">WHAT'S TYPE</h2>
+<section class="w-screen py-10 md:py-16 px-4 md:px-6 lg:px-16">
+  <h2 class="text-3xl md:text-5xl font-black uppercase italic font-condensed mb-6 md:mb-10 tracking-tighter">WHAT'S TYPE</h2>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
     @for (item of features; track item.title) {
     <div routerLink="/feature-products" 
          [state]="{ features: item }"
-         class="group relative h-[65vh] overflow-hidden cursor-pointer">
+         class="group relative h-[40vh] md:h-[65vh] overflow-hidden cursor-pointer">
       
       <div class="absolute inset-0 bg-cover bg-center transition duration-[1200ms] group-hover:scale-110"
         [style.background-image]="'url(' + item.image + ')'"></div>
 
       <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500"></div>
 
-      <div class="absolute bottom-8 left-6 text-white">
-        <p class="text-sm font-bold uppercase tracking-widest mb-2">
+      <div class="absolute bottom-6 md:bottom-8 left-4 md:left-6 text-white">
+        <p class="text-xs md:text-sm font-bold uppercase tracking-widest mb-1 md:mb-2">
           {{ item.label }}
         </p>
-        <h3 class="text-xl font-black uppercase underline underline-offset-4">
+        <h3 class="text-lg md:text-xl font-black uppercase underline underline-offset-4">
           {{ item.title }}
         </h3>
       </div>
@@ -92,91 +91,54 @@
   </div>
 </section>
 
-<!-- Notificate order -->
 <main class="w-full flex flex-col items-center">
   <div class="w-full">
 
-
-    <!-- panel -->
-    <section class="w-full py-8 relative group">
-
-      <!-- <button (click)="scroll('left')"
-        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white border border-black p-3 hover:bg-black hover:text-white transition-all hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 duration-300">
-        <span class="material-icons-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-          </svg>
-        </span>
-      </button> -->
-
-      <div #scrollContainer class="flex overflow-x-auto snap-x snap-mandatory gap-1 px-4 md:px-0 no-scrollbar">
+    <section class="w-full py-4 md:py-8 relative group">
+      <div #scrollContainer class="flex overflow-x-auto snap-x snap-mandatory gap-2 md:gap-1 px-4 md:px-0 no-scrollbar">
         <div *ngFor="let slide of slides"
-          class="snap-center shrink-0 w-full md:w-1/3 relative h-[600px] md:h-[500px] cursor-pointer group/item overflow-hidden">
+          class="snap-center shrink-0 w-[85%] sm:w-1/2 md:w-1/3 relative h-[400px] md:h-[500px] cursor-pointer group/item overflow-hidden">
 
           <img [src]="slide.image" [alt]="slide.title"
             class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-105">
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
 
-          <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
-
+          <div class="absolute inset-0 p-5 md:p-8 flex flex-col justify-between">
             <div>
-              <h2
-                class="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter drop-shadow-md font-sans">
+              <h2 class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter drop-shadow-md font-sans">
                 {{ slide.title }}
               </h2>
             </div>
 
             <div class="translate-y-4 group-hover/item:translate-y-0 transition-transform duration-300">
-              <span
-                class="inline-block bg-white text-black text-[10px] font-bold px-2 py-1 uppercase tracking-widest mb-3">
+              <span class="inline-block bg-white text-black text-[10px] font-bold px-2 py-1 uppercase tracking-widest mb-3">
                 {{ slide.category }}
               </span>
 
-              <div class="bg-white/90 backdrop-blur-sm p-4 w-fit max-w-[90%] mb-4">
-                <p class="text-black text-sm font-bold uppercase leading-snug tracking-wide">
+              <div class="bg-white/90 backdrop-blur-sm p-3 md:p-4 w-fit max-w-[95%] mb-2 md:mb-4">
+                <p class="text-black text-xs md:text-sm font-bold uppercase leading-snug tracking-wide">
                   {{ slide.title }}
                 </p>
-                <p class="text-gray-600 text-xs mt-1 font-medium">
+                <p class="text-gray-600 text-[10px] md:text-xs mt-1 font-medium">
                   {{ slide.subtitle }}
                 </p>
               </div>
-
-           
             </div>
           </div>
-
-          <div class="absolute top-6 right-6 text-white opacity-80">
-
-          </div>
-
         </div>
-
       </div>
-
-      <!-- <button (click)="scroll('right')"
-        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white border border-black p-3 hover:bg-black hover:text-white transition-all hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 duration-300">
-        <span class="material-icons-outlined"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-          </svg>
-        </span>
-      </button> -->
-
     </section>
 
+    <section class="px-4 pb-12 md:pb-17 md:px-10 py-8 md:py-12">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 md:mb-8 gap-4 md:gap-6">
+        <div class="flex flex-col gap-3 md:gap-4 w-full overflow-hidden">
+          <h3 class="text-2xl md:text-3xl font-black uppercase italic tracking-tighter">Sản phẩm dành cho bạn</h3>
 
-    <!-- Sản phẩm dành cho bạn  -->
-    <section class="px-4 pb-17 md:px-10 py-12">
-
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-        <div class="flex flex-col gap-4 w-full">
-          <h3 class="text-3xl font-black uppercase italic tracking-tighter">Sản phẩm dành cho bạn</h3>
-
-          <div class="flex flex-wrap items-center gap-2">
+          <div class="flex overflow-x-auto sm:flex-wrap items-center gap-2 pb-2 sm:pb-0 no-scrollbar">
             @for (cat of displayCategories(); track cat.id) {
             <button (click)="selectCategory(cat.id)"
-              class="px-5 py-3 border border-black/20 text-sm font-bold uppercase tracking-wider transition-all duration-200 min-w-[100px] text-center"
+              class="whitespace-nowrap px-4 py-2 md:px-5 md:py-3 border border-black/20 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 min-w-fit md:min-w-[100px] text-center"
               [ngClass]="{
                   'bg-black text-white border-black': selectedCategoryId() === cat.id,
                   'bg-white text-black hover:border-black hover:bg-black hover:text-white': selectedCategoryId() !== cat.id
@@ -188,116 +150,110 @@
         </div>
 
         <button (click)="onSeeMoreProducts()"
-          class="whitespace-nowrap text-black font-bold text-sm uppercase tracking-widest border-b-2 border-black hover:bg-black hover:text-white px-1 py-1 transition-all">
+          class="self-start sm:self-auto whitespace-nowrap text-black font-bold text-xs md:text-sm uppercase tracking-widest border-b-2 border-black hover:bg-black hover:text-white px-1 py-1 transition-all">
           Xem Tất cả
         </button>
       </div>
 
-      <div class="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory scroll-smooth 
-            [&::-webkit-scrollbar]:h-[6px] 
+      <div class="flex overflow-x-auto gap-3 md:gap-4 pb-6 snap-x snap-mandatory scroll-smooth 
+            [&::-webkit-scrollbar]:h-[4px] md:[&::-webkit-scrollbar]:h-[6px] 
             [&::-webkit-scrollbar-track]:bg-gray-100
             [&::-webkit-scrollbar-thumb]:bg-black 
             [&::-webkit-scrollbar-thumb]:hover:bg-gray-800">
         @for (product of filteredProducts(); track product.id) {
-        <div class="group cursor-pointer relative bg-white flex flex-col flex-shrink-0 snap-start w-[280px] md:w-[320px] 
-     hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all duration-300">
+        <div class="group cursor-pointer relative bg-white flex flex-col flex-shrink-0 snap-start w-[240px] md:w-[320px] 
+      hover:outline hover:outline-2 hover:outline-black hover:z-10 transition-all duration-300">
 
           <div class="relative bg-[#f5f5f5] aspect-square overflow-hidden">
-
             @if (product.discount && product.discount > 0) {
-            <div class="absolute top-0 left-0 bg-[#e32b2b] text-white text-[12px] font-black px-3 py-1.5 z-10 italic">
+            <div class="absolute top-0 left-0 bg-[#e32b2b] text-white text-[10px] md:text-[12px] font-black px-2 py-1 md:px-3 md:py-1.5 z-10 italic">
               -{{ product.discount }}%
             </div>
             }
             @if (product.isNew) {
-            <div [style.top]="(product.discount && product.discount > 0) ? '31px' : '0px'"
-              class="absolute left-0 bg-black text-white text-[10px] font-bold px-2 py-1 z-10 uppercase tracking-tighter">
+            <div [style.top]="(product.discount && product.discount > 0) ? '28px' : '0px'"
+              class="absolute left-0 bg-black text-white text-[9px] md:text-[10px] font-bold px-2 py-1 z-10 uppercase tracking-tighter">
               Hàng mới
             </div>
             }
-            <button class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span class="material-icons-outlined text-xl">favorite_border</span>
+            <button class="absolute top-3 right-3 md:top-4 md:right-4 z-10 opacity-70 md:opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="material-icons-outlined text-lg md:text-xl">favorite_border</span>
             </button>
 
             <img [routerLink]="['/product-detail', product.id]" [src]="product.imageUrl" [alt]="product.name"
               class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
 
-            @if (product.featured ) {
-            <div
-              class="absolute bottom-0 left-0 bg-red-500 px-2 py-1 text-[11px] font-bold text-black border-t border-r border-gray-200 uppercase tracking-tighter">
-              {{product.featured}}
+            @if (product.label ) {
+            <div class="absolute bottom-0 left-0 bg-red-500 px-2 py-1 text-[9px] md:text-[11px] font-bold text-black border-t border-r border-gray-200 uppercase tracking-tighter">
+              {{product.label}}
             </div>
             }
           </div>
 
-          <div class="p-4 flex flex-col flex-grow">
-
-            <div class="flex flex-wrap items-center gap-2 mb-2">
-
-              <span class="text-sm font-black italic" [class.text-[#e32b2b]]="product.discount && product.discount > 0">
+          <div class="p-3 md:p-4 flex flex-col flex-grow">
+            <div class="flex flex-wrap items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+              <span class="text-xs md:text-sm font-black italic" [class.text-[#e32b2b]]="product.discount && product.discount > 0">
                 {{ (product.price * (1 - (product.discount ?? 0) / 100)) | number:'1.0-0' }}₫
               </span>
 
               @if (product.discount && product.discount > 0) {
-              <span class="text-[11px] text-gray-400 line-through decoration-1">
+              <span class="text-[10px] md:text-[11px] text-gray-400 line-through decoration-1">
                 {{ product.price | number:'1.0-0' }}₫
               </span>
               }
             </div>
 
-            <p class="text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2 font-medium min-h-[32px]">
+            <p class="text-[12px] md:text-[13px] text-black leading-tight uppercase mb-1 line-clamp-2 font-medium min-h-[30px] md:min-h-[32px]">
               {{ product.name }}
             </p>
 
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
+            <p class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
               {{ product.categoryName }}
             </p>
           </div>
         </div>
         } @empty {
-        <div class="w-full py-20 text-center text-gray-500 font-bold uppercase">
+        <div class="w-full py-16 md:py-20 text-center text-gray-500 font-bold uppercase">
           Chưa có sản phẩm nào.
         </div>
         }
       </div>
     </section>
-    <section class="mb-2 w-full">
-      <div class="grid grid-cols-1 md:grid-cols-2 w-full h-auto md:h-[650px]">
 
-        <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
+    <section class="mb-2 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full h-auto md:h-[550px] lg:h-[650px]">
+
+        <div class="relative h-[300px] md:h-full w-full group overflow-hidden border-b md:border-b-0 border-r-0 md:border-r border-white">
           <img alt="World Cup Trophy Celebration"
             class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
             [src]="pageImages.passionStadium" />
 
-          <div class="absolute inset-0 bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
+          <div class="absolute inset-0 bg-yellow-900/30 md:bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
 
-          <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
-            <h2
-              class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+          <div class="absolute bottom-6 left-4 md:bottom-12 md:left-12 z-10">
+            <h2 class="bg-white text-black text-xl md:text-4xl lg:text-5xl font-black uppercase italic tracking-tighter px-4 md:px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-3 md:mb-4">
               CHẠM TAY VÀO<br>VINH QUANG
             </h2>
             <div>
-              <button
-                class="bg-black text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black hover:border-transparent transition-all border border-black">
+              <button class="bg-black text-white px-6 py-3 md:px-8 md:py-4 text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black hover:border-transparent transition-all border border-black">
                 SỞ HỮU NGAY
               </button>
             </div>
           </div>
         </div>
-        <div class="relative h-[450px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
+
+        <div class="relative h-[300px] md:h-full w-full group overflow-hidden border-r-0 md:border-r border-white">
           <img alt="World Cup Trophy Celebration"
             class="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
             [src]="pageImages.gloryTrophy" />
-          <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+          <div class="absolute inset-0 bg-black/30 md:bg-black/20 group-hover:bg-transparent transition-colors"></div>
 
-          <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-10">
-            <h2
-              class="bg-white text-black text-2xl md:text-5xl font-black uppercase italic tracking-tighter px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-4">
+          <div class="absolute bottom-6 left-4 md:bottom-12 md:left-12 z-10">
+            <h2 class="bg-white text-black text-xl md:text-4xl lg:text-5xl font-black uppercase italic tracking-tighter px-4 md:px-6 py-2 inline-block shadow-xl transform -skew-x-6 mb-3 md:mb-4">
               SỐNG CÙNG<br>ĐAM MÊ
             </h2>
             <div>
-              <button
-                class="bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors border border-white">
+              <button class="bg-white text-black px-6 py-3 md:px-8 md:py-4 text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors border border-white">
                 XEM BỘ SƯU TẬP
               </button>
             </div>
@@ -307,30 +263,22 @@
       </div>
     </section>
 
-
-
-
-    <section class="bg-black text-white py-16">
-      <div class="max-w-[1440px] mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-10">
-        <div class="max-w-xl">
-          <h2 class="text-5xl font-black italic uppercase mb-6 leading-none">THAM GIA TEAM ADIDAS</h2>
-          <p class="text-lg text-gray-400 mb-8 uppercase tracking-widest">Nhận ưu đãi 15% cho đơn hàng đầu tiên và quyền
-            truy cập sớm.</p>
-          <button
-            class="bg-white text-black px-10 py-4 font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
+    <section class="bg-black text-white py-10 md:py-16">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-10 flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-10">
+        <div class="max-w-xl text-center md:text-left">
+          <h2 class="text-3xl md:text-5xl font-black italic uppercase mb-4 md:mb-6 leading-none">THAM GIA TEAM ADIDAS</h2>
+          <p class="text-sm md:text-lg text-gray-400 mb-6 md:mb-8 uppercase tracking-widest">
+            Nhận ưu đãi 15% cho đơn hàng đầu tiên và quyền truy cập sớm.
+          </p>
+          <button class="bg-white text-black px-8 py-3 md:px-10 md:py-4 text-xs md:text-base font-black uppercase tracking-widest hover:bg-gray-200 transition-all w-full md:w-auto">
             ĐĂNG KÝ MIỄN PHÍ
           </button>
         </div>
-        <div class="w-full md:w-1/2 h-[400px] overflow-hidden">
+        <div class="w-full md:w-1/2 h-[200px] sm:h-[300px] md:h-[400px] overflow-hidden rounded-sm md:rounded-none">
           <img alt="Team Huddle" [src]="pageImages.teamHuddle" class="w-full h-full object-cover opacity-80" />
         </div>
       </div>
     </section>
-
-
-
-
-
 
   </div>
 </main>

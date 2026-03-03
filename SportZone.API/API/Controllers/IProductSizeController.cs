@@ -16,13 +16,6 @@ namespace SportZone.API.Controllers
             return Ok();
         }
         
-        [HttpGet("{productSizeId:int}")]
-        public async Task<ActionResult<InventoryDto>> GetInventory(int productSizeId)
-        {
-            var inventory = await productSizeService.GetProductSizeAsync(productSizeId);
-            return Ok(inventory);
-        }
-        
 
         [HttpGet("{productId:int}/quantity")]
         public async Task<ActionResult<int>> GetQuantity(int productId, string sizeName)

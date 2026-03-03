@@ -37,6 +37,9 @@ namespace SportZone.Application.Mappings
                 srcMember != null && (srcMember is not int i || i != 0) && (srcMember is not decimal d || d != 0)
                 ));
 
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
+
             CreateMap<Product, ProductInCartDto>().ReverseMap();
 
 
@@ -77,6 +80,11 @@ namespace SportZone.Application.Mappings
             // --- 5. CÁC THÀNH PHẦN KHÁC ---
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Promotion, PromotionDto>().ReverseMap();
+
+            //-- FEATURE MAPPING---
+            CreateMap<Feature, FeatureDto>().ReverseMap();
+            CreateMap<Feature, CreateFeatureDto>().ReverseMap();
+
         }
     }
 }

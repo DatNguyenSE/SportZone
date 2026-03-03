@@ -11,6 +11,7 @@ public interface IUnitOfWork
     ICartRepository CartRepository { get; }
     IOrderRepository OrderRepository { get; }
     IPromotionRepository PromotionRepository { get; }
+    IFeatureRepository FeatureRepository { get; }
     Task<bool> Complete();
     bool HasChange();
 }

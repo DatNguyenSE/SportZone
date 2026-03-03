@@ -95,9 +95,9 @@
                     <h1 class="font-[900] text-4xl md:text-5xl uppercase leading-[0.85] italic tracking-tighter mb-4">
                         {{ product()?.name }}
                     </h1>
-                        @if (product()?.featured ) {
+                        @if (product()?.label) {
                             <div class="bg-zinc-100 px-2 py-1 "> <p class="font-bold text-lg text-black-300  ">
-                            {{ product()?.featured }}
+                            {{ product()?.label }}
                         </p></div>
                         
                         }

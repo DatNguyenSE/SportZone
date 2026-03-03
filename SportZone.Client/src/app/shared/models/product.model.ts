@@ -13,7 +13,7 @@ export interface Product {
   discount?: number; 
   isNew?: boolean;
   productSizes?: ProductSize[];
-  featured?: string;
+  label?: string;
 }
 
 export interface ProductSize {

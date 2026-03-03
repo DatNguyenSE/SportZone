@@ -24,7 +24,6 @@ export class ProductFeatures implements OnInit {
   relatedProducts = signal<Product[]>([]);
 
   constructor() {
-    // BẮT BUỘC lấy dữ liệu Navigation ở constructor
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { features: Features };
     
@@ -34,20 +33,18 @@ export class ProductFeatures implements OnInit {
   }
 
   ngOnInit(): void {
-    // Nếu có dữ liệu thì mới gọi API
     if (this.pageData()) {
-      this.getProductByFeature();
+      this.getProductByLabel();
     } else {
       // Trường hợp người dùng F5 trang, state sẽ mất
       this.toast.error("Data lost. Please navigate from home page.");
-      // Bạn có thể redirect về home hoặc xử lý lấy lại data từ URL title ở đây
     }
   }
 
-  getProductByFeature() {
+  getProductByLabel() {
     const currentFeature = this.pageData();
     if (currentFeature) {
-      this.productService.getProductsByFeature(currentFeature.label).subscribe({
+      this.productService.getProductsByLabel(currentFeature.label).subscribe({
         next: (res) => {
           this.relatedProducts.set(res);
         },
