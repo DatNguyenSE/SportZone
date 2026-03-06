@@ -66,6 +66,16 @@ namespace SportZone.Application.Services
             return mapper.Map<IEnumerable<ProductDto>>(entities);
         }
 
+        public async Task<IEnumerable<ProductDto>> GetListByFeatureIdAsync(int featureId)
+        {
+            var products = await uow.ProductRepository.GetListByFeatureIdAsync(featureId);
+            if (products == null)
+            {
+                throw new BadRequestException($"No products found with the specified feature.");
+            }
+            return mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
         public async Task<IEnumerable<ProductDto>> GetListByLabelAsync(string label)
         {
             var products = await uow.ProductRepository.GetListByLabelAsync(label);
@@ -77,16 +87,7 @@ namespace SportZone.Application.Services
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetListByListFeatureAsync(List<int> featureIds)
-        {
-            var products = await uow.ProductRepository.GetListByListFeatureAsync(featureIds);
-            if(products == null )
-            {
-                throw new BadRequestException($"No products found with the specified features.");
-            }
-        
-            return mapper.Map<IEnumerable<ProductDto>>(products);
-        }
+       
 
         public async Task<ProductDto?> UpdateAsync(int id, UpdateProductDto productDto, IFormFile? file)
         {

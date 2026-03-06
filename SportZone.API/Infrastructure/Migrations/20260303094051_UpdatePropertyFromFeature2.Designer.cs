@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportZone.Infrastructure.Data;
@@ -11,9 +12,11 @@ using SportZone.Infrastructure.Data;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260303094051_UpdatePropertyFromFeature2")]
+    partial class UpdatePropertyFromFeature2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,9 +382,6 @@ namespace API.Data.Migrations
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("text");
-
-                    b.Property<bool?>("IsBanner")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()

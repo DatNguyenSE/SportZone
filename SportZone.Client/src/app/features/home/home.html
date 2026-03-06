@@ -4,7 +4,7 @@
   href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
   rel="stylesheet">
 
-@if (pendingOrdersCount() !== 0 && pendingOrdersCount() !== undefined ) {
+@if (pendingOrdersCount() !== 0 ) {
 <div class="w-full mt-4 md:mt-6 px-4 md:px-0">
   <div class="bg-amber-50 border-l-4 border-amber-500 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 group">
     <div class="flex items-start sm:items-center">
@@ -64,26 +64,27 @@
   </div>
 </section>
 
-<section class="w-screen py-10 md:py-16 px-4 md:px-6 lg:px-16">
-  <h2 class="text-3xl md:text-5xl font-black uppercase italic font-condensed mb-6 md:mb-10 tracking-tighter">WHAT'S TYPE</h2>
+<section class="w-screen py-10 md:py-16 px-4 md:px-6 lg:px-16 overflow-hidden">
+  <h2 class="text-3xl md:text-5xl font-black uppercase italic font-condensed mb-6 md:mb-10 tracking-tighter">
+    HIGHLIGHTS
+  </h2>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-    @for (item of features; track item.title) {
-    <div routerLink="/feature-products" 
-         [state]="{ features: item }"
-         class="group relative h-[40vh] md:h-[65vh] overflow-hidden cursor-pointer">
+  <div class="flex flex-nowrap gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-4">
+    @for (item of featuresBanner(); track item.name) {
+    <div [routerLink]="'/feature-products/' + item.id"
+         class="group relative h-[40vh] md:h-[65vh] flex-none w-[80%] sm:w-[45%] md:w-[30%] lg:w-[calc(25%-1.25rem)] overflow-hidden cursor-pointer">
       
       <div class="absolute inset-0 bg-cover bg-center transition duration-[1200ms] group-hover:scale-110"
-        [style.background-image]="'url(' + item.image + ')'"></div>
+        [style.background-image]="'url(' + item.imgUrl + ')'"></div>
 
       <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500"></div>
 
       <div class="absolute bottom-6 md:bottom-8 left-4 md:left-6 text-white">
         <p class="text-xs md:text-sm font-bold uppercase tracking-widest mb-1 md:mb-2">
-          {{ item.label }}
+          {{ item.name }}
         </p>
         <h3 class="text-lg md:text-xl font-black uppercase underline underline-offset-4">
-          {{ item.title }}
+          {{ item.desc }}
         </h3>
       </div>
     </div>

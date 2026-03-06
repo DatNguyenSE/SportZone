@@ -1,12 +1,12 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { ProductService } from '../../../core/services/product-service';
-import { CategoryService } from '../../../core/services/category-service'; // Import Service của bạn
+import { ProductService } from '../../core/services/product-service';
+import { CategoryService } from '../../core/services/category-service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { forkJoin, lastValueFrom, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../models/category.model';
-import { Product } from '../../models/product.model';
+import { Category } from '../../shared/models/category.model';
+import { Product } from '../../shared/models/product.model';
 import { Location } from '@angular/common';
 
 @Component({
@@ -73,17 +73,17 @@ export class ProductList {
         this.loadMergedData(this.SUB_JERSEY_IDS);
       }
       else if (param === this.ACCESSORY_SLUD) {
-        this.categoryName.set('Phụ Kiện');
+        this.categoryName.set('PHỤ KIỆN');
         this.loadMergedData(this.SUB_ACCESSORY_IDS);
       }
       else if (param === this.NEW_SLUD) {
-        this.categoryName.set('Hàng Mới');
+        this.categoryName.set('HÀNG MỚI');
         //  TRUYỀN CHẾ ĐỘ 'new'
         this.loadMergedData(this.SUB_NEW_IDS, 'new');
       }
       //  THÊM ĐIỀU KIỆN CHO SALE TẠI ĐÂY
       else if (param === this.SALE_SLUG) {
-        this.categoryName.set('Khuyến Mãi');
+        this.categoryName.set('KHUYẾN MÃI');
         this.loadMergedData(this.SUB_SALE_IDS, 'sale');
       }
       else {
@@ -215,6 +215,8 @@ export class ProductList {
   pageImages = {
     JERSEY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772103696/bong-da-san-co-sut-bong-banner_gxnozk.jpg',
     SHOES_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772102726/20240102_zZC5cwka_jfxtgt.jpg',
-    DEFAULT_BANNER: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop'
-  };
+    DEFAULT_BANNER: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop',
+    NEW_ITEM_BANNER: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop',
+    ACCESSORY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772091873/0a379d9f6d490c7ac35c80ac2ab70344_e0zevp.jpg'
+}
 }

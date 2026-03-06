@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { OrderService } from '../../../core/services/order-service';
-import { Order } from '../../models/order.model';
+import { OrderService } from '../../core/services/order-service';
+import { Order } from '../../shared/models/order.model';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -14,27 +14,17 @@ import { Router, RouterLink } from '@angular/router';
 export class OrderUser implements OnInit {
   private orderService = inject(OrderService);
   
-  protected userOrder = signal<Order[]>([]);
+  protected userOrder = this.orderService.myOrder; 
   private router = inject(Router)
   protected currentStatus = signal<string>('Pending');
 
   ngOnInit(): void {
-    this.getOrders();
+    if (!this.userOrder() || this.userOrder().length === 0) {
+      this.orderService.getUserOrders();
+    }
   }
 
-  getOrders() {
-    this.orderService.getUserOrders().subscribe({
-      next: (response) => {
-        this.userOrder.set(response);
-      },
-      error: (err) => {
-        console.error('Lỗi gọi API:', err);
-      }
-    });
-  }
-
- 
-
+  
   filteredOrders = computed(() => {
     const status = this.currentStatus(); 
     const orders = this.userOrder();     

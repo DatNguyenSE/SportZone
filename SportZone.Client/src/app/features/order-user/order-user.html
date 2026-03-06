@@ -25,15 +25,17 @@
         <div class="max-w-6xl mx-auto px-6 -mt-10 relative z-10 pb-20">
             <nav
                 class="bg-white dark:bg-zinc-900 border-[3px] border-black p-2 flex flex-wrap gap-2 mb-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                @for(tab of ['Tất cả', 'Pending', 'Paid', 'Cancelled', 'Refunded']; track tab) {
+                @for(tab of ['Tất cả', 'Pending', 'Placed','Paid', 'Cancelled' ,'Refunded' ]; track tab) {
                 <button (click)="setStatus(tab)"
                     class="px-6 py-2 text-[10px] font-black uppercase tracking-widest transition-all duration-200"
                     [class.bg-black]="currentStatus() === tab" [class.text-white]="currentStatus() === tab"
                     [class.text-gray-500]="currentStatus() !== tab">
                     {{ tab === 'Tất cả' ? 'Tất cả' :
                     tab === 'Paid' ? 'Thành công' :
-                    tab === 'Pending' ? 'Đang chờ' :
-                    tab === 'Cancelled' ? 'Đã hủy' : 'Hoàn trả' }}
+                    tab === 'Pending' ? 'Đang chờ' :       
+                      tab === 'Placed' ? 'Đã đặt' :  
+                    tab === 'Cancelled' ? 'Đã hủy' : 'Hoàn trả'
+                     }}
                 </button>
                 }
             </nav>
@@ -77,6 +79,7 @@
                                 <div class="flex items-center gap-1.5">
                                     <span class="w-1.5 h-1.5 rounded-full" [ngClass]="{
                                             'bg-green-500 animate-pulse': order.status === 'Paid', 
+                                            'bg-amber-400': order.status === 'Placed',
                                             'bg-amber-500': order.status === 'Pending', 
                                             'bg-red-500': order.status === 'Cancelled',
                                             'bg-purple-500': order.status === 'Refunded'

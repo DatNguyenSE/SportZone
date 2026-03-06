@@ -13,5 +13,5 @@ public interface IProductService
     Task<IEnumerable<ProductDto>> GetListByCategoryIdAsync(int categoryId);
     Task DeleteAsync(int id);
     Task<IEnumerable<ProductDto>> GetListByLabelAsync(string label);
-    Task<IEnumerable<ProductDto>> GetListByListFeatureAsync(List<int> featureIds);
+    Task<IEnumerable<ProductDto>> GetListByFeatureIdAsync(int featureId);
 }

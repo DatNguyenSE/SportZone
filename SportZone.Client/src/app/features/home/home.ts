@@ -8,6 +8,7 @@ import { OrderService } from '../../core/services/order-service';
 import { Order } from '../../shared/models/order.model';
 import { Product } from '../../shared/models/product.model';
 import { Features } from '../../shared/models/features.model';
+import { FeatureService } from '../../core/services/feature-service';
 
 interface Slide {
   id: number;
@@ -28,11 +29,13 @@ export class Home implements OnInit {
   protected categoryService = inject(CategoryService);
   protected productService = inject(ProductService);
   protected orderService = inject(OrderService);
+  protected featureService = inject(FeatureService);
   private router = inject(Router);
 
-  protected myOrder = signal<Order[] | null>(null);
   protected categories = this.categoryService.categories;
   protected products = this.productService.products;
+  protected featuresBanner = this.featureService.featuresBanner;
+  protected myOrder = this.orderService.myOrder;
 
   selectedCategoryId = signal<number>(0);
 
@@ -57,20 +60,16 @@ export class Home implements OnInit {
     }, { allowSignalWrites: true });
   }
 
-  getOrderUser() {
-    this.orderService.getUserOrders().subscribe({
-      next: res => this.myOrder.set(res)
-    })
-  }
 
   pendingOrdersCount = computed(() =>
-    this.myOrder()?.filter(o => o.status === 'Pending').length
+    this.myOrder().filter(o => o.status === 'Pending' || o.status === 'Placed').length
   );
 
   ngOnInit(): void {
+    this.featureService.getBannerFeatures();
     this.categoryService.getCategories();
     this.productService.getProducts();
-    this.getOrderUser();
+    this.orderService.getUserOrders();
     this.pendingOrdersCount()
   }
 
@@ -153,32 +152,6 @@ export class Home implements OnInit {
     }
   ];
 
-  features: Features[] = [
-  {
-    label: 'GoalKeeper Elite',
-    title: 'Elite catch',
-    image: 'https://images.unsplash.com/photo-1600250395178-40fe752e5189?q=80&w=1000&auto=format&fit=crop',
-    desc: 'Advanced latex technology providing superior adhesive grip and shock absorption for ultimate goalkeeper performance.'
-  },
-  {
-    label: 'CURVE MASTER',
-    title: 'Spin & curve technology',
-    image: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772352606/images_rhphsf.webp',
-    desc: 'Engineered strike zones with 3D ridges designed to maximize ball rotation for devastating finesses and trivela shots.'
-  },
-  {
-    label: 'Master the Ball',
-    title: 'Touch & control',
-    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop',
-    desc: 'Experience an unparalleled first touch with a high-definition texture surface that offers precise ball feel and elegant handling.'
-  },
-  {
-    label: 'PRO FAST-TRACK',
-    title: 'Acceleration ability',
-    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=2670&auto=format&fit=crop',
-    desc: 'Ultralight materials combined with a specialized traction pattern for explosive speed and rapid changes of direction.'
-  }
-];
 
   scroll(direction: 'left' | 'right') {
     const container = this.scrollContainer.nativeElement;

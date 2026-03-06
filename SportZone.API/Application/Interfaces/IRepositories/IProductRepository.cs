@@ -10,6 +10,8 @@ namespace SportZone.Application.Interfaces
         Task<IEnumerable<Product?>> GetAllProductsDetailAsync();
         Task<bool> ChangeStatusProduct(int id);
         Task<IEnumerable<Product?>> GetListByLabelAsync(string label);
-        Task<IEnumerable<Product?>> GetListByListFeatureAsync(List<int> featureIds);
+        Task<IEnumerable<Product?>> GetListByListFeatureIdsAsync(List<int> featureIds);
+        Task<IEnumerable<Product?>> GetListByFeatureIdAsync(int featureId);
+        Task<IEnumerable<Product?>> GetProductsByIdsAsync(List<int> productIds);
     }
 }

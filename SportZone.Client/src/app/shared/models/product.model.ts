@@ -1,3 +1,5 @@
+import { Features } from "./features.model";
+
 export interface Product {
   id: number;
   name: string;
@@ -14,6 +16,8 @@ export interface Product {
   isNew?: boolean;
   productSizes?: ProductSize[];
   label?: string;
+
+  features?: Features[];
 }
 
 export interface ProductSize {
@@ -21,4 +25,5 @@ export interface ProductSize {
   sizeName: string;
   quantity: number;
 }
+
 

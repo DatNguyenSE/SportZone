@@ -3,6 +3,8 @@
 <div class="relative h-[60vh] w-full overflow-hidden bg-black">
     <img [src]="categoryName() === 'GIÀY BÓNG ĐÁ' ? pageImages.SHOES_BANNER : 
                 categoryName() === 'ÁO BÓNG ĐÁ' ? pageImages.JERSEY_BANNER : 
+                categoryName() === 'HÀNG MỚI' ? pageImages.NEW_ITEM_BANNER :
+                categoryName() === 'PHỤ KIỆN' ? pageImages.ACCESSORY_BANNER :
                 pageImages.DEFAULT_BANNER"
         class="absolute inset-0 w-full h-240 object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-1000"
         alt="Banner">

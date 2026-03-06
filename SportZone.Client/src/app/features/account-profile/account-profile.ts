@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UserProfile } from '../../../types/user';
-import { AccountService } from '../../../core/services/account-service';
-import { ToastService } from '../../../core/services/toast-service';
+import { UserProfile } from '../../types/user';
+import { AccountService } from '../../core/services/account-service';
+import { ToastService } from '../../core/services/toast-service';
 
 @Component({
   selector: 'app-account-profile',

@@ -49,17 +49,32 @@ namespace SportZone.Infrastructure.Repositories
                 .Where(p => p.Label == label)
                  .Include(p => p.ProductSizes)
                  .ToListAsync();
-        }   
-        
-        public async Task<IEnumerable<Product?>> GetListByListFeatureAsync(List<int> featureIds)
-        {
-             return await _context.Products
-                .AsNoTracking()
-                .Include(p => p.Features.Where(f => featureIds.Contains(f.Id)))
-                .Include(p => p.ProductSizes)
-                .Where(p => p.Features.Any(f => featureIds.Contains(f.Id)))
-                .ToListAsync();
-         }
+        }
 
+        public async Task<IEnumerable<Product?>> GetListByListFeatureIdsAsync(List<int> featureIds)
+        {
+            return await _context.Products
+               .AsNoTracking()
+               .Include(p => p.Features.Where(f => featureIds.Contains(f.Id)))
+               .Include(p => p.ProductSizes)
+               .Where(p => p.Features.Any(f => featureIds.Contains(f.Id)))
+               .ToListAsync();
+        }
+        public async Task<IEnumerable<Product?>> GetListByFeatureIdAsync(int featureId)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .Where(p => p.Features.Any(f => f.Id == featureId)) // Lọc sản phẩm
+                .Include(p => p.Features.Where(f => f.Id == featureId)) 
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product?>> GetProductsByIdsAsync(List<int> productIds)
+        {
+            return await _context.Products
+                .Where(p => productIds.Contains(p.Id))
+                .Include(p => p.ProductSizes)
+                .ToListAsync();
+        }
     }
 }

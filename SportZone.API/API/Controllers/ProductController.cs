@@ -85,13 +85,14 @@ namespace API.Controllers
             var products = await productService.GetListByLabelAsync(label);
             return Ok(products);
         }
-
-        [HttpGet("feature-items")]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByFeature([FromQuery] List<int> featureIds)
+        [HttpGet("feature-items/{featureId:int}")]
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProductsByFeature(int featureId)
         {
-            var products = await productService.GetListByListFeatureAsync(featureIds);
+            var products = await productService.GetListByFeatureIdAsync(featureId);
             return Ok(products);
         }
+
+        
     }
 }
 

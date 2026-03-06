@@ -41,7 +41,7 @@ namespace SportZone.Application.Mappings
                 .ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
 
             CreateMap<Product, ProductInCartDto>().ReverseMap();
-
+            CreateMap<Product, ProductInFeatureDto>().ReverseMap();
 
             // --- 3. MAPPING CHO CART ---
             CreateMap<CartItem, CartItemDto>()
@@ -82,8 +82,10 @@ namespace SportZone.Application.Mappings
             CreateMap<Promotion, PromotionDto>().ReverseMap();
 
             //-- FEATURE MAPPING---
-            CreateMap<Feature, FeatureDto>().ReverseMap();
+            CreateMap<Feature, FeatureDto>().ReverseMap()
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
             CreateMap<Feature, CreateFeatureDto>().ReverseMap();
+            CreateMap<Feature, UpdateFeatureDto>().ReverseMap();
 
         }
     }

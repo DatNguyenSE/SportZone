@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Product, ProductSize } from '../../models/product.model'; // Đảm bảo interface khớp DTO
+import { ProductSize } from '../../../shared/models/product.model';
 import { ProductService } from '../../../core/services/product-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,10 +11,10 @@ import { CategoryService } from '../../../core/services/category-service';
   selector: 'app-product-manager',
   standalone: true, // Thêm nếu bạn dùng Angular 15+
   imports: [CommonModule, FormsModule],
-  templateUrl: './product-manager.html',
-  styleUrl: './product-manager.css',
+  templateUrl: './product-management.html',
+  styleUrl: './product-management.css',
 })
-export class ProductManager implements OnInit {
+export class ProductManagement implements OnInit {
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private router = inject(Router);

@@ -499,9 +499,9 @@
         class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l border-zinc-800 animate-in slide-in-from-right duration-300">
 
         <div class="px-6 py-6 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-white z-10">
-          <div class="flex items-center gap-2">
+           <div class="flex items-center gap-2">
             <div class="bg-black text-white p-1">
-              <span class="material-icons-outlined text-sm font-bold">Logo</span>
+              <img class="h-11 w-17" src="logo.png">
             </div>
             <span class="font-black uppercase tracking-widest text-lg text-black">SportZone</span>
           </div>
@@ -532,7 +532,7 @@
             </div>
 
             <div class="pt-10 space-y-4">
-              <a (click)="toggleLoginModal()" routerLink="/product-manager"
+              <a (click)="toggleLoginModal()" routerLink="/product-management"
                 class="flex items-center justify-between group py-2" href="#">
                 <span
                   class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
@@ -557,10 +557,10 @@
                   </svg>
                 </span>
               </a>
-              <a class="flex items-center justify-between group py-2" href="#">
+              <a (click)="toggleLoginModal()" routerLink="/feature-banner-management" class="flex items-center justify-between group py-2" href="#">
                 <span
                   class="uppercase font-extrabold text-sm tracking-wider text-zinc-800 group-hover:text-white group-hover:underline underline-offset-4 transition-colors">
-                  edit campaign
+                  edit feature banner
                 </span>
                 <span class="material-icons-outlined text-zinc-500 group-hover:text-white transition-colors"><svg
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
