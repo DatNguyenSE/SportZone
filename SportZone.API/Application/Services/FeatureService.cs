@@ -17,6 +17,7 @@ public class FeatureService(IUnitOfWork uow, IMapper mapper) : IFeatureService
         return mapper.Map<IEnumerable<FeatureDto>>(features);
     }
 
+
     public async Task<IEnumerable<FeatureDto>> GetAllWithProductAsync()
     {
         var features = await uow.FeatureRepository.GetAllWithProduct();

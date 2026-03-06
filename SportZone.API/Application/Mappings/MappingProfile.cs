@@ -87,6 +87,8 @@ namespace SportZone.Application.Mappings
             CreateMap<Feature, CreateFeatureDto>().ReverseMap();
             CreateMap<Feature, UpdateFeatureDto>().ReverseMap();
 
+            //-- APP USER MAPPING---
+            CreateMap<AppUser, MemberDto>().ReverseMap();
         }
     }
 }

@@ -15,6 +15,7 @@ public class UnitOfWork(AppDbContext _context): IUnitOfWork
     private ICategoryRepository? _categoryRepository;
     private IPromotionRepository? _promotionRepository;
     private IFeatureRepository? _featureRepository;
+    private IMembersRepository? _membersRepository;
     
 //when other function call (uow.ProductRepository) -> check and avoid create multiple instance
     public IProductRepository ProductRepository => _productRepository 
@@ -35,6 +36,9 @@ public class UnitOfWork(AppDbContext _context): IUnitOfWork
 
     public IFeatureRepository FeatureRepository => _featureRepository
         ??= new FeatureRepository(_context);
+
+    public IMembersRepository MembersRepository => _membersRepository
+        ??= new MembersRepository(_context);    
     public async Task<bool> Complete()
     {
         try

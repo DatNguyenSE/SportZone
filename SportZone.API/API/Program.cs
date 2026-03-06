@@ -85,6 +85,7 @@ builder.Services.AddScoped<IVnPayService,VnPayService>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
+builder.Services.AddScoped<IMembersService, MembersService>();
 
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
