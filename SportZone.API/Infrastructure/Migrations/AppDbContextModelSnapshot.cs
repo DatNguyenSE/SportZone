@@ -181,6 +181,21 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Product_Features", b =>
+                {
+                    b.Property<int>("FeatureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("FeatureId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Product_Features");
+                });
+
             modelBuilder.Entity("SportZone.Domain.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -351,6 +366,32 @@ namespace API.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("SportZone.Domain.Entities.Feature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("IsBanner")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Features");
+                });
+
             modelBuilder.Entity("SportZone.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -475,9 +516,6 @@ namespace API.Data.Migrations
                     b.Property<double?>("Discount")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("Featured")
-                        .HasColumnType("text");
-
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
@@ -486,6 +524,9 @@ namespace API.Data.Migrations
 
                     b.Property<bool>("IsNew")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -660,6 +701,21 @@ namespace API.Data.Migrations
                     b.HasOne("SportZone.Domain.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Product_Features", b =>
+                {
+                    b.HasOne("SportZone.Domain.Entities.Feature", null)
+                        .WithMany()
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportZone.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

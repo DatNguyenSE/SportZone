@@ -57,7 +57,7 @@ public class Seed
                 IsDeleted = item.IsDeleted,
                 CategoryId = item.CategoryId,
                 PublicId = item.PublicId,
-                Featured = item.Featured,
+                Label = item.Label,
                 IsNew = item.IsNew,
                 Discount = item.Discount,
             };

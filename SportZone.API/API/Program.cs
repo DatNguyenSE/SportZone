@@ -84,6 +84,9 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IVnPayService,VnPayService>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
+builder.Services.AddScoped<IFeatureService, FeatureService>();
+builder.Services.AddScoped<IMembersService, MembersService>();
+
 //Identity(user)
 builder.Services.AddIdentityCore<AppUser>(opt =>
 {
@@ -136,7 +139,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
+
+app.MapFallbackToController("Index", "Fallback");
+
 // Trong file Program.cs
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -11,7 +11,7 @@ namespace SportZone.Infrastructure.Data
         // ===== DbSet =====
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
-        public DbSet<ProductSize> ProductSizes  { get; set; } = null!; // OK
+        public DbSet<ProductSize> ProductSizes { get; set; } = null!; // OK
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
@@ -19,6 +19,7 @@ namespace SportZone.Infrastructure.Data
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Promotion> Promotions { get; set; } = null!;
+        public DbSet<Feature> Features { get; set; } = null!;
 
         // --- CẤU HÌNH TẮT CẢNH BÁO ---
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -94,7 +95,7 @@ namespace SportZone.Infrastructure.Data
             {
                 // KHÓA CHÍNH: Phải là CartId + ProductSizeId 
                 // (Để cho phép 1 giỏ hàng có 2 dòng: Giày A size 40, Giày A size 41)
-                entity.HasKey(ci => new { ci.CartId, ci.ProductSizeId }); 
+                entity.HasKey(ci => new { ci.CartId, ci.ProductSizeId });
 
                 entity.HasOne(ci => ci.Cart)
                       .WithMany(c => c.Items)
@@ -120,12 +121,12 @@ namespace SportZone.Infrastructure.Data
                 entity.HasKey(oi => new { oi.OrderId, oi.ProductSizeId });
 
                 entity.HasOne(oi => oi.Order).WithMany(o => o.Items).HasForeignKey(oi => oi.OrderId);
-                
+
                 entity.HasOne(oi => oi.Product)
                       .WithMany(p => p.OrderItems)
                       .HasForeignKey(oi => oi.ProductId)
                       .OnDelete(DeleteBehavior.NoAction);
-                
+
                 // Liên kết Size cụ thể
                 entity.HasOne(oi => oi.ProductSize)
                       .WithMany()
@@ -140,6 +141,20 @@ namespace SportZone.Infrastructure.Data
                 entity.Property(p => p.PaymentMethod).HasConversion<string>();
                 entity.Property(p => p.PaymentStatus).HasConversion<string>();
             });
+
+            // === Product & Feature (Many-to-Many) ===
+            builder.Entity<Feature>(entity =>
+            {
+                entity.HasMany(f => f.Products)
+                      .WithMany(p => p.Features)
+                      .UsingEntity<Dictionary<string, object>>(
+                          "Product_Features", 
+                          j => j.HasOne<Product>().WithMany().HasForeignKey("ProductId"),
+                          j => j.HasOne<Feature>().WithMany().HasForeignKey("FeatureId")
+                      );
+            });
+
+
         }
     }
 }

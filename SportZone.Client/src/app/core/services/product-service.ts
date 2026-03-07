@@ -27,8 +27,12 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.baseUrl}products/category/` + categoryId)
   }
 
-  getProductsByFeature(feature: string){
-    return this.http.get<Product[]>(`${this.baseUrl}products/features-items/`+feature);
+  getProductsByLabel(label: string){
+    return this.http.get<Product[]>(`${this.baseUrl}products/label-items/`+label);
+  }
+
+  getProductsByFeatureId(featureIds: number) {
+    return this.http.get<Product[]>(`${this.baseUrl}products/feature-items/` + featureIds);
   }
 
   getProductsById(productId: number) {
@@ -49,8 +53,8 @@ export class ProductService {
     // 2. Các trường mới thêm (Discount, IsNew, Featured)
     formData.append('Discount', (productData.discount || 0).toString());
     formData.append('IsNew', (productData.isNew ?? true).toString());// FormData sẽ gửi "true" hoặc "false" dưới dạng string
-    if (productData.featured) {
-      formData.append('Featured', productData.featured);
+    if (productData.label) {
+      formData.append('Label', productData.label);
     }
 
     // 3. Xử lý gửi DANH SÁCH SIZE (List<ProductSizeDto>)
@@ -84,8 +88,8 @@ updateProduct(id: number, productData: Product, file: File | null) {
   // 2. Các trường bổ sung mới
   formData.append('Discount', (productData.discount ?? 0).toString());
   formData.append('IsNew', (productData.isNew ?? false).toString());
-  if (productData.featured) {
-    formData.append('Featured', productData.featured);
+  if (productData.label) {
+    formData.append('Label', productData.label);
   }
 
   // 3. QUAN TRỌNG: Gửi danh sách Sizes

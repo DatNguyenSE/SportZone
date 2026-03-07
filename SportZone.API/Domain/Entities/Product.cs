@@ -11,7 +11,7 @@
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsNew { get; set; } = true;
-        public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
+        public string? Label { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
         public string? PublicId { get; set; } // Cloudinary public ID
         public double? Discount { get; set; } = 0.0;
 
@@ -23,5 +23,6 @@
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Feature> Features { get; set; } = new List<Feature>();
     }
 }

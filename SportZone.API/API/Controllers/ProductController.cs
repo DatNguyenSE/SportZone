@@ -79,12 +79,20 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpGet("features-items/{feature}")]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByFeature(string feature)
+        [HttpGet("label-items/{label}")]
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetListByLabel(string label)
         {
-            var products = await productService.GetListByFeatureAsync(feature);
+            var products = await productService.GetListByLabelAsync(label);
             return Ok(products);
         }
+        [HttpGet("feature-items/{featureId:int}")]
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProductsByFeature(int featureId)
+        {
+            var products = await productService.GetListByFeatureIdAsync(featureId);
+            return Ok(products);
+        }
+
+        
     }
 }
 

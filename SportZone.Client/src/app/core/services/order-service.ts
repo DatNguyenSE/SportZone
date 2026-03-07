@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Order } from '../../shared/models/order.model';
@@ -9,8 +9,9 @@ import { Order } from '../../shared/models/order.model';
 export class OrderService {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
+  myOrder = signal<Order[]>([]);
 
- addOrder(CouponCode: string, paymentMethod: number) {
+  addOrder(CouponCode: string, paymentMethod: number) {
     // Sử dụng HttpParams để đưa dữ liệu lên URL
     const params = new HttpParams()
       .set('CouponCode', CouponCode || '')
@@ -24,7 +25,14 @@ export class OrderService {
   }
 
   getUserOrders() {
-    return this.http.get<Order[]>(`${this.apiUrl}order/user-orders`);
+    return this.http.get<Order[]>(`${this.apiUrl}order/user-orders`).subscribe({
+      next: (res) => {
+        this.myOrder.set(res);
+      },
+      error: (err) => {
+        console.error('Lỗi lấy orders:', err);
+      }
+    });
   }
 
 }

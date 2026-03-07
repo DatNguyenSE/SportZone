@@ -21,8 +21,9 @@ namespace SportZone.Application.Dtos
  
         public double? Discount { get; set; } = 0.0;
         public bool? IsNew { get; set; } = true;
-        public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
+        public string? Label { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
         public List<CreateProductSizeDto>? ProductSizes { get; set; }
+        public List<CreateFeatureDto>? Features { get; set; }
     }
 
     public class ProductDto : CreateProductDto
@@ -49,7 +50,7 @@ namespace SportZone.Application.Dtos
         public int? CategoryId { get; set; }
         public double? Discount { get; set; } = 0.0;
         public bool? IsNew { get; set; } = true;
-        public string? Featured { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
+        public string? Label { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
         public List<ProductSizeDto>? ProductSizes { get; set; }
     }
 
@@ -61,5 +62,13 @@ namespace SportZone.Application.Dtos
         public bool IsDeleted { get; set; }
         public string? CategoryName { get; set; }
     }
-    
+
+    public class ProductInFeatureDto
+    {
+        public required int Id { get; set; } 
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; } 
+    }
+
 }

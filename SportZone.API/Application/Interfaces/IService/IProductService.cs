@@ -12,5 +12,6 @@ public interface IProductService
     Task<ProductDto?> UpdateAsync(int id, UpdateProductDto productDto, IFormFile? file);
     Task<IEnumerable<ProductDto>> GetListByCategoryIdAsync(int categoryId);
     Task DeleteAsync(int id);
-    Task<IEnumerable<ProductDto>> GetListByFeatureAsync(string feature);
+    Task<IEnumerable<ProductDto>> GetListByLabelAsync(string label);
+    Task<IEnumerable<ProductDto>> GetListByFeatureIdAsync(int featureId);
 }

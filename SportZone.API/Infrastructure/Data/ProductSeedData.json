@@ -24,7 +24,6 @@
     "publicId": "sdmqf5v0kgpogxduwrd7",
     "categoryId": 2,
     "quantity": 30,
-    "featured": "SPEED BOOTS",
     "isNew": true,
     "discount": 10
   },
@@ -529,7 +528,6 @@
     "publicId": "q5gmueitvhxwrenmglxa",
     "categoryId": 1,
     "quantity": 88,
-    "featured": "",
     "isNew": false,
     "discount": 5 
   }
