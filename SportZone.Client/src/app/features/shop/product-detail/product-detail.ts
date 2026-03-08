@@ -1,13 +1,13 @@
 import { Component, computed, effect, inject, Input, signal } from '@angular/core';
-import { Product } from '../../shared/models/product.model';
+import { Product } from '../../../shared/models/product.model';
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { ProductService } from '../../core/services/product-service';
-import { ToastService } from '../../core/services/toast-service';
-import { CartService } from '../../core/services/cart-service';
-import { AccountService } from '../../core/services/account-service';
+import { ProductService } from '../../../core/services/product-service';
+import { ToastService } from '../../../core/services/toast-service';
+import { CartService } from '../../../core/services/cart-service';
+import { AccountService } from '../../../core/services/account-service';
 
 
 

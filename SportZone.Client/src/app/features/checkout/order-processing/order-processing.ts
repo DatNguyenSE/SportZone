@@ -1,16 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AccountService } from '../../core/services/account-service';
-import { UserProfile } from '../../types/user';
+import { AccountService } from '../../../core/services/account-service';
+import { UserProfile } from '../../../shared/models/user';
 import { FormsModule } from '@angular/forms';
-import { OrderService } from '../../core/services/order-service';
+import { OrderService } from '../../../core/services/order-service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Order } from '../../shared/models/order.model';
-import { CartService } from '../../core/services/cart-service';
-import { CartItem } from '../../types/cart';
-import { ToastService } from '../../core/services/toast-service';
-import { PaymentService } from '../../core/services/payment-service';
-import { PaymentInput } from '../../shared/models/payment.model';
+import { Order } from '../../../shared/models/order.model';
+import { CartService } from '../../../core/services/cart-service';
+import { CartItem } from '../../../shared/models/cart';
+import { ToastService } from '../../../core/services/toast-service';
+import { PaymentService } from '../../../core/services/payment-service';
+import { PaymentInput } from '../../../shared/models/payment.model';
 
 @Component({
   selector: 'app-order-processing',

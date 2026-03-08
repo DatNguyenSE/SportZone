@@ -1,4 +1,4 @@
-import { Product, ProductSize } from "../shared/models/product.model";
+import { Product, ProductSize } from "./product.model";
 
 export type Cart = {
     id: number;

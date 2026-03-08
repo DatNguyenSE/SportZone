@@ -1,14 +1,14 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CartService } from '../../core/services/cart-service';
-import { CartItem } from '../../types/cart';
+import { CartService } from '../../../core/services/cart-service';
+import { CartItem } from '../../../shared/models/cart';
 import { debounceTime, of, Subject, Subscription, switchMap } from 'rxjs';
-import { PromotionService } from '../../core/services/promotion-service';
-import { Promotion } from '../../shared/models/promotion.model';
+import { PromotionService } from '../../../core/services/promotion-service';
+import { Promotion } from '../../../shared/models/promotion.model';
 import { Router, RouterLink } from '@angular/router';
-import { ToastService } from '../../core/services/toast-service';
-import { OrderService } from '../../core/services/order-service';
+import { ToastService } from '../../../core/services/toast-service';
+import { OrderService } from '../../../core/services/order-service';
 
 @Component({
   selector: 'app-cart',

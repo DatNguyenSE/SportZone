@@ -1,12 +1,12 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { ProductService } from '../../core/services/product-service';
-import { CategoryService } from '../../core/services/category-service';
+import { ProductService } from '../../../core/services/product-service';
+import { CategoryService } from '../../../core/services/category-service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { forkJoin, lastValueFrom, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../shared/models/category.model';
-import { Product } from '../../shared/models/product.model';
+import { Category } from '../../../shared/models/category.model';
+import { Product } from '../../../shared/models/product.model';
 import { Location } from '@angular/common';
 
 @Component({

@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../core/services/account-service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastService } from '../../core/services/toast-service';
-import { themes } from '../../types/theme';
 import { BusyService } from '../../core/services/busy-service';
 import { CommonModule } from '@angular/common';
 import { HasRole } from "../../shared/directives/has-role";
@@ -34,11 +33,10 @@ export class Nav implements OnInit {
   protected isLoginModalOpen = false;
   protected isPasswordVisible = false;
   private isSubmitting = false;
-  // protected selectedTheme = signal<string>(localStorage.getItem('theme') || 'light');
-  // protected themes = themes;
+
 
   ngOnInit(): void {
-    // document.documentElement.setAttribute('data-theme', this.selectedTheme());
+   
     
   }
  
@@ -75,7 +73,12 @@ export class Nav implements OnInit {
         
         this.toast.success(res.message);
         this.toggleLoginModal(); 
-        window.location.reload();
+        if (res.user.roles.includes('Admin')) {
+          this.router.navigateByUrl('/admin');
+        }
+       else {
+        this.router.navigateByUrl('/'); 
+      }
       },
       error: (error) => {
         console.log('error from interceptor:', error);
@@ -98,14 +101,6 @@ export class Nav implements OnInit {
     if (elem) elem.blur();
   }
 
-
-  // handleSelectTheme(theme: string) {
-  //   // this.selectedTheme.set(theme);
-  //   localStorage.setItem('theme', theme);
-  //   document.documentElement.setAttribute('data-theme', theme);
-  //   const elem = document.activeElement as HTMLDivElement;
-  //   if (elem) elem.blur();
-  // }
 
   onCart() {
     this.router.navigate(['/cart']);

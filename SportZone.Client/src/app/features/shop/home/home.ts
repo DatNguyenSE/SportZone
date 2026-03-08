@@ -2,13 +2,13 @@ import { Component, computed, inject, OnInit, signal, effect, ViewChild, Element
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 
-import { CategoryService } from '../../core/services/category-service';
-import { ProductService } from '../../core/services/product-service';
-import { OrderService } from '../../core/services/order-service';
-import { Order } from '../../shared/models/order.model';
-import { Product } from '../../shared/models/product.model';
-import { Features } from '../../shared/models/features.model';
-import { FeatureService } from '../../core/services/feature-service';
+import { CategoryService } from '../../../core/services/category-service';
+import { ProductService } from '../../../core/services/product-service';
+import { OrderService } from '../../../core/services/order-service';
+import { Order } from '../../../shared/models/order.model';
+import { Product } from '../../../shared/models/product.model';
+import { Features } from '../../../shared/models/features.model';
+import { FeatureService } from '../../../core/services/feature-service';
 
 interface Slide {
   id: number;

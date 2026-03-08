@@ -1,12 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ProductService } from '../../../core/services/product-service';
+import { ProductService } from '../../../../core/services/product-service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Features } from '../../models/features.model';
-import { Product } from '../../models/product.model';
-import { ToastService } from '../../../core/services/toast-service';
-import { FeatureService } from '../../../core/services/feature-service';
-
+import { Features } from '../../../../shared/models/features.model';
+import { Product } from '../../../../shared/models/product.model';
+import { ToastService } from '../../../../core/services/toast-service';
+import { FeatureService } from '../../../../core/services/feature-service';
 @Component({
   selector: 'app-feature-products',
   standalone: true, // Thêm nếu bạn dùng standalone

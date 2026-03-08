@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { OrderService } from '../../core/services/order-service';
-import { Order } from '../../shared/models/order.model';
+import { OrderService } from '../../../core/services/order-service';
+import { Order } from '../../../shared/models/order.model';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 

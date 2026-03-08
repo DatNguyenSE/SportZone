@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Order } from '../../shared/models/order.model';
-import { OrderService } from '../../core/services/order-service';
+import { Order } from '../../../shared/models/order.model';
+import { OrderService } from '../../../core/services/order-service';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { PaymentInput } from '../../shared/models/payment.model';
-import { AccountService } from '../../core/services/account-service';
-import { PaymentService } from '../../core/services/payment-service';
-import { ToastService } from '../../core/services/toast-service';
+import { PaymentInput } from '../../../shared/models/payment.model';
+import { AccountService } from '../../../core/services/account-service';
+import { PaymentService } from '../../../core/services/payment-service';
+import { ToastService } from '../../../core/services/toast-service';
 
 @Component({
   selector: 'app-order-detail',
