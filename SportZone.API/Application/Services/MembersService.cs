@@ -24,7 +24,7 @@ public class MembersService(IUnitOfWork uow, IMapper mapper) : IMembersService
 
     public async Task<IEnumerable<MemberDto>> GetAllAsync()
     {
-        var members = await uow.MembersRepository.GetAllAsync();
+        var members = await uow.MembersRepository.GetAllMembersAsync();
         if(members == null)
         {
             throw new NotFoundException("No members found.");

@@ -1,155 +1,145 @@
-<div class="container mx-auto p-8 bg-zinc-50 min-h-screen font-sans">
-  <div class="-mt-25 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="h-full font-sans animate-fade-in-up">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
-    <div class="mt-5 lg:col-span-1">
+    <div class="lg:col-span-1">
       <div
-        class="bg-white p-6 rounded-xl shadow-sm border border-zinc-200 sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto custom-scrollbar transition-all duration-300"
-        [class.border-blue-500]="isEditing" [class.ring-2]="isEditing" [class.ring-blue-100]="isEditing">
+        class="bg-white p-6 lg:p-7 rounded-sm shadow-sm border border-zinc-200 sticky top-0 max-h-[calc(100vh-8rem)] overflow-y-auto custom-scrollbar transition-all duration-300"
+        [class.border-blue-500]="isEditing" [class.shadow-md]="isEditing" [class.shadow-blue-500/10]="isEditing">
 
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="mt-4 text-xl font-extrabold text-zinc-900 uppercase tracking-wider flex items-center gap-2">
-            <div class="flex items-center gap-2">
-              <span *ngIf="isEditing" class="text-blue-600">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-              </span>
-              <span *ngIf="!isEditing" class="text-green-600">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-              </span>
+        <div class="flex items-center justify-between mb-8 border-b border-zinc-100 pb-4">
+          <h2 class="text-lg font-black text-zinc-950 uppercase tracking-widest flex items-center gap-2">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full" [ngClass]="isEditing ? 'bg-blue-50 text-blue-600' : 'bg-black text-white'">
+              <span *ngIf="isEditing" class="material-icons-outlined text-sm">edit</span>
+              <span *ngIf="!isEditing" class="material-icons-outlined text-sm">add</span>
             </div>
-            <span>{{ isEditing ? 'Cập Nhật' : 'Thêm Mới' }}</span>
+            <span class="mt-0.5">{{ isEditing ? 'Cập Nhật' : 'Thêm Mới' }}</span>
           </h2>
 
           <button *ngIf="isEditing" (click)="onCancelEdit()" type="button" [disabled]="isLoading"
-            class="text-[10px] font-bold bg-red-50 text-red-500 px-3 py-1.5 rounded-full hover:bg-red-100 transition-colors uppercase tracking-wide disabled:opacity-50 disabled:cursor-not-allowed">
+            class="text-[10px] font-bold bg-zinc-100 text-zinc-500 px-3 py-1.5 hover:bg-zinc-200 hover:text-black transition-colors uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed">
             Hủy bỏ
           </button>
         </div>
 
-        <form (ngSubmit)="onSubmit()" class="space-y-4">
-          <div class="grid grid-cols-2 gap-3">
+        <form (ngSubmit)="onSubmit()" class="space-y-5">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">Tên sản phẩm <span
-                  class="text-red-500">*</span></label>
+              <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Tên sản phẩm <span class="text-red-500">*</span></label>
               <input type="text" [(ngModel)]="newProduct.name" name="name" required
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white rounded text-sm p-2.5">
+                class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm text-sm p-3 transition-colors outline-none font-bold placeholder-zinc-300" placeholder="VD: Ultraboost 22">
             </div>
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">Thương hiệu</label>
+              <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Thương hiệu</label>
               <input type="text" [(ngModel)]="newProduct.brand" name="brand"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white rounded text-sm p-2.5">
+                class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm text-sm p-3 transition-colors outline-none font-bold placeholder-zinc-300" placeholder="VD: Adidas">
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">Giá <span
-                  class="text-red-500">*</span></label>
+              <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Giá bán (VND) <span class="text-red-500">*</span></label>
               <input type="number" [(ngModel)]="newProduct.price" name="price" required
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded font-mono text-sm p-2.5">
+                class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm font-mono text-sm p-3 transition-colors outline-none placeholder-zinc-300" placeholder="0">
             </div>
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">Giảm giá (%)</label>
+              <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Giảm giá (%)</label>
               <input type="number" [(ngModel)]="newProduct.discount" name="discount"
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded font-mono text-sm p-2.5">
+                class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm font-mono text-sm p-3 transition-colors outline-none placeholder-zinc-300" placeholder="0">
             </div>
-
           </div>
+
           <div>
-            <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide">
-              Thể loại <span class="text-red-500">*</span>
+            <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">
+              Danh mục <span class="text-red-500">*</span>
             </label>
-
             <select [(ngModel)]="newProduct.categoryId" name="categoryId" required [disabled]="isLoading"
-              class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 focus:bg-white focus:ring-0 rounded font-medium text-sm p-2.5 transition-all disabled:opacity-60">
-              <option [value]="undefined">-- Chọn thể loại --</option>
-
+              class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm font-bold text-sm p-3 transition-colors outline-none disabled:opacity-60 cursor-pointer">
+              <option [value]="undefined" disabled selected>-- Chọn danh mục --</option>
               <option *ngFor="let cat of categories()" [value]="cat.id">
                 {{ cat.categoryName }}
               </option>
             </select>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="text-[11px] font-bold text-zinc-500 uppercase">chọn nhãn</label>
-
+              <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Nhãn (Label)</label>
               <input [(ngModel)]="newProduct.label" name="label" list="labelOptions"
-                placeholder="Chọn hoặc tự nhập..."
-                class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded text-sm p-2.5 outline-none" />
-
+                placeholder="Chọn hoặc nhập..."
+                class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm text-sm p-3 outline-none font-bold placeholder-zinc-300" />
               <datalist id="labelOptions">
                 <option value="New Arrival"></option>
                 <option value="Best Seller"></option>
                 <option value="Trending"></option>
               </datalist>
             </div>
-            <div class="flex items-center gap-2 mt-6">
-              <input type="checkbox" [(ngModel)]="newProduct.isNew" name="isNew" id="isNew"
-                class="rounded text-green-600">
-              <label for="isNew" class="text-[11px] font-bold text-zinc-500 uppercase">Sản phẩm mới</label>
+            <div class="flex items-center gap-3 mt-6">
+              <div class="relative flex items-center">
+                 <input type="checkbox" [(ngModel)]="newProduct.isNew" name="isNew" id="isNew"
+                class="w-5 h-5 border-zinc-300 rounded-sm text-black focus:ring-black cursor-pointer">
+              </div>
+              <label for="isNew" class="text-[10px] font-black text-black uppercase tracking-widest cursor-pointer mt-0.5">Hàng mới về</label>
             </div>
           </div>
 
-          <div class="p-3 bg-zinc-50 rounded-lg border border-zinc-200">
-            <label class="text-[11px] font-bold text-zinc-500 uppercase mb-2 block">Quản lý Kích thước & Tồn kho</label>
+          <div class="p-4 bg-zinc-50 border border-zinc-200 rounded-sm">
+            <div class="flex justify-between items-center mb-3">
+               <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block">Quản lý Kho & Size</label>
+               <button type="button" (click)="addSize()" class="text-[10px] font-black text-black hover:text-blue-600 uppercase tracking-widest transition-colors flex items-center gap-1">
+                 <span class="material-icons-outlined text-[14px]">add_circle</span> Thêm
+               </button>
+            </div>
+           
             <div *ngFor="let s of newProduct.productSizes; let i = index" class="flex gap-2 mb-2">
               <input type="text" [(ngModel)]="s.sizeName" [name]="'sizeName' + i" placeholder="Size (VD: 42)"
-                class="flex-1 bg-white border border-zinc-200 rounded text-xs p-2">
+                class="flex-1 bg-white border border-zinc-200 focus:border-black rounded-sm text-xs p-2.5 outline-none font-bold uppercase">
               <input type="number" [(ngModel)]="s.quantity" [name]="'sizeQty' + i" placeholder="SL"
-                class="w-20 bg-white border border-zinc-200 rounded text-xs p-2">
-              <button type="button" (click)="removeSize(i)" class="text-red-400 hover:text-red-600">
-                <span class="material-icons-outlined text-sm">delete</span>
+                class="w-20 bg-white border border-zinc-200 focus:border-black rounded-sm text-xs p-2.5 outline-none font-mono">
+              <button type="button" (click)="removeSize(i)" class="text-zinc-400 hover:text-red-500 p-2 transition-colors">
+                <span class="material-icons-outlined text-[18px]">delete</span>
               </button>
             </div>
-            <button type="button" (click)="addSize()"
-              class="mt-2 text-[10px] font-bold text-blue-600 hover:text-blue-800 uppercase">
-              + Thêm Size
-            </button>
+            
+            <div *ngIf="!newProduct.productSizes?.length" class="text-center py-4 border-2 border-dashed border-zinc-200 text-zinc-400 text-xs font-bold uppercase tracking-widest">
+               Chưa có phân loại size
+            </div>
           </div>
 
           <div>
-            <label class="text-[11px] font-bold text-zinc-500 uppercase">Mô tả</label>
-            <textarea [(ngModel)]="newProduct.description" name="description" rows="2"
-              class="w-full mt-1 bg-zinc-100 border-transparent focus:border-zinc-800 rounded text-sm p-2.5"></textarea>
+            <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Mô tả sản phẩm</label>
+            <textarea [(ngModel)]="newProduct.description" name="description" rows="3"
+              class="w-full bg-zinc-50 border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black rounded-sm text-sm p-3 transition-colors outline-none resize-none placeholder-zinc-300" placeholder="Nhập chi tiết về chất liệu, thiết kế..."></textarea>
           </div>
+          
           <div>
-            <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wide mb-1 block">Hình ảnh</label>
+            <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-1.5">Hình ảnh đại diện</label>
             <div
-              class="relative w-full h-30 bg-zinc-50 rounded border-2 border-dashed border-zinc-300 flex flex-col items-center justify-center hover:bg-zinc-100 transition-all cursor-pointer group overflow-hidden"
+              class="relative w-full h-40 bg-zinc-50 rounded-sm border-2 border-dashed border-zinc-300 flex flex-col items-center justify-center hover:bg-zinc-100 hover:border-black transition-all cursor-pointer group overflow-hidden"
               [class.opacity-50]="isLoading" [class.cursor-not-allowed]="isLoading">
 
               <input type="file" (change)="onFileSelected($event)" accept="image/*" [disabled]="isLoading"
                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed">
 
-              <div *ngIf="!imagePreview" class="text-center group-hover:scale-110 transition-transform">
-                <span class="material-icons-outlined text-2xl text-zinc-400">cloud_upload</span>
+              <div *ngIf="!imagePreview" class="text-center group-hover:-translate-y-1 transition-transform duration-300">
+                <span class="material-icons-outlined text-3xl text-zinc-400 group-hover:text-black transition-colors mb-2">add_photo_alternate</span>
+                <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest group-hover:text-black transition-colors">Click để tải ảnh lên</p>
               </div>
 
               <img *ngIf="imagePreview" [src]="imagePreview" class="absolute inset-0 w-full h-full object-cover">
+              
+              <button *ngIf="imagePreview" type="button" class="absolute top-2 right-2 z-20 bg-white/90 text-red-500 p-1.5 rounded-sm shadow opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white">
+                 <span class="material-icons-outlined text-[16px]">delete</span>
+              </button>
             </div>
           </div>
 
           <button type="submit" [disabled]="isLoading"
-            class="w-full text-white font-semibold uppercase text-xs tracking-widest py-3 rounded transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
-            [ngClass]="isEditing ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-500/30' : 'bg-green-900 hover:bg-green-600 shadow-zinc-900/20'">
+            class="w-full text-white font-black uppercase text-xs tracking-[0.2em] py-4 rounded-sm transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            [ngClass]="isEditing ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/20' : 'bg-black hover:bg-zinc-800 shadow-black/20'">
 
-            <svg *ngIf="isLoading" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
-              fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-              </path>
-            </svg>
-
-            <span>{{ isLoading ? 'Đang xử lý...' : (isEditing ? 'Lưu Thay Đổi' : 'Tạo Sản Phẩm') }}</span>
+            <span *ngIf="isLoading" class="material-icons-outlined animate-spin text-[18px]">sync</span>
+            <span>{{ isLoading ? 'ĐANG XỬ LÝ...' : (isEditing ? 'LƯU THAY ĐỔI' : 'TẠO SẢN PHẨM') }}</span>
           </button>
 
         </form>
@@ -157,93 +147,107 @@
     </div>
 
     <div class="lg:col-span-2">
-      <h2 class="text-xl font-extrabold text-zinc-900 mb-6 uppercase tracking-wider">Kho Hàng <span
-          class="text-zinc-400 text-lg">({{products().length}})</span></h2>
+      <div class="flex items-end justify-between mb-6">
+        <div>
+           <h2 class="text-2xl font-black text-black uppercase tracking-tighter italic">Kho Hàng</h2>
+           <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-1">Tổng cộng: <span class="text-black">{{products().length}}</span> sản phẩm</p>
+        </div>
+        
+        <div class="relative w-64 hidden sm:block">
+           <span class="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
+           <input type="text" placeholder="Tìm tên, thương hiệu..." class="w-full bg-white border border-zinc-200 focus:border-black rounded-sm pl-9 pr-3 py-2 text-xs font-bold outline-none placeholder-zinc-300">
+        </div>
+      </div>
 
-      <div class="bg-white rounded-xl shadow-sm border border-zinc-200 overflow-hidden">
-        <table class="w-full text-left">
-          <thead class="bg-zinc-50 border-b border-zinc-200">
-            <tr>
-              <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-wider">Sản phẩm</th>
-              <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-wider">Kho & Giá</th>
-              <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-wider text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100">
-            <tr *ngFor="let p of products()" (click)="!isLoading && onEdit(p)" class="transition-colors group"
-              [class.cursor-pointer]="!isLoading" [class.cursor-not-allowed]="isLoading" [class.opacity-50]="isLoading"
-              [class.bg-blue-50]="isEditing && newProduct.id === p.id"
-              [class.hover:bg-zinc-50]="(!isEditing || newProduct.id !== p.id) && !isLoading">
+      <div class="bg-white rounded-sm shadow-sm border border-zinc-200 overflow-hidden">
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left whitespace-nowrap md:whitespace-normal">
+            <thead class="bg-zinc-950 border-b border-zinc-800">
+              <tr>
+                <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest w-1/2">Sản phẩm</th>
+                <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Kho & Giá</th>
+                <th class="p-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right w-24">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-100">
+              <tr *ngFor="let p of products()" (click)="!isLoading && onEdit(p)" class="transition-colors group"
+                [class.cursor-pointer]="!isLoading" [class.cursor-not-allowed]="isLoading" [class.opacity-50]="isLoading"
+                [class.bg-blue-50]="isEditing && newProduct.id === p.id"
+                [class.hover:bg-zinc-50]="(!isEditing || newProduct.id !== p.id) && !isLoading">
 
-              <td class="p-4 align-top">
-                <div class="flex gap-4">
-                  <div class="w-16 h-16 rounded bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
-                    <img *ngIf="p.imageUrl" [src]="p.imageUrl" class="w-full h-full object-cover">
-                    <div *ngIf="!p.imageUrl" class="w-full h-full flex items-center justify-center text-zinc-300">
-                      <span class="material-icons-outlined">image</span>
+                <td class="p-4 align-top">
+                  <div class="flex gap-4 items-start">
+                    <div class="w-16 h-16 rounded-sm bg-zinc-50 border border-zinc-200 overflow-hidden shrink-0">
+                      <img *ngIf="p.imageUrl" [src]="p.imageUrl" class="w-full h-full object-cover">
+                      <div *ngIf="!p.imageUrl" class="w-full h-full flex items-center justify-center text-zinc-300">
+                        <span class="material-icons-outlined text-2xl">image_not_supported</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="font-black text-black text-sm uppercase italic group-hover:text-blue-600 transition-colors leading-tight">
+                        {{p.name}}
+                      </div>
+                      <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-1 mb-1.5">
+                        {{p.brand || 'No Brand'}}
+                      </div>
+                      <div class="text-xs text-zinc-500 line-clamp-2 font-medium leading-relaxed max-w-sm whitespace-normal">
+                        {{p.description || 'Chưa có mô tả...'}}
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div class="font-bold text-zinc-800 text-sm group-hover:text-blue-600 transition-colors">
-                      {{p.name}}</div>
-                    <div class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">
-                      {{p.brand}}</div>
-                    <div class="text-xs text-zinc-400 line-clamp-1">{{p.description}}</div>
+                </td>
+                
+                <td class="p-4 align-top">
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono font-black text-sm text-black">{{ p.price | number:'1.0-0' }}₫</span>
+                      <span *ngIf="p.discount" class="text-[9px] font-black bg-red-600 text-white px-1.5 py-0.5 rounded-sm">
+                        -{{ p.discount }}%
+                      </span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1">
+                      <span *ngFor="let size of p.productSizes"
+                        class="text-[9px] font-bold text-zinc-600 bg-zinc-100 px-2 py-1 rounded-sm border border-zinc-200">
+                        {{size.sizeName}}: <span class="font-black text-black">{{size.quantity}}</span>
+                      </span>
+                      <span *ngIf="!p.productSizes?.length" class="text-[9px] font-bold text-red-500 uppercase tracking-widest italic">Hết hàng</span>
+                    </div>
+
+                    <div *ngIf="p.label" class="mt-1">
+                      <span class="text-[9px] text-blue-600 font-black uppercase tracking-widest px-2 py-0.5 bg-blue-50 border border-blue-100 inline-block">
+                        {{p.label}}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td class="p-4 align-top">
-                <div class="flex flex-col gap-1">
-                  <div class="flex items-center gap-2">
-                    <span class="font-mono font-bold text-red-800">{{ p.price | number:'1.0-0' }}₫</span>
-                    <span *ngIf="p.discount !== undefined && p.discount > 0">
-                      -{{ p.discount }}%
-                    </span>
+                </td>
+                
+                <td class="p-4 text-right align-top">
+                  <div class="flex justify-end gap-1">
+                    <button [disabled]="isLoading" title="Chỉnh sửa"
+                      class="text-zinc-400 hover:text-blue-600 transition-colors p-2 rounded hover:bg-blue-50 disabled:hover:bg-transparent disabled:opacity-50">
+                      <span class="material-icons-outlined text-[18px]">edit</span>
+                    </button>
 
-
+                    <button (click)="onDelete(p.id); $event.stopPropagation()" [disabled]="isLoading" title="Xóa"
+                      class="text-zinc-400 hover:text-red-600 transition-colors p-2 rounded hover:bg-red-50 disabled:hover:bg-transparent disabled:opacity-50">
+                      <span class="material-icons-outlined text-[18px]">delete</span>
+                    </button>
                   </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div *ngIf="products().length === 0" class="p-12 text-center flex flex-col items-center">
+             <span class="material-icons-outlined text-6xl text-zinc-200 mb-4">inventory_2</span>
+             <h3 class="text-sm font-black text-zinc-400 uppercase tracking-widest">Kho hàng trống</h3>
+             <p class="text-xs text-zinc-400 mt-2">Hãy sử dụng form bên trái để thêm sản phẩm đầu tiên.</p>
+          </div>
 
-                  <div class="flex flex-wrap gap-1 mt-1">
-                    <span *ngFor="let size of p.productSizes"
-                      class="text-[9px] font-bold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded border border-zinc-200">
-                      {{size.sizeName}}: {{size.quantity}}
-                    </span>
-                  </div>
-
-                  <span *ngIf="p.label" class="text-[9px] text-blue-500 font-bold uppercase tracking-tighter italic">
-                    #{{p.label}}
-                  </span>
-                </div>
-              </td>
-              <td class="p-4 text-right align-top">
-                <div class="flex justify-end gap-2">
-                  <button [disabled]="isLoading"
-                    class="text-zinc-300 hover:text-blue-500 transition-colors p-1 disabled:hover:text-zinc-300">
-                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path
-                          d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                        <path
-                          d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                      </svg>
-                    </span>
-                  </button>
-
-                  <button (click)="onDelete(p.id); $event.stopPropagation()" [disabled]="isLoading"
-                    class="text-zinc-300 hover:text-red-500 transition-colors p-1 disabled:hover:text-zinc-300 disabled:cursor-not-allowed">
-                    <span class="material-icons-outlined text-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </div>
       </div>
     </div>
+    
   </div>
 </div>

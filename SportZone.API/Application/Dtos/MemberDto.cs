@@ -14,5 +14,9 @@ namespace SportZone.Application.Dtos
         // public List<Review> Reviews { get; set; }
 
     }
+
+    public class MemberIdRequest {
+    public required string MemberId { get; set; }
+}
     
 } 

@@ -1,0 +1,92 @@
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.icon-box {
+  width: 80px;
+  height: 80px;
+  background: #fff5f5;
+  color: #e53e3e;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  margin: 0 auto 20px;
+  border: 4px solid #feb2b2;
+}
+
+h1 {
+  color: #2d3748;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.details {
+  color: #718096;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.order-info {
+  margin-top: 10px;
+  color: #2d3748;
+  padding: 8px;
+  background: #f7fafc;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-retry {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn-retry:hover {
+  background: #c53030;
+}
+
+.btn-home {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.btn-home:hover {
+  background: #e2e8f0;
+}
+
+.support {
+  font-size: 0.85em;
+  color: #a0aec0;
+  font-style: italic;
+}

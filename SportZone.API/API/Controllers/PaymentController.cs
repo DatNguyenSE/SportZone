@@ -31,8 +31,8 @@ namespace SportZone.API.Controllers
             if (order.Status == OrderStatus.Paid.ToString()
                 || order.Status == OrderStatus.Cancelled.ToString()
                 || order.Status == OrderStatus.Completed.ToString())
-               return BadRequest($"Unable to process payment. The order is currently '{order.Status}'.");
-            if(order.Payment.PaymentMethod == PaymentMethod.COD.ToString())
+                return BadRequest($"Unable to process payment. The order is currently '{order.Status}'.");
+            if (order.Payment.PaymentMethod == PaymentMethod.COD.ToString())
             {
                 return BadRequest("Payment cannot be processed. The order is currently in the COD payment stage.");
             }
@@ -54,11 +54,14 @@ namespace SportZone.API.Controllers
             var response = _vnPayService.PaymentExecute(Request.Query);
             if (!response.Success || response.VnPayResponseCode != "00")
             {
-                // Redirect về trang thất bại
-                return Redirect($"http://localhost:3000/payment-fail?orderId={response.OrderId}");
+                // Làm sạch ID trước khi gửi
+                string cleanId = response.OrderId.Contains("_") ? response.OrderId.Split('_')[0] : response.OrderId;
+
+                // Đổi từ ?orderId= sang / (Path Parameter)
+                return Redirect($"http://localhost:4200/payment-fail/{cleanId}");
             }
 
-        // --- XỬ LÝ CẮT CHUỖI "12_ticks" ---
+            // --- XỬ LÝ CẮT CHUỖI "12_ticks" ---
             string vnpTxnRef = response.OrderId; // Ví dụ: "12_639045166745147581"
             string orderIdRaw = vnpTxnRef;
 
@@ -71,11 +74,11 @@ namespace SportZone.API.Controllers
             {
                 return BadRequest("Mã đơn hàng lỗi định dạng");
             }
-        // --- output là orderId:int ---
+            // --- output là orderId:int ---
 
             var order = await _orderService.GetOrderByIdAsync(orderId);
             if (order == null)
-                return Redirect($"http://localhost:3000/payment-fail?orderId={response.OrderId}");
+                return Redirect($"http://localhost:4200/payment-fail?orderId={response.OrderId}");
 
             long vnpayAmount = response.Amount;
             long orderAmount = (long)(order.TotalAmount * 100); // vì vnpay trả amount về đã nhân với 100 nên ta nhân với order.amount để sosanh
@@ -88,7 +91,7 @@ namespace SportZone.API.Controllers
             }
             // Redirect về trang thành công 
             // return Redirect($"http://localhost:4200/order-detail?orderId={response.OrderId}");
-            return Redirect($"http://localhost:4200/category/123");
+            return Redirect($"http://localhost:4200/checkout-success/{orderId}");
         }
     }
 }

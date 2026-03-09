@@ -71,7 +71,7 @@ export class ProductDetail {
 
     if (!product || !sizeName) return 0;
 
-    // Tìm size tương ứng trong mảng productSizes
+    // Tìm size tương ứng trong mảng ProductSizeDtos
     const sizeInfo = product.productSizes?.find(s => s.sizeName === sizeName);
     return sizeInfo ? sizeInfo.quantity : 0;
   });

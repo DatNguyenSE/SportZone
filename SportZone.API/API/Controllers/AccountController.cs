@@ -79,7 +79,7 @@ namespace SportZone.API.Controllers
             return Ok(new
             {
                 user = userDto,
-                Message = isNewUser ? "New account successfully created.!" : "Log in successfully!",
+                Message = isNewUser ? "New account successfully created." : "Login successfully",
                 IsNewUser = isNewUser
             });
         }

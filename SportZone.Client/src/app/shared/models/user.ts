@@ -1,3 +1,5 @@
+import { Order, OrderItem } from "./order.model";
+
 export type User = {
     id: string;
     userName?: string;
@@ -19,6 +21,7 @@ export type UserProfile = {
     phoneNumber?: string;
     gender?: 'male' | 'female' | 'other';
     dateOfBirth?: string;
+    orders : Order[];
 }
 
 export type authenLoginCreds = {

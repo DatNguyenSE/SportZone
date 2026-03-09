@@ -12,14 +12,6 @@ namespace SportZone.Application.Mappings
             // Map 2 chiều giữa Entity và DTO chính
             CreateMap<ProductSize, ProductSizeDto>().ReverseMap();
 
-            // SỬA LỖI MAPPING: Map từ Entity sang CreateProductSizeDto (nếu có dùng)
-            // Lỗi "ProductSize -> CreateProductSizeDto" sẽ hết khi thêm dòng này
-            CreateMap<ProductSize, CreateProductSizeDto>().ReverseMap();
-
-            // Map dùng cho tạo mới: Bỏ qua Id để DB tự sinh
-            CreateMap<CreateProductSizeDto, ProductSize>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
-
 
             // --- 2. MAPPING CHO PRODUCT ---
             // Map hiển thị: Entity -> DTO
@@ -33,8 +25,13 @@ namespace SportZone.Application.Mappings
 
             // Map cập nhật: Chỉ cập nhật các trường không null
             CreateMap<UpdateProductDto, Product>()
+                // THÊM DÒNG NÀY ĐỂ CHẶN LỖI:
+                .ForMember(dest => dest.ProductSizes, opt => opt.Ignore())
+
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
-                srcMember != null && (srcMember is not int i || i != 0) && (srcMember is not decimal d || d != 0)
+                    srcMember != null &&
+                    (srcMember is not int i || i != 0) &&
+                    (srcMember is not decimal d || d != 0)
                 ));
 
             CreateMap<Product, ProductDto>()
@@ -88,7 +85,8 @@ namespace SportZone.Application.Mappings
             CreateMap<Feature, UpdateFeatureDto>().ReverseMap();
 
             //-- APP USER MAPPING---
-            CreateMap<AppUser, MemberDto>().ReverseMap();
+            CreateMap<AppUser, MemberDto>().ReverseMap()
+            .ForMember(dest => dest.Orders, opt => opt.MapFrom(src => src.Orders));
         }
     }
 }

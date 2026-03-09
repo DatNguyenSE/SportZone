@@ -17,10 +17,10 @@ export class AdminLayout {
   isSidebarCollapsed = signal(false);
 
   menuItems = [
-    { label: 'Thống kê', icon: 'dashboard', link: '/admin/dashboard' },
-    { label: 'Sản phẩm', icon: 'inventory_2', link: '/admin/products' },
-    { label: 'Hội viên', icon: 'group', link: '/admin/users' },
-    { label: 'Banner', icon: 'view_carousel', link: '/admin/banners' },
+    // { label: 'Thống kê', icon: 'dashboard', link: '/admin' },
+    { label: 'Sản phẩm', icon: 'inventory_2', link: '/admin/product-management' },
+    { label: 'Thành viên', icon: 'group', link: '/admin/members' },
+    { label: 'Banner', icon: 'view_carousel', link: '/admin/feature-banner-management' },
   ];
 
   toggleSidebar() {

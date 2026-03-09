@@ -10,4 +10,8 @@ public interface ICartRepository : IGenericRepository<Cart>
     Task<bool> UpdateItemQuantityAsync(string userId, int productId, int quantity, string sizeName);
     Task<bool> ClearCartAsync(string userId);
     Task<int> GetItemQuantityInCartAsync(string userId, int productId, string sizeName);
+    Task<IEnumerable<CartItem>> GetCartItemsBySizeIdsAsync(List<int> sizeIds);
+    void RemoveCartItem(CartItem item); 
+
+    
 }

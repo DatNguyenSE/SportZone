@@ -14,7 +14,7 @@ export interface Product {
 
   discount?: number; 
   isNew?: boolean;
-  productSizes?: ProductSize[];
+  productSizes: ProductSize[];
   label?: string;
 
   features?: Features[];

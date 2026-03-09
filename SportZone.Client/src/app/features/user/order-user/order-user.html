@@ -8,10 +8,21 @@
 
     <main class="min-h-screen bg-white dark:bg-zinc-950">
         <div class="relative h-[40vh] w-full overflow-hidden bg-black">
+
             <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=2564&auto=format&fit=crop"
                 class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
                 alt="Banner">
+
             <div class="absolute inset-0 flex flex-col justify-center px-12">
+                <a routerLink="/"
+                    class="flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-white pb-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                    </svg>
+                    <span class="text-xs font-bold uppercase tracking-widest">QUAY LẠI</span>
+                </a>
                 <h1
                     class="text-white text-7xl md:text-8xl font-black italic tracking-tighter uppercase leading-none drop-shadow-2xl">
                     My Orders
@@ -19,6 +30,7 @@
                 <p class="text-white/80 text-xs font-bold uppercase tracking-[0.5em] mt-4 ml-2">
                     {{ userOrder().length }} Giao dịch / {{ filteredOrders().length }} hiển thị
                 </p>
+
             </div>
         </div>
 
@@ -32,10 +44,10 @@
                     [class.text-gray-500]="currentStatus() !== tab">
                     {{ tab === 'Tất cả' ? 'Tất cả' :
                     tab === 'Paid' ? 'Thành công' :
-                    tab === 'Pending' ? 'Đang chờ' :       
-                      tab === 'Placed' ? 'Đã đặt' :  
+                    tab === 'Pending' ? 'Đang chờ' :
+                    tab === 'Placed' ? 'Đã đặt' :
                     tab === 'Cancelled' ? 'Đã hủy' : 'Hoàn trả'
-                     }}
+                    }}
                 </button>
                 }
             </nav>

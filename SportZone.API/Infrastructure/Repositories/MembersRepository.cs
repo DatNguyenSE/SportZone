@@ -7,24 +7,45 @@ namespace SportZone.Infrastructure.Repositories;
 
 public class MembersRepository(AppDbContext _context) : GenericRepository<AppUser>(_context), IMembersRepository
 {
-    public Task<AppUser?> GetByEmailAsync(string email)
+    private const string AdminRoleId = "admin-id"; // Thay bằng ID thực tế của Role Admin
+    public async Task<IEnumerable<AppUser>> GetAllMembersAsync()
     {
-        throw new NotImplementedException();
-    }
+        // Lấy danh sách UserId của những người có Role là Admin
+        var adminUserIds = await _context.UserRoles
+            .Where(ur => ur.RoleId == AdminRoleId)
+            .Select(ur => ur.UserId)
+            .ToListAsync();
 
-    public async Task<AppUser?> GetMemberByIdAsync(string id)
-    {
+        // Trả về những User không nằm trong danh sách adminUserIds
         return await _context.Users
+            .Where(u => !adminUserIds.Contains(u.Id))
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == id);
+            .ToListAsync();
     }
 
     public async Task<AppUser?> GetMemberWithOrdersAsync(string id)
     {
+        // Kiểm tra xem ID này có phải Admin không
+        var isAdmin = await _context.UserRoles
+            .AnyAsync(ur => ur.UserId == id && ur.RoleId == AdminRoleId);
+
+        if (isAdmin) return null; // Nếu là admin thì không trả về dữ liệu
+
         return await _context.Users
             .Include(u => u.Orders)
+                .ThenInclude(o => o.Items)
+                    .ThenInclude(i => i.Product)
+            .Include(u => u.Orders)
+                .ThenInclude(o => o.Items)
+                    .ThenInclude(i => i.ProductSize)
             .FirstOrDefaultAsync(u => u.Id == id);
-       
     }
+
+    public Task<AppUser?> GetByEmailAsync(string email)
+    {
+        return _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+
     
 }

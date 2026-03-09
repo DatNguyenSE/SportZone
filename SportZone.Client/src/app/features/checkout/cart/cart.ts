@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastService } from '../../../core/services/toast-service';
 import { OrderService } from '../../../core/services/order-service';
 
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -18,6 +19,7 @@ import { OrderService } from '../../../core/services/order-service';
   styleUrls: ['./cart.css'],
 })
 export class Cart implements OnInit, OnDestroy {
+
   private cartService = inject(CartService);
   private promotionService = inject(PromotionService);
   private orderService = inject(OrderService);

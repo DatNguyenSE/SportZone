@@ -18,6 +18,7 @@ import { FeatureProducts } from './features/shop/campaign/feature-products/featu
 import { FeatureBannerManagement } from './features/admin/feature-banner-management/feature-banner-management';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { UserLayout } from './layouts/user-layout/user-layout';
+import { MemberList } from './features/admin/member/member-list/member-list';
 
 export const routes: Routes = [
     {
@@ -50,8 +51,11 @@ export const routes: Routes = [
         component: AdminLayout,
         canActivate: [adminGuard], // Bảo vệ chỉ Admin mới vào được
         children: [
+            { path: '', redirectTo: 'product-management', pathMatch: 'full' },
             { path: 'product-management', component: ProductManagement, canActivate: [adminGuard] },
             { path: 'feature-banner-management', component: FeatureBannerManagement, canActivate: [adminGuard] },
+            { path: 'members', component: MemberList, canActivate: [adminGuard] },
+
         ]
     }
     ,
