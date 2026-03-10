@@ -1,0 +1,53 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+<div class="flex h-screen bg-gray-100 overflow-hidden font-sans">
+  
+  <aside [class.w-64]="!isSidebarCollapsed()" [class.w-20]="isSidebarCollapsed()" 
+         class="bg-black text-white transition-all duration-300 flex flex-col z-50">
+    
+    <div class="p-6 border-b border-zinc-800 flex items-center gap-3">
+      <div class="bg-white text-black p-1 font-black italic">SZ</div>
+      <span *ngIf="!isSidebarCollapsed()" class="font-black uppercase tracking-tighter">Admin Panel</span>
+    </div>
+
+    <nav class="flex-1 mt-4">
+      @for (item of menuItems; track item.label) {
+        <a [routerLink]="item.link" routerLinkActive="bg-zinc-900 border-white text-white"
+           class="flex items-center gap-4 p-4 hover:bg-zinc-900 transition-all border-l-4 border-transparent group">
+          <span class="material-icons-outlined text-xl">{{item.icon}}</span>
+          <span *ngIf="!isSidebarCollapsed()" class="text-xs font-bold uppercase tracking-widest">{{item.label}}</span>
+        </a>
+      }
+    </nav>
+
+    <button (click)="logout()" class="p-4 border-t border-zinc-800 flex items-center gap-4 text-red-500 hover:bg-red-500/10 transition-colors">
+      <span class="material-icons-outlined">logout</span>
+      <span *ngIf="!isSidebarCollapsed()" class="text-xs font-bold uppercase tracking-widest">Đăng xuất</span>
+    </button>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm">
+      <button (click)="toggleSidebar()" class="text-gray-500 hover:text-black">
+        <span class="material-icons-outlined">menu_open</span>
+      </button>
+
+      <div class="flex items-center gap-4">
+        <div class="text-right hidden sm:block">
+          <p class="text-[10px] font-bold text-gray-400 uppercase leading-none">Admin hiện tại</p>
+          <p class="text-xs font-black uppercase italic">{{accountService.currentUser()?.roles}}</p>
+        </div>
+        <div class="w-10 h-10 bg-zinc-200 rounded-full flex items-center justify-center font-bold">A</div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8">
+      <div class="max-w-7xl mx-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+    
+  </div>
+</div>

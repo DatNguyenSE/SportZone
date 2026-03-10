@@ -1,0 +1,99 @@
+<div class="member-container">
+  <div class="list-section">
+    <h2>Danh sách thành viên</h2>
+    <div class="member-grid">
+      @for (member of members(); track member.id) {
+        <div class="member-card" (click)="selectMember(member.id)">
+          <img [src]="member.imageUrl || 'assets/default-avatar.png'" alt="avatar">
+          <div class="info">
+            <p class="name">{{ member.fullName }}</p>
+            <p class="email">{{ member.email }}</p>
+          </div>
+        </div>
+      } @empty {
+        <p>Không có thành viên nào.</p>
+      }
+    </div>
+  </div>
+
+  @if (selectedMember(); as user) {
+    <div class="detail-overlay" (click)="closeDetail()">
+      <div class="detail-content" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closeDetail()">X</button>
+        
+        <header>
+          <h3>Thông tin chi tiết: {{ user.fullName }}</h3>
+        </header>
+
+        <section class="personal-info">
+          <p><strong>Số điện thoại:</strong> {{ user.phoneNumber || 'N/A' }}</p>
+          <p><strong>Địa chỉ:</strong> {{ user.address || 'Chưa cập nhật' }}</p>
+          <p><strong>Giới tính:</strong> {{ user.gender }}</p>
+        </section>
+
+        <hr>
+
+        <section class="order-section">
+          <h4>Lịch sử đơn hàng ({{ user.orders.length }})</h4>
+          @if (user.orders.length > 0) {
+            <table class="order-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Ngày đặt</th>
+                  <th>Trạng thái</th>
+                  <th>Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+  @for (order of user.orders; track order.id) {
+
+    <!-- ORDER ROW -->
+    <tr class="order-row" (click)="toggleOrder(order.id)">
+      <td>#{{ order.id }}</td>
+      <td>{{ order.createdAt | date:'dd/MM/yyyy' }}</td>
+      <td>
+        <span class="status-badge">{{ order.status }}</span>
+      </td>
+      <td>{{ order.totalAmount | number }}đ</td>
+    </tr>
+
+    <!-- ORDER ITEMS -->
+    @if (expandedOrderId() === order.id) {
+      <tr class="order-items-row">
+        <td colspan="4">
+
+          <div class="order-items">
+
+            @for (item of order.items; track item.productId) {
+              <div class="order-item">
+
+                <img [src]="item.imageUrl" alt="product">
+
+                <div class="product-info">
+                  <p class="product-name">{{ item.name }}</p>
+                  <p>Size: {{ item.sizeName }}</p>
+                  <p>Số lượng: {{ item.quantity }}</p>
+                  <p>Giá: {{ item.unitPrice | number }}đ</p>
+                </div>
+
+              </div>
+            }
+
+          </div>
+
+        </td>
+      </tr>
+    }
+
+  }
+</tbody>
+            </table>
+          } @else {
+            <p>Người dùng này chưa có đơn hàng nào.</p>
+          }
+        </section>
+      </div>
+    </div>
+  }
+</div>

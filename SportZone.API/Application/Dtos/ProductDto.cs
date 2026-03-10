@@ -22,7 +22,7 @@ namespace SportZone.Application.Dtos
         public double? Discount { get; set; } = 0.0;
         public bool? IsNew { get; set; } = true;
         public string? Label { get; set; } = null; // e.g., "New Arrival", "Best Seller", to set banners on UI
-        public List<CreateProductSizeDto>? ProductSizes { get; set; }
+        public List<ProductSizeDto>? ProductSizes { get; set; }
         public List<CreateFeatureDto>? Features { get; set; }
     }
 

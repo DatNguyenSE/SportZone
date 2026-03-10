@@ -8,5 +8,5 @@ public interface IMembersRepository : IGenericRepository<AppUser>
 {
     Task<AppUser?> GetByEmailAsync(string email);
     Task<AppUser?> GetMemberWithOrdersAsync(string id);
-    Task<AppUser?> GetMemberByIdAsync(string id);
+    Task<IEnumerable<AppUser>> GetAllMembersAsync();
 }

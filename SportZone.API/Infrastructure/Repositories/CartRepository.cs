@@ -70,6 +70,13 @@ public class CartRepository(AppDbContext _context) : GenericRepository<Cart>(_co
             .FirstOrDefaultAsync(c => c.UserId == userId);
     }
 
+    public async Task<IEnumerable<CartItem>> GetCartItemsBySizeIdsAsync(List<int> sizeIds)
+    {
+        return await _context.CartItems
+        .Where(ci => sizeIds.Contains(ci.ProductSizeId))
+        .ToListAsync();
+    }
+
     public async Task<int> GetItemQuantityInCartAsync(string userId, int productId, string sizeName)
     {
         var cartId = await _context.Carts
@@ -85,6 +92,11 @@ public class CartRepository(AppDbContext _context) : GenericRepository<Cart>(_co
                     .FirstOrDefaultAsync();
 
         return quantity; 
+    }
+
+    public void RemoveCartItem(CartItem item)
+    {
+         _context.CartItems.Remove(item);
     }
 
     public async Task<bool> RemoveItemFromCartAsync(string userId, int productId, string sizeName)

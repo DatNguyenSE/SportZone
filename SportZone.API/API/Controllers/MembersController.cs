@@ -19,12 +19,12 @@ namespace SportZone.API.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")] // 1. Yêu cầu phải đăng nhập mới gọi được API này
-        [HttpPost("/member-detail")]
-        public async Task<ActionResult<MemberDto>> GetMemberById([FromBody] string memberId)
+        // [Authorize(Roles = "Admin")] // 1. Yêu cầu phải đăng nhập mới gọi được API này
+        [HttpPost("detail")]
+        public async Task<ActionResult<MemberDto>> GetMemberById([FromBody] MemberIdRequest request)
         {
             // Implement logic to retrieve a member by ID
-            var member = await memberService.GetMemberDetailByIdAsync(memberId);
+            var member = await memberService.GetMemberDetailByIdAsync(request.MemberId);
             return Ok(member);
         }
 
@@ -45,7 +45,7 @@ namespace SportZone.API.Controllers
         }
 
         [HttpDelete("{memberId:int}/delete")]
-        public async Task<ActionResult> DeleteMember(string memberId)
+        public async Task<ActionResult> DeleteMember( [FromBody] string memberId)
         {
             // Implement logic to delete a member
             await memberService.DeleteAsync(memberId);

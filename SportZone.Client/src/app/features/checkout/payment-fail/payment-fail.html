@@ -1,0 +1,28 @@
+<div class="status-container">
+  <div class="card">
+    <div class="icon-box">
+      <span class="error-icon">✕</span>
+    </div>
+    
+    <h1>Thanh toán thất bại!</h1>
+    
+    <div class="details">
+      <p>Rất tiếc, đã có lỗi xảy ra trong quá trình xử lý thanh toán bằng VNPay.</p>
+      @if (orderId()) {
+        <p class="order-info">Mã đơn hàng: <strong>#{{ orderId() }}</strong></p>
+      }
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-retry" [routerLink]="['/orders', orderId()]">
+        Thử thanh toán lại
+      </button>
+      
+      <button class="btn btn-home" routerLink="/">
+        Về trang chủ
+      </button>
+    </div>
+    
+    <p class="support">Nếu tiền đã bị trừ nhưng đơn hàng chưa cập nhật, vui lòng liên hệ hỗ trợ.</p>
+  </div>
+</div>

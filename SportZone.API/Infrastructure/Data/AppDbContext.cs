@@ -84,6 +84,7 @@ namespace SportZone.Infrastructure.Data
             builder.Entity<ProductSize>(entity =>
             {
                 // Khi xóa Product -> Xóa hết ProductSize
+                // entity.HasQueryFilter(ps => ps.IsActive);
                 entity.HasOne(v => v.Product)
                       .WithMany(p => p.ProductSizes)
                       .HasForeignKey(v => v.ProductId)

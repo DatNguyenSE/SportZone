@@ -170,7 +170,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         {
             BackgroundJob.Schedule<IOrderService>(
                 service => service.CancelOrderBackgroundAsync(order.Id),
-                TimeSpan.FromMinutes(1));
+                TimeSpan.FromMinutes(10));
         }
         return mapper.Map<OrderDetailsDto>(order);
     }

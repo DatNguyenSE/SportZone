@@ -75,6 +75,12 @@ export class ProductManagement implements OnInit {
     this.isEditing = true;
     // Deep copy để tránh tham chiếu trực tiếp làm hỏng dữ liệu trong danh sách khi đang sửa
     this.newProduct = JSON.parse(JSON.stringify(product)); 
+    console.log('Product being edited:', this.newProduct);
+    if (this.newProduct.productSizes) {
+        this.newProduct.productSizes.forEach((s: any) => {
+            console.log(`Size: ${s.sizeName}, ID: ${s.id}`);
+        });
+    }
     this.imagePreview = product.imageUrl || null;
     this.selectedFile = null;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -128,6 +134,7 @@ export class ProductManagement implements OnInit {
       .subscribe({
         next: () => {
           alert('Cập nhật thành công!');
+          console.log('Updated product:', this.newProduct);
           this.loadProducts();
           this.onCancelEdit();
         },

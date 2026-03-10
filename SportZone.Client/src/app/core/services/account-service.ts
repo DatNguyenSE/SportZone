@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { authenResponse, authenLoginCreds, RegisterCreds, User, UserProfile } from '../../types/user';
+import { authenResponse, authenLoginCreds, RegisterCreds, User, UserProfile } from '../../shared/models/user';
 import { tap } from 'rxjs';
 
 @Injectable({

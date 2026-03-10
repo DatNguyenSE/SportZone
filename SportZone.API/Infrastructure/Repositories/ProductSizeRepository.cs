@@ -19,6 +19,11 @@ public class ProductSizeRepository(AppDbContext _context) : GenericRepository<Pr
                         .ToListAsync();
     }
 
+    public Task<ProductSize?> GetProductSizeByProductIdAndSizeNameAsync(int productId, string sizeName)
+    {
+        return _context.ProductSizes
+                     .FirstOrDefaultAsync(i => i.ProductId == productId && i.SizeName == sizeName);
+    }
 
     public async Task<ProductSize?> GetProductSizeIdAsync(int productId, string sizeName)
     {

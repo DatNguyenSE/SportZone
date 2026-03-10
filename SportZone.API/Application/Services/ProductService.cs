@@ -79,63 +79,100 @@ namespace SportZone.Application.Services
         public async Task<IEnumerable<ProductDto>> GetListByLabelAsync(string label)
         {
             var products = await uow.ProductRepository.GetListByLabelAsync(label);
-            if(products == null)
+            if (products == null)
             {
                 throw new BadRequestException($"Product with label: {label} not found");
             }
-                return mapper.Map<IEnumerable<ProductDto>>(products);
+            return mapper.Map<IEnumerable<ProductDto>>(products);
 
         }
 
-       
+
 
         public async Task<ProductDto?> UpdateAsync(int id, UpdateProductDto productDto, IFormFile? file)
         {
-            
             var product = await uow.ProductRepository.GetProductByIdAsync(id);
-            
+            if (product == null) throw new NotFoundException($"Product with id {id} not found.");
 
-            if (product == null)
-            {
-                throw new NotFoundException($"Product with id {id} not found.");
-            }
-
-      
             mapper.Map(productDto, product);
 
-          
+            // 3. Xử lý ảnh (Giữ nguyên logic của bạn)
             if (file != null)
             {
-                if (!string.IsNullOrEmpty(product.PublicId))
-                {
-                    await photoService.DeletePhotoAsync(product.PublicId);
-                }
-
+                if (!string.IsNullOrEmpty(product.PublicId)) await photoService.DeletePhotoAsync(product.PublicId);
                 var uploadResult = await photoService.AddPhotoAsync(file);
                 if (uploadResult.Error != null) throw new Exception(uploadResult.Error);
-
                 product.ImageUrl = uploadResult.Url;
                 product.PublicId = uploadResult.PublicId;
             }
 
-         
-            if (productDto.ProductSizes != null)
+            // 4. Xử lý logic ProductSizes và CartItems
+            if (productDto.ProductSizes != null) //dto có thong tin size
             {
-         
-                product.ProductSizes.Clear();
+                var existingSizes = product.ProductSizes.ToList(); //Danh sách Size trong DB
+                var sizeIdsToCleanCart = new List<int>(); // danh sach SizeID cần chỉnh trong user cart
 
-             
-                var newSizes = mapper.Map<List<ProductSize>>(productDto.ProductSizes);
-                foreach (var size in newSizes)
+
+                var SizeIdsInDto = productDto.ProductSizes.Where(s => s.Id != 0).Select(s => s.Id).ToList(); //danh sách SizeID có trong DTO (cả update và thêm mới)
+                var cartItems = await uow.CartRepository.GetCartItemsBySizeIdsAsync(SizeIdsInDto); // lấy hết Size mà client gửi để tìm tới giỏ hàng cần chỉnh sửa số lượng
+                int quantityInAllCart = cartItems.Sum(ci => ci.Quantity); // tổng số lượng của Size đó trong tất cả giỏ hàng
+
+                // A. Cập nhật hoặc Thêm mới
+                foreach (var dtoSize in productDto.ProductSizes) // duyet hết size trong DTO 
                 {
-                    product.ProductSizes.Add(size);
+                    
+                    var sizeInDb = existingSizes.FirstOrDefault(s =>
+                        (dtoSize.Id != 0 && s.Id == dtoSize.Id) ||
+                        ( s.SizeName == dtoSize.SizeName));
+
+                    if (sizeInDb != null)// nếu tìm thấy -> cập nhật
+                    {
+                        sizeInDb.Quantity = dtoSize.Quantity;
+                        sizeInDb.IsActive = true;
+
+                        // nếu số lượng size sau khi cập nhật <=0 hoặc tổng số lượng size đó trong tất cả giỏ hàng lớn hơn số lượng mới cập nhật -> Thêm vào danh sách dọn dẹp giỏ hàng
+                        if (sizeInDb.Quantity <= 0 || quantityInAllCart > dtoSize.Quantity) sizeIdsToCleanCart.Add(sizeInDb.Id);
+                    }
+                    else
+                    {
+                        var newSize = mapper.Map<ProductSize>(dtoSize);
+                        newSize.ProductId = id;
+                        newSize.IsActive = true;
+                        product.ProductSizes.Add(newSize);
+                    }
+                }
+
+                // B. Xử lý Soft Delete (Ẩn size)
+                var dtoSizeIds = productDto.ProductSizes.Select(s => s.Id).ToList(); //lấy danh sách SizeID từ DTO 
+                var sizesToDisable = existingSizes.Where(s => s.Id != 0 && !dtoSizeIds.Contains(s.Id)).ToList();
+                // so sanh với Db xem sizeId nào không có trong dto mà có trong Db thì chuyển Size trong Db IsActive = false 
+
+                foreach (var size in sizesToDisable)
+                {
+                    size.IsActive = false;
+                    size.Quantity = 0;
+
+                    sizeIdsToCleanCart.Add(size.Id); // Thêm vào danh sách dọn dẹp giỏ hàng
+                }
+
+                // C. THỰC HIỆN XÓA KHỎI GIỎ HÀNG
+                if (sizeIdsToCleanCart.Any())
+                {
+                    // Tìm tất cả CartItems liên quan đến các SizeId này
+                    var cartItemsToRemove = await uow.CartRepository
+                        .GetCartItemsBySizeIdsAsync(sizeIdsToCleanCart);
+
+                    foreach (var cartItem in cartItemsToRemove)
+                    {
+                        uow.CartRepository.RemoveCartItem(cartItem);
+                    }
                 }
             }
 
+            // 5. Lưu tất cả thay đổi trong 1 Transaction duy nhất
             uow.ProductRepository.Update(product);
             await uow.Complete();
 
-         
             return mapper.Map<ProductDto>(product);
         }
     }
