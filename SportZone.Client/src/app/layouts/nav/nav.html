@@ -1,139 +1,82 @@
 <link
   href="https://fonts.googleapis.com/css2?family=AdihausDIN:wght@400;700&family=ITC+Avant+Garde+Gothic:wght@700&display=swap"
   rel="stylesheet" />
-
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+
 <header class="sticky top-0 z-40 w-full bg-white border-b border-gray-200 transition-all duration-300">
-  <div
-    class="bg-black text-white text-[11px] font-bold py-2.5 text-center uppercase tracking-widest cursor-pointer hover:underline z-50 relative">
+  <div class="bg-black text-white text-[11px] font-bold py-2.5 text-center uppercase tracking-widest cursor-pointer hover:underline z-50 relative">
     GIAO HÀNG MIỄN PHÍ CHO THÀNH VIÊN CỦA SportZone
   </div>
 
   <div class="hidden lg:flex justify-end px-10 py-1 gap-6 text-[11px] text-gray-600 font-medium">
-    <a (click)="onAssist()" class="hover:text-black">Trợ giúp</a>
+    <a (click)="onAssist()" class="hover:text-black cursor-pointer">Trợ giúp</a>
     <span class="flex items-center gap-1 cursor-pointer hover:text-black">🇻🇳</span>
   </div>
 
-
   <div class="px-4 lg:px-10 pb-4 pt-1 flex items-center justify-between">
-
     <a routerLink="/" class="flex-shrink-0 mr-8 group">
       <div class="flex flex-col items-center justify-center cursor-pointer">
-        <h2 class="text-2xl font-black tracking-tighter uppercase italic transform -skew-x-12">
-          SportZone</h2>
+        <h2 class="text-2xl font-black tracking-tighter uppercase italic transform -skew-x-12">SportZone</h2>
       </div>
     </a>
 
     <nav class="hidden lg:flex items-center gap-6 absolute left-1/2 transform -translate-x-1/2">
-      <a routerLink="/category/shoes" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Giày</a>
-      <a routerLink="/category/jersey" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Áo
-        Thể
-        thao</a>
-      <a routerLink="/category/accessory" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Phụ
-        kiện</a>
-      <a routerLink="/category/new" routerLinkActive="text-red-600"
-        class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Mới</a>
-      <a routerLink="/category/sale" routerLinkActive="text-red-600"
-        class="text-sm font-bold  uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Sale</a>
+      <a routerLink="/category/shoes" routerLinkActive="text-red-600" class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Giày</a>
+      <a routerLink="/category/jersey" routerLinkActive="text-red-600" class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Áo Thể thao</a>
+      <a routerLink="/category/accessory" routerLinkActive="text-red-600" class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Phụ kiện</a>
+      <a routerLink="/category/new" routerLinkActive="text-red-600" class="text-sm font-bold uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Mới</a>
+      <a routerLink="/category/sale" routerLinkActive="text-red-600" class="text-sm font-bold  uppercase tracking-tight hover:underline underline-offset-4 decoration-2 cursor-pointer">Sale</a>
     </nav>
 
     <div class="flex items-center gap-4 flex-1 justify-end">
-      <!-- search -->
       <div class="hidden md:block relative w-48 lg:w-64">
         <div class="relative">
-          <input #searchInput (input)="onSearch(searchInput.value)"
-            (focus)="isSearching = filteredProducts().length > 0"
+          <input #searchInput (input)="onSearch(searchInput.value)" (focus)="isSearching = filteredProducts().length > 0"
             class="w-full bg-gray-100 text-gray-900 text-sm font-medium px-4 py-2 pr-10 border border-transparent focus:bg-white focus:border-gray-300 outline-none transition-all placeholder-gray-500"
             placeholder="Tìm kiếm" type="text" />
-
           <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </span>
         </div>
 
-        <div *ngIf="isSearching && filteredProducts().length > 0"
-          class="absolute top-full left-0 w-[300px] mt-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-2xl rounded-sm overflow-hidden z-[999]">
-
-          <div
-            class="p-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800">
+        <div *ngIf="isSearching && filteredProducts().length > 0" class="absolute top-full left-0 w-[300px] mt-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-2xl rounded-sm overflow-hidden z-[999]">
+          <div class="p-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800">
             Kết quả tìm kiếm ({{filteredProducts().length}})
           </div>
-
           <ul class="max-h-[400px] overflow-y-auto">
-            <li *ngFor="let product of filteredProducts()" (click)="goToProduct(product.id)"
-              class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors border-b border-gray-50 dark:border-zinc-800 last:border-none">
-
+            <li *ngFor="let product of filteredProducts()" (click)="goToProduct(product.id)" class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors border-b border-gray-50 dark:border-zinc-800 last:border-none">
               <img [src]="product.imageUrl" class="w-12 h-12 object-cover bg-gray-100">
-
               <div class="flex flex-col flex-1 min-w-0">
-                <span class="text-sm font-bold text-black dark:text-white truncate uppercase italic">{{ product.name
-                  }}</span>
+                <span class="text-sm font-bold text-black dark:text-white truncate uppercase italic">{{ product.name }}</span>
                 <span class="text-xs text-zinc-500">{{ product.price | number }}đ</span>
               </div>
-
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="size-4 text-gray-300">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
             </li>
           </ul>
-
-          <div class="p-2 bg-zinc-50 dark:bg-zinc-800/50 text-center">
-            <button class="text-[10px] font-black uppercase hover:underline italic">Xem tất cả</button>
-          </div>
         </div>
-
         <div *ngIf="isSearching" (click)="isSearching = false" class="fixed inset-0 bg-transparent z-[998]"></div>
       </div>
-      <!-- user -->
 
       <div class="flex items-center gap-1 sm:gap-3">
-
         <button (click)="toggleLoginModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-          <span class="material-symbols-outlined text-gray-900 text-[24px]"><svg xmlns="http://www.w3.org/2000/svg"
-              fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
+          <span class="material-symbols-outlined text-gray-900 text-[24px]">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
           </span>
         </button>
-        <!-- favorite -->
         <button class="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block">
-          <span class="material-symbols-outlined text-gray-900 text-[24px]"><svg xmlns="http://www.w3.org/2000/svg"
-              fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-          </span>
+          <span class="material-symbols-outlined text-gray-900 text-[24px]"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg></span>
         </button>
-        <!-- cart  -->
         <button (click)="onCart()" class="p-2 relative hover:bg-gray-100 rounded-full transition-colors">
-          <span class="material-symbols-outlined text-gray-900 text-[24px] font-medium"><svg
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-            </svg>
-          </span> </button>
-
+          <span class="material-symbols-outlined text-gray-900 text-[24px] font-medium"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg></span>
+        </button>
       </div>
     </div>
-
   </div>
 </header>
 
-
-<!-- toggle login -->
-
 @if(this.accountService.currentUser() === null){
-<div *ngIf="isLoginModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center backdrop-blur-[2px]  p-4">
+<div *ngIf="isLoginModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center backdrop-blur-[2px] p-4">
 
   <div class="bg-white w-full max-w-[480px] p-6 md:p-10 relative shadow-2xl animate-fade-in-up transition-all">
 
@@ -152,159 +95,114 @@
       </div>
 
       <div *ngIf="creds.step === 1" class="animate-fade-in">
-
         <div class="space-y-3">
-          <h2 class="text-2xl md:text-2xl font-black uppercase tracking-tight leading-none">
-            ĐĂNG NHẬP HOẶC ĐĂNG KÝ
-          </h2>
+          <h2 class="text-2xl md:text-2xl font-black uppercase tracking-tight leading-none">ĐĂNG NHẬP HOẶC ĐĂNG KÝ</h2>
           <p class="text-[13px] font-medium leading-relaxed">
-            Tận hưởng quyền truy cập chỉ dành cho hội viên vào các sản phẩm, trải nghiệm, ưu đãi độc quyền và hơn thế
-            nữa.
+            Tận hưởng quyền truy cập chỉ dành cho hội viên vào các sản phẩm, trải nghiệm, ưu đãi độc quyền và hơn thế nữa.
           </p>
         </div>
-
-
 
         <div class="mt-4">
           <input [(ngModel)]="creds.email" (keyup.enter)="onContinue()" type="email" placeholder="ĐỊA CHỈ EMAIL *"
             [class.border-red-500]="this.creds.emailError" [class.text-red-500]="this.creds.emailError"
             class="w-full border border-gray-400 p-3.5 text-sm font-bold placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all" />
-          <p *ngIf="this.creds.emailError" class="text-red-600 text-[11px] mt-1 font-bold">Vui lòng nhập định dạng email
-            hợp lệ (ví dụ: user@domain.com)</p>
+          <p *ngIf="this.creds.emailError" class="text-red-600 text-[11px] mt-1 font-bold">Vui lòng nhập định dạng email hợp lệ</p>
         </div>
+
         <div class="grid grid-cols-2 gap-3 mt-4">
-          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg
-              class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.048 0-2.733.984-2.733 2.039v1.932h3.588l-.642 3.667h-2.946v7.98c-5.083.7-5.083.7-5.083.7z" />
-            </svg></button>
-          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg
-              class="w-6 h-6" viewBox="0 0 48 48">
-              <path fill="#EA4335"
-                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-              <path fill="#4285F4"
-                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-              <path fill="#FBBC05"
-                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-              <path fill="#34A853"
-                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-            </svg></button>
+          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.048 0-2.733.984-2.733 2.039v1.932h3.588l-.642 3.667h-2.946v7.98c-5.083.7-5.083.7-5.083.7z" /></svg></button>
+          <button class="flex items-center justify-center border border-black py-3 hover:bg-gray-100 transition"><svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" /><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" /><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" /><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" /></svg></button>
         </div>
-          <div class="mt-2">For-Test-Client-Side: <br>Dataa@gmail.com</div>
+        
+        <div class="mt-2 text-[12px] text-gray-500">For-Test-Client-Side: <br>Dataa@gmail.com</div>
+
         <div class="pt-5 space-y-4 text-sm">
           <label class="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox"
-              class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
-            <span class="text-gray-900 leading-tight">
-              Có, tôi trên 16 tuổi<br>
-              <a href="/dieu-khoan"
-                class="underline font-bold text-[11px] hover:bg-black hover:text-white transition-colors px-0.5">Tại
-                sao nó quan trọng?</a> *
-            </span>
+            <input type="checkbox" class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+            <span class="text-gray-900 leading-tight">Có, tôi trên 16 tuổi<br><a href="/dieu-khoan" class="underline font-bold text-[11px] hover:bg-black hover:text-white transition-colors px-0.5">Tại sao nó quan trọng?</a> *</span>
           </label>
-
           <label class="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox"
-              class="shrink-0 w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
-
-            <span class="text-gray-900 leading-tight">
-              Tôi đã đọc, hiểu và chấp thuận <a href="/dieu-khoan"
-                class="underline hover:bg-black hover:text-white px-0.5">Chính sách Bảo mật</a>,
-              <a href="/dieu-khoan" class="underline hover:bg-black hover:text-white px-0.5">Điều khoản SportZone</a> và
-              <a href="/dieu-khoan" class="underline hover:bg-black hover:text-white px-0.5">Điều khoản trang Web</a>. *
-            </span>
+            <input type="checkbox" class="shrink-0 w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+            <span class="text-gray-900 leading-tight">Tôi đã đọc, hiểu và chấp thuận <a href="/dieu-khoan" class="underline hover:bg-black hover:text-white px-0.5">Chính sách Bảo mật</a>... *</span>
           </label>
-
-
           <label class="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox"
-              class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
-            <span class="text-gray-900 leading-tight">
-              Tôi đồng ý nhận thông tin quảng cáo và khuyến mãi cá nhân hóa.
-            </span>
+            <input type="checkbox" class="w-5 h-5 border-gray-300 rounded-none focus:ring-0 cursor-pointer mt-0.5 accent-black">
+            <span class="text-gray-900 leading-tight">Tôi đồng ý nhận thông tin quảng cáo...</span>
           </label>
         </div>
 
-        <button (click)="onContinue()"
-          class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-6">
+        <button (click)="onContinue()" class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-6">
           TIẾP TỤC
-          <span class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </span>
+          <span class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg></span>
         </button>
-
       </div>
-      <div *ngIf="creds.step === 2" class="animate-fade-in">
 
+      <div *ngIf="creds.step === 2" class="animate-fade-in">
         <div class="space-y-1 mb-6">
-          <h2 class="text-xl font-black uppercase tracking-tight break-all">
-            CHÀO MỪNG ĐẾN VỚI SportZone!
-          </h2>
+          <h2 class="text-xl font-black uppercase tracking-tight break-all">CHÀO MỪNG ĐẾN VỚI SportZone!</h2>
         </div>
 
         <div class="space-y-4">
           <div class="relative">
-            <input [(ngModel)]="creds.password" [type]="isPasswordVisible ? 'text' : 'password'"
+            <input [(ngModel)]="creds.password" [type]="isPasswordVisible ? 'text' : 'password'" (keyup.enter)="onLogin()"
               placeholder="MẬT KHẨU *"
               class="w-full border border-gray-400 p-3.5 text-sm font-bold placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all" />
 
-            <span (click)="togglePassword()"
-              class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-black select-none">
-
-              <span *ngIf="!isPasswordVisible" class="material-symbols-outlined flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-              </span>
-
-              <span *ngIf="isPasswordVisible" class="material-symbols-outlined flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                </svg>
-              </span>
+            <span (click)="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-black select-none">
+              <span *ngIf="!isPasswordVisible" class="material-symbols-outlined flex items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg></span>
+              <span *ngIf="isPasswordVisible" class="material-symbols-outlined flex items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg></span>
             </span>
           </div>
 
-
-          <div class="mb-10">Password For Test:
-            <br>Dat6112005nt!
-          </div>
-
+          <div class="mb-10 text-[12px] text-gray-500">Password For Test: <br>Dat6112005nt!</div>
 
           <div class="flex justify-between items-center">
-            <a href="#"
-              class="text-[11px] font-bold underline hover:bg-black hover:text-white transition-colors px-0.5">QUÊN MẬT
-              KHẨU?</a>
+            <a href="#" class="text-[11px] font-bold underline hover:bg-black hover:text-white transition-colors px-0.5">QUÊN MẬT KHẨU?</a>
           </div>
 
-          <button (click)="onLogin()"
-            class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-2">
-            ĐĂNG NHẬP
-            <span class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg
-                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-              </svg>
-            </span>
+          <button (click)="onLogin()" [disabled]="isSubmitting"
+            class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-2 disabled:bg-gray-400 disabled:cursor-wait">
+            <span *ngIf="!isSubmitting">ĐĂNG NHẬP</span>
+            <span *ngIf="isSubmitting" class="animate-pulse">ĐANG GỬI MÃ...</span>
+            <span *ngIf="!isSubmitting" class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" /></svg></span>
           </button>
+
+          <div class="text-center mt-3">
+            <button (click)="creds.step = 1" class="text-[12px] font-bold underline hover:text-gray-500 transition-colors">ĐỔI TÀI KHOẢN KHÁC</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="creds.step === 3" class="animate-fade-in">
+        <div class="space-y-2 mb-8 text-center">
+          <h2 class="text-2xl font-black uppercase tracking-tight break-all">XÁC THỰC EMAIL</h2>
+          <p class="text-[14px] text-gray-600 font-medium">
+            Mã gồm 6 chữ số đã được gửi đến: <br>
+            <strong class="text-black block mt-1">{{ creds.email }}</strong>
+          </p>
         </div>
 
+        <div class="space-y-5">
+          <input [(ngModel)]="creds.otpCode" (keyup.enter)="onVerifyOtp()" type="text" maxlength="6"
+            placeholder="--- ---"
+            class="w-full border-b-2 border-gray-300 p-4 text-center text-3xl tracking-[0.5em] font-bold focus:border-black focus:outline-none transition-all placeholder-gray-300" />
+
+          <button (click)="onVerifyOtp()" [disabled]="isSubmitting"
+            class="w-full bg-black text-white font-bold uppercase py-4 tracking-wider flex justify-between items-center px-6 hover:bg-gray-800 transition-colors group mt-6 disabled:bg-gray-400 disabled:cursor-wait">
+            <span *ngIf="!isSubmitting">XÁC NHẬN</span>
+            <span *ngIf="isSubmitting" class="animate-pulse">ĐANG KIỂM TRA...</span>
+            <span *ngIf="!isSubmitting" class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg></span>
+          </button>
+
+          <div class="text-center mt-5">
+            <button (click)="creds.step = 2" class="text-[12px] font-bold underline hover:text-gray-500 transition-colors">QUAY LẠI ĐĂNG NHẬP</button>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
-}
-
-@else {
-  <!-- closeDrawer , logoutUser là sk từ con -->
-<app-user-drawer [isOpen]="isLoginModalOpen" (closeDrawer)="toggleLoginModal()" (logoutUser)="logout()"> 
-</app-user-drawer>
+} @else {
+<app-user-drawer [isOpen]="isLoginModalOpen" (closeDrawer)="toggleLoginModal()" (logoutUser)="logout()"></app-user-drawer>
 }

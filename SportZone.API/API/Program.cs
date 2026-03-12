@@ -60,6 +60,10 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+//Email
+builder.Services.Configure<SportZone.Infrastructure.Configuration.EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
 //Cấu hình DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
@@ -76,12 +80,15 @@ builder.Services.AddHangfire(config => config
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IVnPayService,VnPayService>();
+
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductSizeService, ProductSizeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IVnPayService,VnPayService>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
@@ -94,7 +101,8 @@ builder.Services.AddIdentityCore<AppUser>(opt =>
     opt.User.RequireUniqueEmail = true; //Unique Email
 })
 .AddRoles<IdentityRole>() // Activate the Role feature
-.AddEntityFrameworkStores<AppDbContext>(); // store user to db via AppDbcontext
+.AddEntityFrameworkStores<AppDbContext>() // store user to db via AppDbcontext
+.AddDefaultTokenProviders();
 
 //JWT config
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

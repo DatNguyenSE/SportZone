@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { authenResponse, authenLoginCreds, RegisterCreds, User, UserProfile } from '../../shared/models/user';
+import { authenResponse, authenLoginCreds, RegisterCreds, User, UserProfile, VerifyOtpCreds } from '../../shared/models/user';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -25,16 +25,30 @@ export class AccountService {
   //     )
   // }
 
-  authenticate(creds: authenLoginCreds) {
-    return this.http.post<authenResponse>(this.baseUrl + 'account/authenticate', creds,
-      { withCredentials: true }).pipe(
+ authenticate(creds: authenLoginCreds) {
+    return this.http.post<authenResponse>(this.baseUrl + 'account/authenticate', creds, { withCredentials: true })
+      .pipe(
         tap(res => {
+          // Chỉ set User khi Backend trả về user (tức là đăng nhập thành công thẳng luôn)
+          if (res.user && !res.requireOtp) {
+            this.setCurrentUser(res.user);
+            this.startTokenRefreshInterval();
+          }
+        })
+      );
+  }
+
+  verifyEmail(creds: VerifyOtpCreds) {
+    return this.http.post<authenResponse>(this.baseUrl + 'account/verify-email', creds, { withCredentials: true })
+      .pipe(
+        tap(res => {
+          // Xác thực thành công -> Backend trả về Token -> Set User luôn
           if (res.user) {
             this.setCurrentUser(res.user);
             this.startTokenRefreshInterval();
           }
         })
-      )
+      );
   }
 
   refreshToken() {

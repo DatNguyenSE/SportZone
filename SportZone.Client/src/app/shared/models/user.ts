@@ -35,10 +35,16 @@ export type authenResponse = {
     user: User;
     message: string;
     isNewUser : boolean;
+    requireOtp?: boolean;
 }
 
 export type RegisterCreds = {
     email: string;
     password: string;
     username: string
+}
+
+export interface VerifyOtpCreds {
+  email: string;
+  otpCode: string;
 }

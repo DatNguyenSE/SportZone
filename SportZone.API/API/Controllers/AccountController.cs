@@ -8,49 +8,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using SportZone.API.Extensions;
 using SportZone.Application.Dtos.SportZone.Application.Dtos;
+using SportZone.Application.Dtos.EmailLoginDto;
 
 namespace SportZone.API.Controllers
-{   
+{
     [Route("api/account")]
     [ApiController]
-    public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : ControllerBase
+    public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IEmailService emailService) : ControllerBase
     {
-        // [HttpPost("register")]
-        // public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
-        // {
-        //     var user = new AppUser
-        //     {
-        //         Email = registerDto.Email,
-        //         UserName = registerDto.UserName
-        //     };
-
-        //     var result = await userManager.CreateAsync(user, registerDto.Password);
-        //     if (!result.Succeeded)
-        //     {
-        //         foreach (var error in result.Errors)
-        //         {
-        //             ModelState.AddModelError("identity", error.Description);
-        //         }
-        //         return ValidationProblem();
-        //     }
-        //     await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
-        //     await SetRefreshTokenCookie(user);
-        //     return await user.ToDto(tokenService);
-        // }
-
 
         //   !login  ->  register 
         [HttpPost("authenticate")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult> Login(LoginDto loginDto)
         {
             var user = await userManager.FindByEmailAsync(loginDto.Email);
             bool isNewUser = false;
+
+            // TH1: email chưa có -> đki nhập password -> tạo tk và gửi otp 
             if (user == null)
             {
                 user = new AppUser
                 {
                     Email = loginDto.Email,
-                    UserName = loginDto.Email, // 
+                    UserName = loginDto.Email,
                     FullName = loginDto.Email.Split("@")[0]
                 };
 
@@ -58,29 +38,90 @@ namespace SportZone.API.Controllers
                 if (!result.Succeeded)
                 {
                     foreach (var error in result.Errors)
-                    {
                         ModelState.AddModelError("identity", error.Description);
-                    }
                     return ValidationProblem();
                 }
-                await userManager.AddToRoleAsync(user, "Member"); //have to seed roles-data before
-                isNewUser = true;
+
+                await userManager.AddToRoleAsync(user, "Member");
+
+                // Tạo mã OTP và Gửi Mail
+                var otpToken = await userManager.GenerateUserTokenAsync(user, "Email", "EmailConfirmation");
+
+                string subject = "Xác nhận tài khoản SportZone";
+                string body = $@"
+            <div style='font-family: Arial;'>
+                <h2>Chào mừng bạn đến với SportZone!</h2>
+                <p>Tài khoản của bạn vừa được tạo. Mã xác nhận là: <strong style='font-size: 24px; color: #d9534f;'>{otpToken}</strong></p>
+                <p>Vui lòng nhập mã này vào ứng dụng để hoàn tất đăng ký.</p>
+            </div>";
+
+                await emailService.SendEmailAsync(user.Email, subject, body);
+
+                return Ok(new
+                {
+                    Message = "Tài khoản mới đã được tạo. Vui lòng kiểm tra email để lấy mã xác thực!",
+                    RequireOtp = true // Cờ báo cho Frontend biết cần chuyển sang màn hình nhập OTP
+                });
             }
+
+            // th2: email có rồi thì login như thường
             else
             {
+                // 1. Kiểm tra mật khẩu
                 var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
+                if (!result) return Unauthorized("Email hoặc mật khẩu không đúng!");
 
-                if (!result) return Unauthorized("Invalid password!");
+                // 2. Kiểm tra xem đã xác thực Email chưa
+                if (!user.EmailConfirmed)
+                {
 
+                    return BadRequest(new
+                    {
+                        Message = "Tài khoản chưa được xác thực. Vui lòng kiểm tra email để lấy mã xác nhận.",
+                        RequireOtp = true
+                    });
+                }
+
+                // 3. Đăng nhập thành công -> Trả về Token
+                await SetRefreshTokenCookie(user);
+                var userDto = await user.ToDto(tokenService);
+
+                return Ok(new
+                {
+                    user = userDto,
+                    Message = "Đăng nhập thành công!",
+                    RequireOtp = false
+                });
             }
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<ActionResult<UserDto>> VerifyEmail(VerifyOtpDto request)
+        {
+            var user = await userManager.FindByEmailAsync(request.Email);
+            if (user == null) return NotFound("Không tìm thấy tài khoản.");
+
+            if (user.EmailConfirmed) return BadRequest("Tài khoản này đã được xác thực rồi.");
+
+            //  Kiểm tra mã OTP
+            var isValid = await userManager.VerifyUserTokenAsync(user, "Email", "EmailConfirmation", request.OtpCode);
+
+            if (!isValid) return BadRequest("Mã xác thực không chính xác hoặc đã hết hạn.");
+
+            user.EmailConfirmed = true;
+            await userManager.UpdateAsync(user);
+
+
+            // Tạo Refresh Token và lưu vào Cookie
             await SetRefreshTokenCookie(user);
+
+            // Tạo JWT Token cho userDto
             var userDto = await user.ToDto(tokenService);
 
             return Ok(new
             {
                 user = userDto,
-                Message = isNewUser ? "New account successfully created." : "Login successfully",
-                IsNewUser = isNewUser
+                Message = "Xác thực email và đăng nhập thành công!"
             });
         }
 
@@ -144,7 +185,7 @@ namespace SportZone.API.Controllers
         }
 
         [Authorize]
-        [HttpPut("profile")] 
+        [HttpPut("profile")]
         public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateDto)
         {
             var userId = User.GetUserId();
