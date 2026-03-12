@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Order } from '../../../shared/models/order.model';
 import { CartService } from '../../../core/services/cart-service';
-import { CartItem } from '../../../shared/models/cart';
+import { CartItem } from '../../../shared/models/cart.model';
 import { ToastService } from '../../../core/services/toast-service';
 import { PaymentService } from '../../../core/services/payment-service';
 import { PaymentInput } from '../../../shared/models/payment.model';
@@ -40,7 +40,7 @@ export class OrderProcessing implements OnInit {
 
   discount = this.router.getCurrentNavigation()?.extras.state?.['discount'] || '';
   couponCode = this.router.getCurrentNavigation()?.extras.state?.['couponCode'] || '';
-  taxAmount = this.router.getCurrentNavigation()?.extras.state?.['taxAmount'] || '';
+  // taxAmount = this.router.getCurrentNavigation()?.extras.state?.['taxAmount'] || '';
   subTotal = this.router.getCurrentNavigation()?.extras.state?.['subTotal'] || '';
   finalTotal = this.router.getCurrentNavigation()?.extras.state?.['finalTotal'] || '';
   totalItems = this.router.getCurrentNavigation()?.extras.state?.['totalItems'] || '';

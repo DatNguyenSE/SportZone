@@ -7,15 +7,17 @@ import { BusyService } from '../../core/services/busy-service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../core/services/product-service';
 import { Product } from '../../shared/models/product.model';
+import { UserDrawer } from "../user-layout/user-drawer/user-drawer";
 
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive, RouterLinkActive, CommonModule, UserDrawer],
   templateUrl: './nav.html',
   styleUrl: './nav.css'
 })
 export class Nav implements OnInit {
+
  
   protected accountService = inject(AccountService);
   protected productService = inject(ProductService);
@@ -105,6 +107,9 @@ export class Nav implements OnInit {
     this.router.navigate(['/cart']);
   }
 
+  onAssist() {
+    alert(`Vui lòng liên hệ email: datnt05se@gmail.com để được hỗ trợ`);
+  }
 
   allProducts = this.productService.products;
   filteredProducts = signal<Product[]>([]);

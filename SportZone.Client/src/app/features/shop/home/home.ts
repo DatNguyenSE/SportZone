@@ -9,6 +9,7 @@ import { Order } from '../../../shared/models/order.model';
 import { Product } from '../../../shared/models/product.model';
 import { Features } from '../../../shared/models/features.model';
 import { FeatureService } from '../../../core/services/feature-service';
+import { AccountService } from '../../../core/services/account-service';
 
 interface Slide {
   id: number;
@@ -30,6 +31,7 @@ export class Home implements OnInit {
   protected productService = inject(ProductService);
   protected orderService = inject(OrderService);
   protected featureService = inject(FeatureService);
+  protected accoutSerivce = inject(AccountService);
   private router = inject(Router);
 
   protected categories = this.categoryService.categories;
@@ -69,7 +71,9 @@ export class Home implements OnInit {
     this.featureService.getBannerFeatures();
     this.categoryService.getCategories();
     this.productService.getProducts();
-    this.orderService.getUserOrders();
+    if(this.accoutSerivce.currentUser() !== null) {
+      this.orderService.getUserOrders();
+    }
     this.pendingOrdersCount()
   }
 

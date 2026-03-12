@@ -84,10 +84,12 @@ namespace SportZone.API.Controllers
             long orderAmount = (long)(order.TotalAmount * 100); // vì vnpay trả amount về đã nhân với 100 nên ta nhân với order.amount để sosanh
 
             if (vnpayAmount != orderAmount) return BadRequest("The payment amounts don't match!");
+
+            string userId = order.UserId;
             if (order.Status != OrderStatus.Paid.ToString())
             {
 
-                await _orderService.CompletedOrderStatus(orderId);
+                await _orderService.CompletedOrderStatus(orderId, userId);
             }
             // Redirect về trang thành công 
             // return Redirect($"http://localhost:4200/order-detail?orderId={response.OrderId}");

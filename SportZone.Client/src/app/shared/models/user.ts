@@ -7,6 +7,7 @@ export type User = {
     email: string;
     token: string;
     imageUrl?: string;
+    points?: number;
     roles: string[];
 }
 

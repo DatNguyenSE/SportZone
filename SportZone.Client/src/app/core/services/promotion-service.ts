@@ -12,7 +12,14 @@ export class PromotionService {
   promotions = signal<Promotion[]>([]);
 
   getPromotions() {
-    return this.http.get<Promotion[]>(`${this.baseUrl}promotions/active-promotions`);
+    return this.http.get<Promotion[]>(`${this.baseUrl}promotions/active-promotions`).subscribe({
+      next: (promos) => {
+        this.promotions.set(promos);
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy khuyến mãi:', err);
+      }
+    });
   }
 
   getPromotionByCode(code: string) {

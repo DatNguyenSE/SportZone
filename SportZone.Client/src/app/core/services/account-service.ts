@@ -8,9 +8,9 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AccountService {
+  
   private http = inject(HttpClient);
   currentUser = signal<User | null>(null);
-  currentProfile = signal<UserProfile | null>(null);
   baseUrl = environment.apiUrl;
   
   // register(creds: RegisterCreds) {
@@ -86,4 +86,6 @@ export class AccountService {
     const jsonPayload = JSON.parse(decoded);
     return Array.isArray(jsonPayload.role) ? jsonPayload.role : [jsonPayload.role]
   }
+
+ 
 }

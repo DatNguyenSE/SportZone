@@ -2,7 +2,7 @@ import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../core/services/cart-service';
-import { CartItem } from '../../../shared/models/cart';
+import { CartItem } from '../../../shared/models/cart.model';
 import { debounceTime, of, Subject, Subscription, switchMap } from 'rxjs';
 import { PromotionService } from '../../../core/services/promotion-service';
 import { Promotion } from '../../../shared/models/promotion.model';
@@ -22,7 +22,6 @@ export class Cart implements OnInit, OnDestroy {
 
   private cartService = inject(CartService);
   private promotionService = inject(PromotionService);
-  private orderService = inject(OrderService);
   private toast = inject(ToastService);
   private router = inject(Router);
 
@@ -31,7 +30,11 @@ export class Cart implements OnInit, OnDestroy {
   private updateSubscription!: Subscription;
 
   protected cartItems = signal<CartItem[]>([]);
-  protected promotions = signal<Promotion[]>([]);
+  protected promotions = this.promotionService.promotions
+
+
+  discount = signal<number>(0); 
+
 
   // --- COMPUTED SIGNALS (Tự động tính toán khi cartItems thay đổi) ---
   totalItems = computed(() =>
@@ -40,35 +43,34 @@ export class Cart implements OnInit, OnDestroy {
   );
 
 
-
   // 2. Tổng tiền hàng trước thuế và phí vận chuyển
   subTotal = computed(() =>
   this.cartItems().reduce((total, item) => {
+
     const price = item.product?.price || 0;
     const discountPercent = item.product?.discount || 0;
 
-    // 1. Tính giá sau khi giảm của 1 sản phẩm
-    // Công thức: Giá gốc * (1 - %giảm/100)
+    // Giá gốc * (1 - %giảm/100)
     const discountedUnitPrice = price * (1 - discountPercent / 100);
 
-    // 2. Cộng dồn vào tổng (Giá đã giảm * Số lượng)
+    //  Cộng dồn vào tổng (Giá đã giảm * Số lượng)
     return total + (discountedUnitPrice * item.quantity);
   }, 0)
 );
 
   // 3. Thuế (Giả sử 8% trên subTotal - discount)
-  taxRate = 0.03; // 3% thuế VAT
-  discount = signal<number>(0); // Bạn có thể biến cái này thành signal nếu có mã giảm giá
+  // taxRate = 0.03; // 3% thuế VAT
+  // taxAmount = computed(() => {
+  //   const amount = (this.subTotal() - this.discount()) * this.taxRae;
+  //   return amount > 0 ? amount : 0;
+  // });
 
-  taxAmount = computed(() => {
-    const amount = (this.subTotal() - this.discount()) * this.taxRate;
-    return amount > 0 ? amount : 0;
-  });
 
   // 4. Tổng thanh toán cuối cùng
   shippingFee = 0; // Miễn phí
+
   finalTotal = computed(() =>
-    this.subTotal() + this.shippingFee - this.discount() + this.taxAmount()
+    this.subTotal() + this.shippingFee - this.discount() //+ this.taxAmount()
   );
 
 
@@ -84,22 +86,10 @@ export class Cart implements OnInit, OnDestroy {
     });
   }
 
-  getPromotions() {
-    this.promotionService.getPromotions().subscribe({
-      next: (promos) => {
-        console.log('Khuyến mãi hiện có:', promos);
-        this.promotions.set(promos);
-      },
-      error: (err) => {
-        console.error('Lỗi khi lấy khuyến mãi:', err);
-      }
-    });
-  }
-
 
   ngOnInit() {
     this.getCartItems();
-    this.getPromotions();
+    this.promotionService.getPromotions();
     this.setupDebounceUpdate();
   }
 
@@ -221,58 +211,61 @@ export class Cart implements OnInit, OnDestroy {
   }
 
 
-  onContinueInfoOrder() {
-    if (this.cartItems().length === 0) {
-      this.toast.error("Giỏ hàng hiện đang trống.");
-      return;
-    }
+ onContinueInfoOrder() {
+  if (this.cartItems().length === 0) {
+    this.toast.error("Giỏ hàng hiện đang trống.");
+    return;
+  }
 
-    const code = this.couponCodeInput().trim();
-    const currentFinalTotal = this.finalTotal();
+  const code = this.couponCodeInput().trim();
+  // SỬA Ở ĐÂY: Dùng subTotal thay vì finalTotal
+  const baseTotal = this.subTotal(); 
 
-    const couponCheck$ = code
-      ? this.promotionService.validateCoupon(code, currentFinalTotal)
-      : of(0); // Nếu không có mã, trả về 0 ngay lập tức
+  const couponCheck$ = code
+    ? this.promotionService.validateCoupon(code, baseTotal)
+    : of(0);
 
-    couponCheck$.subscribe({
-      next: (res) => {
-        let finalDiscount = 0;
+  couponCheck$.subscribe({
+    next: (res) => {
+      let finalDiscount = 0;
 
-        if (code) {
-          if (res && res > 0) {
-            finalDiscount = res;
-            this.discount.set(res);
-            this.toast.success(`Đã áp dụng mã giảm giá: ${res.toLocaleString()} VND`);
-          } else {
-            this.toast.warning("Mã giảm giá không hợp lệ và sẽ không được áp dụng.");
-            this.discount.set(0);
-          }
+      if (code) {
+        // Kiểm tra res khác null và > 0
+        if (res !== null && res > 0) {
+          finalDiscount = res;
+          this.discount.set(res);
+          this.toast.success(`Đã áp dụng mã giảm giá: ${res.toLocaleString()} VND`);
+        } else {
+          // Nếu res là null, set discount về 0
+          this.toast.warning("Mã giảm giá không còn thỏa mãn điều kiện.");
+          this.discount.set(0);
+          finalDiscount = 0;
         }
-
-
-        this.navigateToProcess(code, finalDiscount);
-      },
-      error: err => {
-        console.error('Lỗi kiểm tra mã:', err);
-        this.toast.error("Mã không hợp lệ hoặc đã hết hạn.");
-        this.discount.set(0);
-        //  chuyển trang nhưng không áp mã
-        this.navigateToProcess('', 0);
       }
-    });
-  }
+      
 
-  private navigateToProcess(code: string, discountAmount: number) {
-    this.router.navigate(['/order-processing'], {
-      state: {
-        discount: discountAmount,
-        couponCode: code,
-        taxAmount: this.taxAmount(),
-        subTotal: this.subTotal(),
-        finalTotal: this.finalTotal(), 
-        totalItems: this.totalItems()
-      }
-    });
-  }
+      const calculatedFinalTotal = baseTotal  - finalDiscount //+ this.shippingFee;
+      this.navigateToProcess(code, finalDiscount, calculatedFinalTotal);
+    },
+    error: err => {
+      this.toast.error("Mã không hợp lệ hoặc đã hết hạn.");
+      this.discount.set(0);
+      this.navigateToProcess('', 0, baseTotal + this.shippingFee);
+    }
+  });
+}
+
+// Cập nhật lại hàm navigate để nhận giá trị chính xác
+private navigateToProcess(code: string, discountAmount: number, calculatedFinal: number) {
+  this.router.navigate(['/order-processing'], {
+    state: {
+      discount: discountAmount,
+      couponCode: code,
+      subTotal: this.subTotal(),
+      finalTotal: calculatedFinal, // Dùng giá trị đã tính toán để tránh lệch Signal
+      totalItems: this.totalItems()
+    }
+  });
+}
 
 }

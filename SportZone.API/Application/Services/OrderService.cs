@@ -239,7 +239,7 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
 
     }
 
-    public async Task CompletedOrderStatus(int orderId)
+    public async Task CompletedOrderStatus(int orderId, string userId)
     {
         var order = await uow.OrderRepository.GetOrderWithPaymentAsync(orderId); //include Payment
 
@@ -247,15 +247,18 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
         {
             throw new BadRequestException("Order not found");
         }
-
+        
         if (order.Status != OrderStatus.Paid)
         {
             order.Status = OrderStatus.Paid;
+            
 
             if (order.Payment != null)
             {
                 order.Payment.PaymentStatus = PaymentStatus.Success;
                 order.Payment.PaidAt = DateTime.UtcNow;
+                await AddPoints(userId, order.TotalAmount);
+               
             }
             else
             {
@@ -265,6 +268,12 @@ public class OrderService(IUnitOfWork uow, IMapper mapper, ILogger<OrderService>
 
             await uow.Complete();
         }
+    }
+
+    private async Task AddPoints(string userId, decimal totalPay)
+    {
+        int points = (int)Math.Floor(totalPay / 1000m);
+         await uow.MembersRepository.AddPointsAsync(userId, points);
     }
 
     public async Task<OrderDto> GetOrderByIdAsync(int orderId)

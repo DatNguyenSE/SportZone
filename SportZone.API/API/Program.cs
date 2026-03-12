@@ -113,28 +113,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// 3. THÊM DASHBOARD (Cho phép bạn xem các job tại /hangfire)
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(); 
-    app.UseHangfireDashboard(); // Thêm dòng này
+    app.UseHangfireDashboard(); 
 }
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x
+    .WithOrigins("http://localhost:4200", "https://localhost:4200")
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+    .AllowCredentials() // <-- BẠN ĐANG THIẾU DÒNG QUAN TRỌNG NÀY
+);
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(); 
-
-}
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

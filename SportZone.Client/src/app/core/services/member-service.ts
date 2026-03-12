@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MemberService {
+
   private http = inject(HttpClient)
   private apiUrl = environment.apiUrl
 
@@ -25,7 +26,11 @@ export class MemberService {
   }
 
   getMemberDetail(userId: string): Observable<UserProfile> {
-    // Gửi một object khớp với class MemberIdRequest ở Backend
     return this.http.post<UserProfile>(`${this.apiUrl}Members/detail`, { memberId: userId });
   }
+
+  redeemReward(points: number) {
+  return this.http.put<string>(`${this.apiUrl}Members/redeem-reward`, points);
+}
+
 }
