@@ -12,4 +12,5 @@ public interface IMembersService
     Task AddAsync(UpdateProfileDto userDto);
     Task UpdateAsync(string id, UpdateProfileDto memberDto);
     Task DeleteAsync(string id);
+    Task SubtractPointsAsync(string id, int pointsToSubtract);
 }

@@ -53,7 +53,7 @@ export class OrderDetail implements OnInit {
      // Tạo payload chuẩn
       const paymentPayload: PaymentInput = {
         orderId: orderId,
-        description: `SportZone - Don hang #${orderId} - User ${this.accountService.currentProfile()?.id}`
+        description: `SportZone - Don hang #${orderId} - User ${this.accountService.currentUser()?.id}`
       };
   
       this.paymentService.processPayment(paymentPayload).subscribe({

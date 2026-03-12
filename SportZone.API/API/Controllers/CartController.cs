@@ -3,17 +3,19 @@ using SportZone.Application.Dtos;
 using SportZone.Application.Interfaces.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SportZone.API.Controllers
 {
     [Route("api/cart")]
     [ApiController]
+    [Authorize]
     public class CartController(ICartService cartService) : ControllerBase
     {
         [HttpPost("add")]
         public async Task<IActionResult> AddItemToCart(AddCartItemDto dto)
         {
-            var userId = User.GetUserId();
+            var userId =User.GetUserId(); 
             await cartService.AddItemToCartAsync(userId, dto.ProductId, dto.Quantity, dto.SizeName);
             return Ok();
         }
@@ -29,7 +31,7 @@ namespace SportZone.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
-            var userId = "ac62e361-dad0-4602-a2ba-e866fe577444";
+            var userId = User.GetUserId();
             var cart =  await cartService.GetCartByUserIdAsync(userId);
             return Ok(cart);
         }

@@ -46,6 +46,29 @@ public class MembersRepository(AppDbContext _context) : GenericRepository<AppUse
         return _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task AddPointsAsync(string id, int points) // vi gửi lên cho payment nên làm thêm add cho gọn
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-    
+        if (user != null)
+        {
+            user.Points = (user.Points ?? 0) + points;
+        }
+    }
+    public async Task<bool> SubtractPointsAsync(string id, int pointsToSubtract)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null) return false;
+
+   
+        int currentPoints = user.Points ?? 0;
+        if (currentPoints < pointsToSubtract) return false;
+
+        // Thực hiện trừ điểm
+        user.Points = currentPoints - pointsToSubtract;
+        return true;
+    }
+
+
 }

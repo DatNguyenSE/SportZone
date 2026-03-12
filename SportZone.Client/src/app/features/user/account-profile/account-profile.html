@@ -1,4 +1,4 @@
-<div class="flex flex-1 justify-center -mt-10 px-4 md:px-8 bg-background-light dark:bg-background-dark min-h-screen">
+<div class="flex flex-1 justify-center -mt-10 px-4 md:px-8 bg-background-light dark:bg-background-dark min-h-screen pt-20">
     <div class="flex flex-col max-w-6xl w-full gap-6">
 
         <div class="flex flex-col gap-2">
@@ -206,60 +206,66 @@
                         </button>
                     </div>
 
-                   <div class="flex flex-col md:flex-row gap-4">
-    <div class="flex-1 p-4 border border-primary/30 rounded-xl bg-primary/5 dark:bg-primary/10 relative group transition-all hover:shadow-md">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div
+                            class="flex-1 p-4 border border-primary/30 rounded-xl bg-primary/5 dark:bg-primary/10 relative group transition-all hover:shadow-md">
 
-        <div class="flex items-center flex-wrap gap-2 mb-2">
-            <span class="font-bold text-slate-900 dark:text-white">{{ user()?.fullName }}</span>
-            <span class="text-slate-300 dark:text-slate-600">|</span>
-            
-            <span *ngIf="!isEditingAddress()" class="text-slate-600 dark:text-slate-300 font-medium">
-                {{ user()?.phoneNumber || 'Chưa có SĐT' }}
-            </span>
+                            <div class="flex items-center flex-wrap gap-2 mb-2">
+                                <span class="font-bold text-slate-900 dark:text-white">{{ user()?.fullName }}</span>
+                                <span class="text-slate-300 dark:text-slate-600">|</span>
 
-            <span class="bg-primary text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded ml-auto">Mặc định</span>
-        </div>
+                                <span *ngIf="!isEditingAddress()"
+                                    class="text-slate-600 dark:text-slate-300 font-medium">
+                                    {{ user()?.phoneNumber || 'Chưa có SĐT' }}
+                                </span>
 
-        <ng-container *ngIf="!isEditingAddress()">
-            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3 min-h-[40px]">
-                {{ user()?.address || 'Chưa cập nhật địa chỉ' }}
-            </p>
-            <button (click)="toggleEditAddress()"
-                class="text-sm font-medium text-primary hover:text-green-700 transition-colors flex items-center gap-1">
-                Chỉnh sửa thông tin giao hàng
-            </button>
-        </ng-container>
+                                <span
+                                    class="bg-primary text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded ml-auto">Mặc
+                                    định</span>
+                            </div>
 
-        <div *ngIf="isEditingAddress()" class="space-y-3 mb-3">
-            <div>
-                <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Số điện thoại nhận hàng</label>
-                <input [ngModel]="user()?.phoneNumber" (ngModelChange)="updateField('phoneNumber', $event)"
-                    type="tel"
-                    class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="Nhập số điện thoại mới..." />
-            </div>
+                            <ng-container *ngIf="!isEditingAddress()">
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3 min-h-[40px]">
+                                    {{ user()?.address || 'Chưa cập nhật địa chỉ' }}
+                                </p>
+                                <button (click)="toggleEditAddress()"
+                                    class="text-sm font-medium text-primary hover:text-green-700 transition-colors flex items-center gap-1">
+                                    Chỉnh sửa thông tin giao hàng
+                                </button>
+                            </ng-container>
 
-            <div>
-                <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Địa chỉ chi tiết</label>
-                <textarea [ngModel]="user()?.address" (ngModelChange)="updateField('address', $event)"
-                    rows="2"
-                    class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="Nhập địa chỉ giao hàng..."></textarea>
-            </div>
+                            <div *ngIf="isEditingAddress()" class="space-y-3 mb-3">
+                                <div>
+                                    <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Số điện
+                                        thoại nhận hàng</label>
+                                    <input [ngModel]="user()?.phoneNumber"
+                                        (ngModelChange)="updateField('phoneNumber', $event)" type="tel"
+                                        class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
+                                        placeholder="Nhập số điện thoại mới..." />
+                                </div>
 
-            <div class="flex gap-2">
-                <button (click)="onSave()"
-                    class="text-xs bg-primary text-green-900 px-4 py-2 rounded-md font-bold shadow-sm">
-                    Xác nhận lưu
-                </button>
-                <button (click)="toggleEditAddress()"
-                    class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md font-bold">
-                    Hủy
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+                                <div>
+                                    <label class="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Địa chỉ chi
+                                        tiết</label>
+                                    <textarea [ngModel]="user()?.address"
+                                        (ngModelChange)="updateField('address', $event)" rows="2"
+                                        class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-primary/50"
+                                        placeholder="Nhập địa chỉ giao hàng..."></textarea>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <button (click)="onSave()"
+                                        class="text-xs bg-primary text-green-900 px-4 py-2 rounded-md font-bold shadow-sm">
+                                        Xác nhận lưu
+                                    </button>
+                                    <button (click)="toggleEditAddress()"
+                                        class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md font-bold">
+                                        Hủy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </main>

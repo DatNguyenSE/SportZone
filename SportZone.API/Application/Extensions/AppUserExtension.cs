@@ -15,6 +15,7 @@ namespace SportZone.Application.Extensions
             UserName = user.UserName,
             Email = user.Email!,
             ImageUrl = user.ImageUrl,
+            Points = user.Points,
             Token = await tokenService.CreateToken(user)
         };
     }

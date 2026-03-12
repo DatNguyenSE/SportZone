@@ -53,4 +53,12 @@ public class MembersService(IUnitOfWork uow, IMapper mapper) : IMembersService
     {
         throw new NotImplementedException();
     }
+
+    public async Task SubtractPointsAsync(string id, int pointsToSubtract)
+    {
+       bool result = await uow.MembersRepository.SubtractPointsAsync(id, pointsToSubtract);
+      if (!result) throw new BadRequestException("Bạn không đủ điểm để thực hiện giao dịch này.");
+
+      await uow.Complete();
+    }
 }

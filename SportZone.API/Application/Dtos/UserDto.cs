@@ -7,6 +7,7 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; }
         public string? UserName { get; set; } //displayname
         public string? FullName { get; set; }
+        public int? Points { get; set; }
         public required string  Token { get; set; }
     }
 
@@ -21,6 +22,7 @@ namespace SportZone.Application.Dtos
         public string? Gender { get; set; }
         public string? DateOfBirth { get; set; }
         public string? PhoneNumber { get; set; }
+        public int? Points { get; set; }
 
     }
     namespace SportZone.Application.Dtos

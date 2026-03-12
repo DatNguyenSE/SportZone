@@ -10,7 +10,7 @@ using SportZone.API.Extensions;
 using SportZone.Application.Dtos.SportZone.Application.Dtos;
 
 namespace SportZone.API.Controllers
-{
+{   
     [Route("api/account")]
     [ApiController]
     public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : ControllerBase
@@ -117,7 +117,7 @@ namespace SportZone.API.Controllers
 
             return Ok();
         }
-
+        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
@@ -138,12 +138,13 @@ namespace SportZone.API.Controllers
                 Address = profile.Address,
                 Gender = profile.Gender,
                 DateOfBirth = profile.DateOfBirth?.ToString("dd/MM/yyyy"),
-                PhoneNumber = profile.PhoneNumber
+                PhoneNumber = profile.PhoneNumber,
+                Points = profile.Points
             });
         }
 
         [Authorize]
-        [HttpPut("profile")] // Dùng HttpPut cho hành động cập nhật
+        [HttpPut("profile")] 
         public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateDto)
         {
             var userId = User.GetUserId();
@@ -151,7 +152,6 @@ namespace SportZone.API.Controllers
 
             if (user == null) return Unauthorized();
 
-            // 2. Cập nhật các thông tin
             user.FullName = updateDto.FullName;
             user.Address = updateDto.Address;
             user.Gender = updateDto.Gender;
@@ -166,7 +166,6 @@ namespace SportZone.API.Controllers
                 }
             }
 
-            // 4. Lưu vào 
             var result = await userManager.UpdateAsync(user);
 
             if (!result.Succeeded)

@@ -9,7 +9,8 @@ namespace SportZone.Application.Dtos
         public string? ImageUrl { get; set; }
         public string? Address { get; set; }
         public string? Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }  
+        public DateTime? DateOfBirth { get; set; }
+        public int? Points { get; set; }  
         public List<OrderDto>? Orders { get; set; } 
         // public List<Review> Reviews { get; set; }
 

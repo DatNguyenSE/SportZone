@@ -213,10 +213,10 @@ export class ProductList {
 
   //  OBJECT QUẢN LÝ ẢNH 
   pageImages = {
-    JERSEY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772103696/bong-da-san-co-sut-bong-banner_gxnozk.jpg',
-    SHOES_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772102726/20240102_zZC5cwka_jfxtgt.jpg',
-    DEFAULT_BANNER: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop',
-    NEW_ITEM_BANNER: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=2000&auto=format&fit=crop',
-    ACCESSORY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772091873/0a379d9f6d490c7ac35c80ac2ab70344_e0zevp.jpg'
+    JERSEY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    SHOES_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    DEFAULT_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    NEW_ITEM_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    ACCESSORY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp'
 }
 }
