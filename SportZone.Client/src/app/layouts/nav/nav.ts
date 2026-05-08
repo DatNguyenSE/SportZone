@@ -17,6 +17,13 @@ import { UserDrawer } from "../user-layout/user-drawer/user-drawer";
 })
 export class Nav implements OnInit {
 
+openFaceBook() {
+ this.toast.warning("Tính năng đang được phát triển. Vui lòngC sử dụng email để đăng nhập hoặc tạo tài khoản mới.");
+}
+openGoogle() {
+ this.toast.warning("Tính năng đang được phát triển. Vui lòng sử dụng email để đăng nhập hoặc tạo tài khoản mới.");
+}
+
   protected accountService = inject(AccountService);
   protected productService = inject(ProductService);
   protected busyService = inject(BusyService);
@@ -29,12 +36,16 @@ export class Nav implements OnInit {
     email: '',
     password: '',
     otpCode: '',
-    emailError: false
+    emailError: false,
+    old: false,
+    condition: false,
+    marketing: false
   };
 
   protected isLoginModalOpen = false;
   protected isPasswordVisible = false;
   protected isSubmitting = false;
+onpenGoogle: any;
 
   ngOnInit(): void { }
 
@@ -51,12 +62,23 @@ export class Nav implements OnInit {
 
   onContinue() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     if (emailPattern.test(this.creds.email)) {
       this.creds.emailError = false;
+      if (!this.creds.old) {
+      this.toast.error("Bạn cần xác nhận rằng bạn trên 16 tuổi để tiếp tục.");
+      return;
+    }
+    if (!this.creds.condition) {
+      this.toast.error("Bạn cần đồng ý với các điều khoản và điều kiện.");
+      return;
+    }
       this.creds.step = 2;
     } else {
       this.creds.emailError = true;
     }
+
+    
   }
 
   onLogin() {

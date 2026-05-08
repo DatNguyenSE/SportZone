@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AccountService } from './account-service';
-import { tap } from 'rxjs';
+import { tap, catchError, of } from 'rxjs'; // Import thêm catchError và of
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,17 +9,23 @@ import { Router } from '@angular/router';
 export class InitService {
   private accountService = inject(AccountService);
   private router = inject(Router);
+
   init() {
     return this.accountService.refreshToken().pipe(
       tap(user => {
         if (user) {
           this.accountService.setCurrentUser(user);
           this.accountService.startTokenRefreshInterval();
-          if (user.roles.includes('Admin')) {
-            this.router.navigate(['/admin']);
+
+          if (user.roles?.includes('Admin') && this.router.url === '/login') {
+             this.router.navigate(['/admin']);
           }
         }
+      }),
+      catchError((error) => {
+        console.log('Không thể làm mới token:', error);
+        return of(null); 
       })
-    )
+    );
   }
 }

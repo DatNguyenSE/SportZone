@@ -43,7 +43,7 @@ namespace SportZone.API.Controllers
                 OrderDescription = $"Pay for order - {order.Id}"
 
             };
-            var returnUrl = "http://localhost:5144/api/payments/callback";
+            var returnUrl = "https://nbhaeggp4n.ap-southeast-2.awsapprunner.com/api/payments/callback";
             var url = _vnPayService.CreatePaymentUrl(paymentModel, HttpContext, returnUrl);
             return Ok(new { url });
         }
@@ -58,7 +58,7 @@ namespace SportZone.API.Controllers
                 string cleanId = response.OrderId.Contains("_") ? response.OrderId.Split('_')[0] : response.OrderId;
 
                 // Đổi từ ?orderId= sang / (Path Parameter)
-                return Redirect($"http://localhost:4200/payment-fail/{cleanId}");
+                return Redirect($"https://nbhaeggp4n.ap-southeast-2.awsapprunner.com/payment-fail/{cleanId}");
             }
 
             // --- XỬ LÝ CẮT CHUỖI "12_ticks" ---
@@ -78,7 +78,7 @@ namespace SportZone.API.Controllers
 
             var order = await _orderService.GetOrderByIdAsync(orderId);
             if (order == null)
-                return Redirect($"http://localhost:4200/payment-fail?orderId={response.OrderId}");
+                 return Redirect($"https://nbhaeggp4n.ap-southeast-2.awsapprunner.com/payment-fail/{orderId}");
 
             long vnpayAmount = response.Amount;
             long orderAmount = (long)(order.TotalAmount * 100); // vì vnpay trả amount về đã nhân với 100 nên ta nhân với order.amount để sosanh
@@ -92,8 +92,8 @@ namespace SportZone.API.Controllers
                 await _orderService.CompletedOrderStatus(orderId, userId);
             }
             // Redirect về trang thành công 
-            // return Redirect($"http://localhost:4200/order-detail?orderId={response.OrderId}");
-            return Redirect($"http://localhost:4200/checkout-success/{orderId}");
+            // return Redirect($"/order-detail?orderId={response.OrderId}");
+            return Redirect($"https://nbhaeggp4n.ap-southeast-2.awsapprunner.com/checkout-success/{orderId}");
         }
     }
 }

@@ -1,165 +1,234 @@
-<link
-    href="https://fonts.googleapis.com/css2?family=AdihausDIN:wght@400;700&family=ITC+Avant+Garde+Gothic:wght@700&display=swap"
-    rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,400;0,700;0,900;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
+<div class="ord-root">
 
-<body class="bg-background-light dark:bg-background-dark text-black dark:text-white min-h-screen">
+  <!-- ══ BANNER ══ -->
+  <div class="ord-banner">
+    <div class="ord-banner__img-side">
+      <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=2564&auto=format&fit=crop"
+           class="ord-banner__img" alt="Banner đơn hàng">
+    </div>
+    <div class="ord-banner__fade"></div>
 
-    <main class="min-h-screen bg-white dark:bg-zinc-950">
-        <div class="relative h-[40vh] w-full overflow-hidden bg-black">
+    <div class="ord-banner__content">
+      <nav class="ord-banner__nav">
+        <a routerLink="/" class="ord-banner__back">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="ord-banner__back-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"/>
+          </svg>
+          QUAY LẠI
+        </a>
+        <span class="ord-banner__sep">/</span>
+        <span class="ord-banner__crumb">ĐƠN HÀNG</span>
+      </nav>
 
-            <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=2564&auto=format&fit=crop"
-                class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
-                alt="Banner">
+      <div class="ord-banner__title-block">
+        <div class="ord-banner__season">
+          <div class="ord-banner__season-line"></div>
+          <span class="ord-banner__season-text">Tài khoản · Lịch sử mua hàng</span>
+        </div>
+        <div class="ord-banner__main">
+          <h1 class="ord-banner__title">MY ORDERS</h1>
+          <span class="ord-banner__count">{{ userOrder().length }} giao dịch</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <div class="absolute inset-0 flex flex-col justify-center px-12">
-                <a routerLink="/"
-                    class="flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-white pb-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-                    </svg>
-                    <span class="text-xs font-bold uppercase tracking-widest">QUAY LẠI</span>
-                </a>
-                <h1
-                    class="text-white text-7xl md:text-8xl font-black italic tracking-tighter uppercase leading-none drop-shadow-2xl">
-                    My Orders
-                </h1>
-                <p class="text-white/80 text-xs font-bold uppercase tracking-[0.5em] mt-4 ml-2">
-                    {{ userOrder().length }} Giao dịch / {{ filteredOrders().length }} hiển thị
-                </p>
+  <!-- ══ MAIN ══ -->
+  <main class="ord-main">
+
+    <!-- ── Status tabs (luôn hiển thị dù có đơn hay không) ── -->
+    <div class="ord-tabs-wrap">
+      <div class="ord-tabs">
+        @for (tab of ['Tất cả', 'Pending', 'Placed', 'Paid', 'Cancelled', 'Refunded']; track tab) {
+          <button
+            class="ord-tab"
+            [class.ord-tab--active]="currentStatus() === tab"
+            (click)="setStatus(tab)">
+            {{ tab === 'Tất cả'    ? 'Tất cả'      :
+               tab === 'Pending'   ? 'Đang chờ'    :
+               tab === 'Placed'    ? 'Đã đặt'      :
+               tab === 'Paid'      ? 'Thành công'  :
+               tab === 'Cancelled' ? 'Đã hủy'      : 'Hoàn trả' }}
+            <span class="ord-tab__dot ord-tab__dot--{{ tab | lowercase }}"></span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Sort bar -->
+    <div class="ord-sort-bar">
+      <span class="ord-sort-label">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor" class="ord-sort-icon">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"/>
+        </svg>
+        <span>{{ filteredOrders().length }} đơn hiển thị</span>
+      </span>
+    </div>
+
+    <!-- ── Empty state ── -->
+    <div *ngIf="filteredOrders().length === 0" class="ord-empty">
+      <span class="material-icons-outlined ord-empty__icon">inventory_2</span>
+      <p class="ord-empty__text">Không có đơn nào cho trạng thái này</p>
+    </div>
+
+    <!-- ── Order list ── -->
+    <div *ngIf="filteredOrders().length > 0" class="ord-list">
+      @for (order of filteredOrders(); track order.id) {
+
+        <div class="ord-card" [class.ord-card--expanded]="expandedId === order.id">
+
+          <!-- ── Card main row ── -->
+          <div class="ord-card__row" (click)="toggleExpand(order.id)">
+
+            <!-- Thumbnail -->
+            <div class="ord-card__thumb-wrap">
+              <img [src]="order.items[0].imageUrl" [alt]="order.items[0].name" class="ord-card__thumb">
+              @if (order.items.length > 1) {
+                <span class="ord-card__thumb-badge">+{{ order.items.length - 1 }}</span>
+              }
+            </div>
+
+            <!-- Info grid -->
+            <div class="ord-card__info">
+
+              <div class="ord-card__col">
+                <span class="ord-card__label">Mã đơn</span>
+                <p class="ord-card__val ord-card__val--mono">#{{ order.id }}</p>
+                <p class="ord-card__sub">{{ order.createdAt | date:'dd/MM/yyyy · HH:mm' }}</p>
+              </div>
+
+              <div class="ord-card__col ord-card__col--product">
+                <span class="ord-card__label">Sản phẩm</span>
+                <p class="ord-card__val ord-card__val--name">{{ order.items[0].name }}</p>
+                <p class="ord-card__sub">{{ order.items.length }} sản phẩm</p>
+              </div>
+
+              <div class="ord-card__col ord-card__col--status">
+                <span class="ord-card__label">Trạng thái</span>
+                <div class="ord-status ord-status--{{ order.status | lowercase }}">
+                  <span class="ord-status__dot"></span>
+                  <span class="ord-status__text">
+                    {{ order.status === 'Paid'      ? 'Thành công' :
+                       order.status === 'Pending'   ? 'Đang chờ'  :
+                       order.status === 'Placed'    ? 'Đã đặt'    :
+                       order.status === 'Cancelled' ? 'Đã hủy'    :
+                       order.status === 'Refunded'  ? 'Hoàn trả'  : order.status }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="ord-card__col ord-card__col--amount">
+                <span class="ord-card__label">Tổng tiền</span>
+                <p class="ord-card__price">{{ order.totalAmount | number:'1.0-0' }}₫</p>
+              </div>
 
             </div>
-        </div>
 
-        <div class="max-w-6xl mx-auto px-6 -mt-10 relative z-10 pb-20">
-            <nav
-                class="bg-white dark:bg-zinc-900 border-[3px] border-black p-2 flex flex-wrap gap-2 mb-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                @for(tab of ['Tất cả', 'Pending', 'Placed','Paid', 'Cancelled' ,'Refunded' ]; track tab) {
-                <button (click)="setStatus(tab)"
-                    class="px-6 py-2 text-[10px] font-black uppercase tracking-widest transition-all duration-200"
-                    [class.bg-black]="currentStatus() === tab" [class.text-white]="currentStatus() === tab"
-                    [class.text-gray-500]="currentStatus() !== tab">
-                    {{ tab === 'Tất cả' ? 'Tất cả' :
-                    tab === 'Paid' ? 'Thành công' :
-                    tab === 'Pending' ? 'Đang chờ' :
-                    tab === 'Placed' ? 'Đã đặt' :
-                    tab === 'Cancelled' ? 'Đã hủy' : 'Hoàn trả'
-                    }}
-                </button>
-                }
-            </nav>
+            <!-- Expand chevron -->
+            <button class="ord-card__chevron" [class.ord-card__chevron--open]="expandedId === order.id"
+                    aria-label="Xem chi tiết">
+              <span class="material-icons-outlined">expand_more</span>
+            </button>
+          </div>
 
-            <div class="space-y-4">
-                @for(order of filteredOrders(); track order.id) {
-                <div
-                    class="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-all shadow-sm hover:shadow-md">
-                    <div class="flex flex-col md:flex-row items-stretch md:items-center p-4 gap-6">
+          <!-- ── Expandable detail panel ── -->
+          <div class="ord-detail" [class.ord-detail--open]="expandedId === order.id">
+            <div class="ord-detail__inner">
 
-                        <div
-                            class="relative w-20 h-20 bg-zinc-100 dark:bg-zinc-800 shrink-0 border border-gray-100 dark:border-zinc-700">
-                            <img [src]="order.items[0].imageUrl"
-                                class="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500">
-                            @if(order.items.length > 1) {
-                            <span
-                                class="absolute -top-2 -right-2 bg-black text-white text-[8px] font-black w-5 h-5 flex items-center justify-center rounded-full border border-white">+{{
-                                order.items.length - 1 }}</span>
-                            }
-                        </div>
-
-                        <div class="flex-grow grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
-                            <div class="space-y-0.5">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">Mã đơn &
-                                    Ngày</span>
-                                <p class="text-xs font-black italic">#{{ order.id }}</p>
-                                <p class="text-[10px] font-medium text-gray-500">{{ order.createdAt | date:'dd/MM/yyyy'
-                                    }}</p>
-                            </div>
-
-                            <div class="space-y-0.5">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">Sản phẩm
-                                    chính</span>
-                                <p class="text-xs font-black italic uppercase truncate max-w-[150px]">{{
-                                    order.items[0].name }}</p>
-                            </div>
-
-                            <div class="space-y-0.5">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Trạng
-                                    thái</span>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-1.5 h-1.5 rounded-full" [ngClass]="{
-                                            'bg-green-500 animate-pulse': order.status === 'Paid', 
-                                            'bg-amber-400': order.status === 'Placed',
-                                            'bg-amber-500': order.status === 'Pending', 
-                                            'bg-red-500': order.status === 'Cancelled',
-                                            'bg-purple-500': order.status === 'Refunded'
-                                        }"></span>
-                                    <p class="text-[10px] font-black italic uppercase">{{ order.status }}</p>
-                                </div>
-                            </div>
-
-                            <div class="hidden md:block space-y-0.5">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">Thời
-                                    gian</span>
-                                <p class="text-[11px] font-bold italic uppercase">{{ order.createdAt | date:'HH:mm' }}
-                                </p>
-                            </div>
-
-                            <div class="space-y-0.5 md:text-right">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase">Tổng tiền</span>
-                                <p class="text-sm font-black italic leading-none">{{ order.totalAmount | number }}đ</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-2 md:border-l border-gray-100 dark:border-zinc-800 md:pl-6">
-
-                            @switch (order.status) {
-                            @case ('Pending') {
-                            <button [routerLink]="[`/order-detail`, order.id]"
-                                class="bg-green-100 text-black dark:bg-green-900 dark:text-shadow-green-900 px-4 py-2.5 text-[9px] font-black uppercase tracking-widest hover:bg-green-800 transition-all flex items-center gap-2">
-                                <span class="material-icons-round text-xs">payments</span> Thanh toán
-                            </button>
-                            <button
-                                class="border border-red-500 text-red-500 px-4 py-2.5 text-[9px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">
-                                Hủy đơn
-                            </button>
-                            }
-                            @case ('Paid') {
-                            <button
-                                class="bg-white text-black dark:bg-white dark:text-black px-6 py-2.5 text-[9px] font-black uppercase tracking-widest hover:invert transition-all flex items-center gap-2">
-                                <span class="material-icons-round text-sm">local_shipping</span> Theo dõi
-                            </button>
-                            }
-                            @case ('Cancelled') {
-                            <button
-                                class="border border-black dark:border-white px-6 py-2.5 text-[9px] font-black uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-                                Chi tiết
-                            </button>
-                            }
-                            @default {
-                            <button
-                                class="border border-gray-300 text-gray-500 px-6 py-2.5 text-[9px] font-black uppercase tracking-widest">
-                                Chi tiết
-                            </button>
-                            }
-                            }
-
-                            <button
-                                class="border border-black dark:border-white p-2.5 flex items-center justify-center hover:bg-black hover:text-white transition-all">
-                                <span class="material-icons-round text-sm">more_vert</span>
-                            </button>
-                        </div>
+              <!-- Product list -->
+              <div class="ord-detail__items">
+                <p class="ord-detail__section-label">Danh sách sản phẩm</p>
+                @for (item of order.items; track item.productId) {
+                  <div class="ord-detail__item">
+                    <img [src]="item.imageUrl" [alt]="item.name" class="ord-detail__item-img">
+                    <div class="ord-detail__item-info">
+                      <p class="ord-detail__item-name">{{ item.name }}</p>
+                      <p class="ord-detail__item-meta">Size {{ item.sizeName }} · x{{ item.quantity }}</p>
                     </div>
-                </div>
-                } @empty {
-                <div class="py-24 text-center border-2 border-dashed border-gray-200 rounded-lg">
-                    <span class="material-icons-round text-4xl text-gray-300 mb-2">inventory_2</span>
-                    <p class="text-xs font-black italic text-gray-400 uppercase tracking-widest">Không có dữ liệu cho
-                        trạng thái này</p>
-                </div>
+                    <p class="ord-detail__item-price">{{ item.unitPrice | number:'1.0-0' }}₫</p>
+                  </div>
                 }
+              </div>
+
+              <!-- Summary + Actions -->
+              <div class="ord-detail__side">
+
+                <div class="ord-detail__summary">
+                  <p class="ord-detail__section-label">Tóm tắt đơn</p>
+                  <div class="ord-detail__summary-row">
+                    <span>Tạm tính</span>
+                    <span>{{ order.totalAmount | number:'1.0-0' }}₫</span>
+                  </div>
+                  <div class="ord-detail__summary-row">
+                    <span>Phí vận chuyển</span>
+                    <span class="ord-detail__free">Miễn phí</span>
+                  </div>
+                  <div class="ord-detail__summary-row ord-detail__summary-row--total">
+                    <span>Tổng cộng</span>
+                    <span>{{ order.totalAmount | number:'1.0-0' }}₫</span>
+                  </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="ord-detail__actions">
+
+                  @switch (order.status) {
+                    @case ('Pending') {
+                      <a [routerLink]="['/order-detail', order.id]" class="ord-btn ord-btn--pay">
+                        <span class="material-icons-outlined">payments</span>
+                        Thanh toán ngay
+                      </a>
+                      <button class="ord-btn ord-btn--cancel">
+                        <span class="material-icons-outlined">cancel</span>
+                        Hủy đơn
+                      </button>
+                    }
+                    @case ('Paid') {
+                      <button class="ord-btn ord-btn--track">
+                        <span class="material-icons-outlined">local_shipping</span>
+                        Theo dõi vận chuyển
+                      </button>
+                      <button class="ord-btn ord-btn--outline">
+                        <span class="material-icons-outlined">receipt_long</span>
+                        Xem hóa đơn
+                      </button>
+                    }
+                    @case ('Cancelled') {
+                      <button class="ord-btn ord-btn--outline">
+                        <span class="material-icons-outlined">refresh</span>
+                        Mua lại
+                      </button>
+                    }
+                    @case ('Refunded') {
+                      <button class="ord-btn ord-btn--outline">
+                        <span class="material-icons-outlined">support_agent</span>
+                        Liên hệ hỗ trợ
+                      </button>
+                    }
+                    @default {
+                      <button class="ord-btn ord-btn--outline">
+                        <span class="material-icons-outlined">info</span>
+                        Chi tiết đơn
+                      </button>
+                    }
+                  }
+
+                </div>
+              </div>
+
             </div>
+          </div>
+
         </div>
-    </main>
+
+      }
+    </div>
+
+  </main>
+</div>

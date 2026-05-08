@@ -135,7 +135,7 @@ app.UseCors(x => x
     .WithOrigins("http://localhost:4200", "https://localhost:4200")
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .AllowCredentials() // <-- BẠN ĐANG THIẾU DÒNG QUAN TRỌNG NÀY
+    .AllowCredentials() 
 );
 
 app.UseHttpsRedirection();

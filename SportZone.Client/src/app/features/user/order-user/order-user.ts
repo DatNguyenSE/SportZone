@@ -6,17 +6,20 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-order-user',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './order-user.html',
   styleUrl: './order-user.css',
 })
 export class OrderUser implements OnInit {
   private orderService = inject(OrderService);
-  
-  protected userOrder = this.orderService.myOrder; 
-  private router = inject(Router)
+  private router = inject(Router);
+
+  protected userOrder = this.orderService.myOrder;
   protected currentStatus = signal<string>('Pending');
+
+  /** ID của đơn đang mở detail panel. null = đóng hết */
+  expandedId: number | null = null;
 
   ngOnInit(): void {
     if (!this.userOrder() || this.userOrder().length === 0) {
@@ -24,19 +27,19 @@ export class OrderUser implements OnInit {
     }
   }
 
-  
   filteredOrders = computed(() => {
-    const status = this.currentStatus(); 
-    const orders = this.userOrder();     
-
-    if (status === 'Tất cả') {
-      return orders;
-    }
-    
+    const status = this.currentStatus();
+    const orders = this.userOrder();
+    if (status === 'Tất cả') return orders;
     return orders.filter(o => o.status === status);
   });
 
-  setStatus(status: string) {
+  setStatus(status: string): void {
     this.currentStatus.set(status);
+    this.expandedId = null; // đóng panel khi đổi tab
+  }
+
+  toggleExpand(orderId: number): void {
+    this.expandedId = this.expandedId === orderId ? null : orderId;
   }
 }

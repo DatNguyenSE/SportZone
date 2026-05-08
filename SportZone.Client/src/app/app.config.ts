@@ -12,11 +12,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes, withViewTransitions()),
     provideRouter(
       routes,
+      withViewTransitions(),
       withComponentInputBinding(),
-      //  Tự động cuộn lên đầu khi chuyển trang
       withInMemoryScrolling({ 
         scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled' 
