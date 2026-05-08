@@ -213,10 +213,10 @@ export class ProductList {
 
   //  OBJECT QUẢN LÝ ẢNH 
   pageImages = {
-    JERSEY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
-    SHOES_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    JERSEY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772092022/global_aclubs_away_arsenal_football_fw25_launch_plp_Banner_Statement_d_41641ed9a3_maxwbi.avif',
+    SHOES_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1772082063/nike_new_lights_92b8afa1c82e4491879f90a5eb8e6d8c_ocekjd.jpg',
     DEFAULT_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
-    NEW_ITEM_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp',
+    NEW_ITEM_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145286/samples/waves.png',
     ACCESSORY_BANNER: 'https://res.cloudinary.com/dmsx0pltj/image/upload/v1773145222/20260210-mobile-shoppable-banner-ChampionsLeague-Ballen_mnr8bv.webp'
 }
 }

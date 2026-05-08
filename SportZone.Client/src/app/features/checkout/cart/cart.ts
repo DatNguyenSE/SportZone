@@ -195,7 +195,6 @@ export class Cart implements OnInit, OnDestroy {
 
     this.cartService.removeFromCart(productId, sizeName).subscribe({
       next: () => {
-        this.toast.info(` Đã xóa SP ${productId} thành công trên server`)
         console.log(` Đã xóa SP ${productId} thành công trên server`);
       },
       error: (err) => {

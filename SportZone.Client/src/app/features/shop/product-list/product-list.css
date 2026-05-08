@@ -1,27 +1,714 @@
-/* Font chữ theo style thể thao */
-.heading-font {
-    font-family: 'Inter', sans-serif;
+/* ════════════════════════════════════════════════════════
+   SPORTZONE — CATEGORY PAGE
+   Mobile-first → 768px → 1024px → 1280px
+   ════════════════════════════════════════════════════════ */
+
+/* ════ ROOT ════ */
+.cat-root {
+  min-height: 100svh;
+  background: #fff;
+  font-family: 'Barlow', 'Inter', sans-serif;
+  color: #0a0a0a;
 }
 
-
-
-
-/* Hiệu ứng loading quả bóng xoay */
-.loader-football {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #eee;
-    border-top: 3px solid #000;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+/* ════ BANNER ════ */
+.cat-banner {
+  position: relative;
+  width: 100%;
+  height: 44vw;          /* fluid: 44% of viewport width */
+  min-height: 220px;
+  max-height: 520px;
+  overflow: hidden;
+  background: #000;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.cat-banner__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: filter 1s ease, opacity 1s ease;
 }
 
-/* Tạo hiệu ứng mượt cho card */
-.product-card {
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+.cat-banner:hover .cat-banner__img {
+  filter: grayscale(0%);
+  opacity: 0.65;
+}
+
+.cat-banner__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 16px 20px;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .cat-banner__overlay { padding: 28px 40px 32px; }
+}
+
+@media (min-width: 1024px) {
+  .cat-banner__overlay { padding: 36px 64px 40px; }
+}
+
+/* Nav */
+.cat-banner__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-banner__back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.cat-banner__back:hover { color: #fff; }
+
+.cat-banner__back-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.cat-banner__sep { color: #555; font-size: 10px; }
+
+.cat-banner__crumb {
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #fff;
+}
+
+/* Title */
+.cat-banner__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.cat-banner__title-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.cat-banner__title {
+  font-family: 'Anton', 'Inter', sans-serif;
+  font-size: clamp(36px, 10vw, 96px);
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -1px;
+  color: #fff;
+  margin: 0;
+}
+
+.cat-banner__count {
+  position: absolute;
+  top: -8px;
+  right: -36px;
+  background: #fff;
+  color: #000;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  /* count chip: đặt dưới title trên mobile rất nhỏ */
+  .cat-banner__count {
+    position: static;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  .cat-banner__title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ════ MAIN ════ */
+.cat-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+
+@media (min-width: 768px) { .cat-main { padding: 28px 32px 80px; } }
+@media (min-width: 1024px) { .cat-main { padding: 32px 40px 100px; } }
+@media (min-width: 1280px) { .cat-main { padding: 36px 64px 100px; } }
+
+/* ════ FILTER PILLS ════ */
+.cat-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+  /* mobile: scroll ngang nếu quá nhiều */
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cat-filters::-webkit-scrollbar { display: none; }
+
+@media (min-width: 768px) {
+  .cat-filters { flex-wrap: wrap; overflow-x: visible; }
+}
+
+.cat-filter-btn {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.cat-filter-btn:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.cat-filter-btn--active {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+
+/* ════ SORT BAR ════ */
+.cat-sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cat-sort-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #000;
+  white-space: nowrap;
+}
+
+.cat-sort-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.cat-sort-select {
+  border: 1.5px solid #d0d0d0;
+  padding: 8px 12px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  transition: border-color 0.2s;
+  /* mobile: fill remaining width */
+  flex: 1;
+  max-width: 200px;
+}
+
+.cat-sort-select:hover,
+.cat-sort-select:focus { border-color: #000; }
+
+/* ════ EMPTY / LOADING ════ */
+.cat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  gap: 16px;
+}
+
+.cat-spinner {
+  width: 36px;
+  height: 36px;
+  border: 2.5px solid #eee;
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: cat-spin 0.75s linear infinite;
+}
+
+@keyframes cat-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cat-empty__text {
+  font-size: 13px;
+  color: #aaa;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ════ PRODUCT GRID ════ */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;                   /* gap = 0, dùng border để tạo ô như Adidas */
+}
+
+@media (min-width: 768px) {
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ════ PRODUCT CARD ════ */
+.cat-card {
+  position: relative;
+  cursor: pointer;
+  border-right: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  transition: background 0.2s;
+}
+
+/* Bỏ border-right cho cuối mỗi hàng */
+.cat-grid .cat-card:nth-child(2n)   { border-right: none; }
+@media (min-width: 768px) {
+  .cat-grid .cat-card:nth-child(2n)  { border-right: 1px solid #e8e8e8; }
+  .cat-grid .cat-card:nth-child(3n)  { border-right: none; }
+}
+@media (min-width: 1024px) {
+  .cat-grid .cat-card:nth-child(3n)  { border-right: 1px solid #e8e8e8; }
+  .cat-grid .cat-card:nth-child(4n)  { border-right: none; }
+}
+
+.cat-card:hover { background: #f9f9f9; }
+
+/* Image wrap */
+.cat-card__img-wrap {
+  position: relative;
+  background: #f5f5f5;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+/* Badges */
+.cat-card__badge {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.cat-card__badge--sale {
+  top: 0;
+  background: #dc2626;
+  color: #fff;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.cat-card__badge--new {
+  background: #000;
+  color: #fff;
+  letter-spacing: 0.12em;
+  font-style: normal;
+}
+
+/* Wishlist button */
+.cat-card__wish {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 0;
+  line-height: 1;
+  color: #000;
+}
+
+.cat-card:hover .cat-card__wish { opacity: 1; }
+
+.cat-card__wish .material-icons-outlined { font-size: 20px; }
+
+/* Image */
+.cat-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cat-card:hover .cat-card__img { transform: scale(1.06); }
+
+/* New arrival chip (bottom) */
+.cat-card__new-chip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  color: #000;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 4px 8px;
+  border-top: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+
+/* Info */
+.cat-card__info {
+  padding: 12px 12px 16px;
+}
+
+@media (min-width: 768px) {
+  .cat-card__info { padding: 14px 16px 18px; }
+}
+
+.cat-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.cat-card__price {
+  font-family: 'Anton', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  color: #000;
+  letter-spacing: -0.3px;
+}
+
+.cat-card__price--sale { color: #dc2626; }
+
+.cat-card__price-old {
+  font-size: 11px;
+  font-weight: 700;
+  color: #bbb;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.cat-card__name {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: #000;
+  margin: 0 0 4px;
+  /* 2 dòng max */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 32px;
+}
+
+@media (min-width: 768px) {
+  .cat-card__name { font-size: 13px; }
+}
+
+.cat-card__cat {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #bbb;
+  margin: 0;
+}
+
+/* ════ MOBILE TWEAKS ≤ 480px ════ */
+@media (max-width: 480px) {
+
+  /* Banner thấp hơn */
+  .cat-banner {
+    min-height: 200px;
+    max-height: 260px;
+  }
+
+  /* Grid: 2 cột sát nhau, info nhỏ hơn */
+  .cat-card__info { padding: 10px 10px 12px; }
+  .cat-card__price { font-size: 13px; }
+  .cat-card__price-old { font-size: 10px; }
+  .cat-card__name { font-size: 11px; min-height: 28px; }
+  .cat-card__cat { font-size: 8px; letter-spacing: 0.12em; }
+
+  /* Sort bar: label ẩn trên màn rất nhỏ */
+  .cat-sort-label span:last-child { display: none; }
+  .cat-sort-select { max-width: 100%; }
+
+  /* Filter scroll ngang */
+  .cat-filter-btn { padding: 6px 12px; font-size: 8px; }
+}/* ════ BANNER — split layout ════ */
+.cat-banner {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: #111;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Ảnh: chiếm 65% bên phải */
+.cat-banner__img-side {
+  position: absolute;
+  right: 0; top: 0;
+  width: 65%; height: 100%;
+  overflow: hidden;
+}
+
+.cat-banner__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: .5;
+  filter: grayscale(30%);
+  transition: opacity .8s, filter .8s;
+}
+
+.cat-banner:hover .cat-banner__img {
+  opacity: .65;
+  filter: grayscale(0%);
+}
+
+/* Gradient: từ #111 bên trái fade sang transparent */
+.cat-banner__fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #111 30%, rgba(17,17,17,.65) 58%, transparent 100%);
+  z-index: 1;
+}
+
+/* Content overlay */
+.cat-banner__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 32px 28px;
+  width: 100%;
+}
+
+/* Season label */
+.cat-banner__season {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.cat-banner__season-line {
+  width: 28px; height: 1.5px;
+  background: #dc2626;
+}
+.cat-banner__season-text {
+  font-size: 9px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: .22em;
+  color: #666;
+}
+
+/* Title */
+.cat-banner__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(40px, 6vw, 72px);
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -1px;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+/* Subtitle */
+.cat-banner__sub {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .14em;
+  color: #555;
+  max-width: 260px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.cat-banner__main-row {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 16px; /* Khoảng cách giữa chữ và badge */
+  flex-wrap: wrap; /* Cho phép rớt dòng trên mobile nếu tiêu đề quá dài */
+  margin-top: 8px; /* Cách phần BST ở trên một chút */
+}
+.cat-banner__main {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: flex-start;
+  gap: 16px; /* Khoảng cách giữa chữ GIÀY BÓNG ĐÁ và cục đỏ */
+  margin-top: 8px; /* Cách dòng BST 2025 ở trên một chút */
+  flex-wrap: wrap;
+}
+/* 2. Style và ÉP vị trí cho Badge đỏ */
+.cat-banner__count {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background-color: #dc2626 !important; /* Màu đỏ */
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase; 
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  
+  /* 🚀 CODE CHỐNG BAY LÊN GÓC MÀN HÌNH 🚀 */
+  position: static !important; /* Hủy position absolute cũ */
+  top: auto !important;
+  right: auto !important;
+  float: none !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* ── MOBILE ≤ 640px ── */
+@media (max-width: 640px) {
+  .cat-banner {
+    height: 220px;    /* thấp hơn nhiều, không full screen */
+  }
+  .cat-banner__img-side {
+    width: 100%;      /* ảnh full width, text overlay trên ảnh */
+  }
+  /* Gradient dọc từ bottom lên — text đọc được */
+  .cat-banner__fade {
+    background: linear-gradient(to top, #111 30%, rgba(17,17,17,.5) 65%, transparent 100%);
+  }
+  .cat-banner__content {
+    padding: 14px 16px 18px;
+  }
+  .cat-banner__title {
+    font-size: clamp(28px, 9vw, 40px);
+  }
+  .cat-banner__sub {
+    display: none; /* ẩn trên mobile nhỏ */
+  }
+}
+
+/* 3. KHOẢNG CÁCH GIỮA CÁC CHỮ: Tăng gap từ 32px lên 48px (hoặc 64px tùy ý bạn) */
+.cat-filters {
+  display: flex;
+  gap: 48px; /* Tăng số này nếu muốn khoảng cách rộng hơn nữa */
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid #f7eeee;
+  padding: 0 28px;
+}
+.cat-filters::-webkit-scrollbar { display: none; }
+
+.cat-filters {
+  display: flex;
+  gap: 48px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid #f7eeee;
+  padding: 0 28px;
+}
+.cat-filters::-webkit-scrollbar { display: none; }
+
+/* 1. NÚT MẶC ĐỊNH (CHƯA BẤM): Chữ màu xám đậm để nhường sự chú ý cho tab đang Active */
+.cat-filter-btn {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  color: #71717a; /* MÀU XÁM ĐẬM (giúp phân biệt rõ ràng hơn) */
+  font-weight: 400; 
+  font-size: 15px;
+  padding: 16px 0;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none; /* 🌟 CHỐNG LỖI BỊ BÔI ĐEN CHỮ KHI BẤM NHANH 🌟 */
+  transition: all 0.2s ease;
+}
+
+/* GẠCH CHÂN BÊN DƯỚI (Mặc định ẩn) */
+.cat-filter-btn::after {
+  content: ''; 
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent; 
+  transition: background-color 0.2s ease;
+}
+
+/* 2. KHI ẤN VÀO (ACTIVE): Chữ chuyển thành màu ĐEN TUYỀN, gạch chân đen */
+.cat-filter-btn:hover::after,
+.cat-filter-btn--active::after {
+  background-color: #000 !important;
+}
+
+.cat-filter-btn:hover,
+.cat-filter-btn--active {
+  color: #000 !important; /* Chữ chuyển sang đen tuyền */
+  text-shadow: 0 0 0.8px #000, 0 0 0.8px #000; /* Làm chữ đậm lên */
+}
+
+/* Sort row */
+.cat-sort-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px 14px;
+}
+
+@media (max-width: 640px) {
+  .cat-sort-row { padding: 10px 16px 12px; }
+}
+
+.cat-result-count {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: #aaa;
 }

@@ -241,7 +241,7 @@ namespace SportZone.API.Controllers
             {
                 HttpOnly = true,                 // JavaScript không đọc trộm được (Chống XSS)
                 Secure = true,                   // Chỉ chạy trên HTTPS
-                SameSite = SameSiteMode.Strict,  // Chỉ gửi cookie khi request từ chính trang web của bạn (Chống CSRF)
+                SameSite = SameSiteMode.None,  // Chỉ gửi cookie khi request từ chính trang web của bạn (Chống CSRF)
                 Expires = DateTime.UtcNow.AddDays(7)
             };
 

@@ -68,7 +68,7 @@ toggleExchange() {
         
        
       },
-      error: () => this.toast.error("Có lỗi xảy ra khi đổi điểm.")
+      error: () => this.toast.error("Không đủ điểm để đổi quà.")
     });
   } 
 }
